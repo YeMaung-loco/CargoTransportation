@@ -7,7 +7,7 @@ public class login_view {
 
 	private JFrame frame;
 
-	/**
+	/**test by thandar soe
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
