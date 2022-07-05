@@ -10,6 +10,7 @@ public class login_view {
 	/**test by thandar soe
 	 * test again
 	 * Launch the application.
+	 * dfgfhghg
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
