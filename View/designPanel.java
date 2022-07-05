@@ -5,12 +5,19 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.JCheckBox;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.SystemColor;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 public class designPanel extends JFrame {
 	JFrame frame;
@@ -42,7 +49,15 @@ public class designPanel extends JFrame {
 	private JLabel lblInputform;
 	private JLabel lblAccountType;
 	private JLabel lblFunction;
-	private JPanel panel;
+	private JPanel panel_create;
+	private JTextField txtsearch;
+	private JTable tblEmployee;
+	private JScrollPane scrollPane;
+	private DefaultTableModel dtm = new DefaultTableModel();
+	private JButton btnClear;
+	private JButton btnSearch;
+	private ButtonGroup group;
+
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -61,13 +76,28 @@ public class designPanel extends JFrame {
 		initcomponent();
 		setProperties();
 		addComponents();
+		setTableDesign();
 
+	}
+	private void setTableDesign() {
+		dtm.addColumn("ID");
+		dtm.addColumn("Name");
+		dtm.addColumn("NRC");
+		dtm.addColumn("Phone");
+		dtm.addColumn("Address");
+		dtm.addColumn("Department");
+		
+		this.tblEmployee.setModel(dtm);
+		
+		
+	
+		
 	}
 
 	private void initcomponent() {
 
 		frame = new JFrame();
-		panel = new JPanel();
+		panel_create = new JPanel();
 		lblName = new JLabel();
 		lblUsername = new JLabel();
 		txtName = new JTextField();
@@ -96,17 +126,18 @@ public class designPanel extends JFrame {
 		btnSave = new JButton();
 		btnUpdate = new JButton();
 		btnDelete = new JButton();
+	     group=new ButtonGroup();
 	}
 
 	private void setProperties() {
-		//getContentPane().setLayout()//
-		frame.setBounds(0, 0, 1300, 500);
+		//getContentPane().setLayout(null);
+		frame.setBounds(0, 0, 1300, 760);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		panel.setBackground(SystemColor.activeCaption);
-		panel.setBounds(0, 65, 1144, 370);
+		panel_create.setBackground(SystemColor.activeCaption);
+		panel_create.setBounds(0, 0, 1144, 370);
 
-		panel.setLayout(null);
+		panel_create.setLayout(null);
 
 		lblName.setText("Name");
 		lblName.setFont(new Font("Tahoma", Font.BOLD, 18));
@@ -125,10 +156,12 @@ public class designPanel extends JFrame {
 		rdbtnOffice.setText("Office");
 		rdbtnOffice.setFont(new Font("Tahoma", Font.BOLD, 17));
 		rdbtnOffice.setBounds(167, 66, 82, 40);
+	    group.add(rdbtnOffice);
 
 		rdbtnDelivery.setText("Delivery");
 		rdbtnDelivery.setFont(new Font("Tahoma", Font.BOLD, 17));
 		rdbtnDelivery.setBounds(264, 66, 103, 40);
+	    group.add(rdbtnDelivery);
 
 		lblAccountType.setText("Account Type");
 		lblAccountType.setFont(new Font("Tahoma", Font.BOLD, 17));
@@ -197,7 +230,7 @@ public class designPanel extends JFrame {
 
 		btnMinimize.setText("Minimize");
 		btnMinimize.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnMinimize.setBounds(987, 303, 129, 32);
+		btnMinimize.setBounds(987, 10, 129, 32);
 
 		btnSave.setText("Save");
 		btnSave.setFont(new Font("Tahoma", Font.BOLD, 16));
@@ -209,40 +242,76 @@ public class designPanel extends JFrame {
 
 		btnDelete.setText("Delete");
 		btnDelete.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnDelete.setBounds(460, 303, 129, 32);
+		btnDelete.setBounds(418, 303, 129, 32);
 
 	}
 
 	private void addComponents() {
-		frame.add(panel);
-		panel.add(chckbxManage);
-		panel.add(chckbxupload);
-		panel.add(lblAccountType);
-		panel.add(lblAddress);
-		panel.add(lblDepartment);
-		panel.add(lblFunction);
-		panel.add(lblInputform);
-		panel.add(lblName);
-		panel.add(lblNrc);
-		panel.add(lblPassword);
-		panel.add(lblPhone);
-		panel.add(lblStaffid);
-		panel.add(lblUsername);
-		panel.add(txtareaAddress);
-		panel.add(txtDepartment);
-		panel.add(txtNRC);
-		panel.add(txtName);
-		panel.add(txtPassword);
-		panel.add(txtPhone);
-		panel.add(txtStaffid);
-		panel.add(txtUserName);
-		panel.add(rdbtnDelivery);
-		panel.add(rdbtnOffice);
-		panel.add(btnMaximize);
-		panel.add(btnMinimize);
-		panel.add(btnDelete);
-		panel.add(btnUpdate);
-		panel.add(btnSave);
+		getContentPane().add(panel_create);
+		panel_create.add(chckbxManage);
+		panel_create.add(chckbxupload);
+		panel_create.add(lblAccountType);
+		panel_create.add(lblAddress);
+		panel_create.add(lblDepartment);
+		panel_create.add(lblFunction);
+		panel_create.add(lblInputform);
+		panel_create.add(lblName);
+		panel_create.add(lblNrc);
+		panel_create.add(lblPassword);
+		panel_create.add(lblPhone);
+		panel_create.add(lblStaffid);
+		panel_create.add(lblUsername);
+		panel_create.add(txtareaAddress);
+		panel_create.add(txtDepartment);
+		panel_create.add(txtNRC);
+		panel_create.add(txtName);
+		panel_create.add(txtPassword);
+		panel_create.add(txtPhone);
+		panel_create.add(txtStaffid);
+		panel_create.add(txtUserName);
+		panel_create.add(rdbtnDelivery);
+		panel_create.add(rdbtnOffice);
+		panel_create.add(btnMaximize);
+		panel_create.add(btnMinimize);
+		panel_create.add(btnDelete);
+		panel_create.add(btnUpdate);
+		panel_create.add(btnSave);
+		
+		btnClear = new JButton();
+		btnClear.setText("Clear");
+		btnClear.setFont(new Font("Tahoma", Font.BOLD, 16));
+		btnClear.setBounds(598, 303, 129, 32);
+		panel_create.add(btnClear);
+		
+		JPanel panel_1 = new JPanel();
+		panel_1.setBounds(0, 370, 1144, 370);
+		getContentPane().add(panel_1);
+		panel_1.setLayout(null);
+		
+		JLabel lblSearch = new JLabel("Search");
+		lblSearch.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblSearch.setBounds(703, 7, 90, 26);
+		panel_1.add(lblSearch);
+		
+		txtsearch = new JTextField();
+		txtsearch.setBounds(803, 10, 161, 26);
+		panel_1.add(txtsearch);
+		txtsearch.setColumns(10);
+		
+		scrollPane = new JScrollPane();
+		scrollPane.setBounds(0, 46, 1144, 324);
+		panel_1.add(scrollPane);
+		
+		tblEmployee = new JTable();
+		tblEmployee.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		scrollPane.setViewportView(tblEmployee);
+		
+		btnSearch = new JButton("Search");
+		btnSearch.setFont(new Font("Tahoma", Font.BOLD, 15));
+		btnSearch.setBounds(1002, 7, 132, 26);
+		panel_1.add(btnSearch);
+		
+	
 	}
 
 	public JRadioButton getRdbtnOffice() {
@@ -312,5 +381,13 @@ public class designPanel extends JFrame {
 	public JButton getBtnMaximize() {
 		return btnMaximize;
 	}
+	public JTextField getTxtsearch() {
+		return txtsearch;
+	}
+	public JButton getBtnClear() {
+		return btnClear;
+	}
+	public JButton getBtnSearch() {
+		return btnSearch;
+	}
 }
-//tested

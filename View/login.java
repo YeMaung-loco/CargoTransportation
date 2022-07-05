@@ -11,17 +11,18 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import java.awt.Font;
 import javax.swing.JButton;
+import javax.swing.JPasswordField;
 
 public class login {
 
 	private JFrame frame;
 	private JTextField txtUsername;
-	private JTextField txtPassword;
 	private JLabel lblUsername;
 	private JLabel lblPassword;
 	private JButton btnLogin;
 	private JLabel lblcargo;
 	private JPanel panel;
+	private JPasswordField passwordField;
 
 	/**
 	 * Launch the application.
@@ -57,9 +58,9 @@ public class login {
 		lblUsername = new JLabel();
 		txtUsername = new JTextField();
 		lblPassword = new JLabel();
-		txtPassword = new JTextField();
 		btnLogin = new JButton();
 		lblcargo = new JLabel();
+		passwordField = new JPasswordField();
 
 	}
 
@@ -84,9 +85,7 @@ public class login {
 		lblPassword.setText("Password");
 		lblPassword.setFont(new Font("Tahoma", Font.BOLD, 18));
 		lblPassword.setBounds(59, 184, 122, 35);
-
-		txtPassword.setColumns(10);
-		txtPassword.setBounds(249, 189, 165, 30);
+		passwordField.setBounds(249, 184, 165, 30);
 
 		btnLogin.setText("Login");
 		btnLogin.setFont(new Font("Tahoma", Font.BOLD, 18));
@@ -100,14 +99,13 @@ public class login {
 	}
 
 	private void addComponents() {
-		frame.add(panel);
+		frame.getContentPane().add(panel);
 		panel.add(lblcargo);
 		panel.add(btnLogin);
 		panel.add(lblPassword);
 		panel.add(lblUsername);
-
-		panel.add(txtPassword);
 		panel.add(txtUsername);
+		panel.add(passwordField);
 	}
 
 	public JLabel getLblUsername() {
@@ -122,11 +120,12 @@ public class login {
 		return txtUsername;
 	}
 
-	public JTextField getTxtPassword() {
-		return txtPassword;
-	}
 
 	public JButton getBtnLogin() {
 		return btnLogin;
 	}
+	public JPasswordField getPasswordField() {
+		return passwordField;
+	}
 }
+//tested 
