@@ -2,7 +2,8 @@ package Model;
 
 public class Staff extends PersonInfo {
 
-	private String nrc, departmentId, date, username, password, role;
+	private String nrc, departmentId, date, username, password;
+	int roleId;
 
 	private boolean active;
 
@@ -10,21 +11,18 @@ public class Staff extends PersonInfo {
 		super();
 	}
 
-	public Staff(String name, String phone, String address, String nrc, String username, String password, String role,
-			String departmentId, boolean active, String date) {
+	public Staff(String name, String phone, String address, String nrc,int roleId,String departmentId, boolean active, String date) {
 
 		super(name, phone, address);
 		this.nrc = nrc;
 		this.departmentId = departmentId;
 		this.date = date;
-		this.username = username;
-		this.password = password;
-		this.role = role;
+		this.roleId = roleId;
 		this.active = active;
 	}
 
 	public void setActive(boolean active) {
-		System.out.println("employee.java" + active);
+		System.out.println("Staff.java" + active);
 		this.active = active;
 	}
 
@@ -32,28 +30,14 @@ public class Staff extends PersonInfo {
 		return active;
 	}
 
-	public String getUsername() {
-		return username;
+	
+
+	public int getRole() {
+		return roleId;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getRole() {
-		return role;
-	}
-
-	public void setRole(String role) {
-		this.role = role;
+	public void setRole(int role) {
+		this.roleId = role;
 	}
 
 	public String getNrc() {
