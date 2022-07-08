@@ -1,17 +1,17 @@
 package Model;
 
-public class customer {
+public class Customer {
 private String name;
 private int phone;
 private String address;
 private int id;
 
-public customer() {
+public Customer() {
 	
 }
 
 
-public customer(String name, int phone, String address) {
+public Customer(String name, int phone, String address) {
 	super();
 	this.name = name;
 	this.phone = phone;

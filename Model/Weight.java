@@ -1,15 +1,15 @@
 package Model;
 
-public class weight {
+public class Weight {
 	private int weightprice;
 	private int weight_kg;
 	private int id;
 
-	public weight() {
+	public Weight() {
 
 	}
 
-	public weight(int weightprice, int weight_kg) {
+	public Weight(int weightprice, int weight_kg) {
 		super();
 		this.weightprice = weightprice;
 		this.weight_kg = weight_kg;

@@ -2,7 +2,7 @@ package Model;
 
 public class Staff extends PersonInfo {
 
-	private String nrc, departmentId, date, username, password;
+	private String nrc, departmentId, date;
 	int roleId;
 
 	private boolean active;
@@ -11,7 +11,8 @@ public class Staff extends PersonInfo {
 		super();
 	}
 
-	public Staff(String name, String phone, String address, String nrc,int roleId,String departmentId, boolean active, String date) {
+	public Staff(String name, String phone, String address, String nrc, int roleId, String departmentId, boolean active,
+			String date) {
 
 		super(name, phone, address);
 		this.nrc = nrc;
@@ -29,8 +30,6 @@ public class Staff extends PersonInfo {
 	public boolean getActive() {
 		return active;
 	}
-
-	
 
 	public int getRole() {
 		return roleId;

@@ -9,23 +9,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import config.DBConfig;
-import Model.department;
+import Model.Department;
 
-public class department_service {
+public class Department_service {
 	private final DBConfig dbConfig;
 	private final Connection connection;
-	public department_service() throws SQLException {
+	public Department_service() throws SQLException {
 		this.dbConfig = new DBConfig();
 		this.connection = dbConfig.getConnection();
 
 	}
 	    
 
-	    public void createDepartment(department depart) {
+	    public void createDepartment(Department depart) {
 	        try {
 
 	            PreparedStatement ps = this.dbConfig.getConnection()
-	                    .prepareStatement("INSERT INTO department(name) VALUES (?);");
+	                    .prepareStatement("INSERT INTO department(depart_name) VALUES (?);");
 
 	            ps.setString(1, depart.getDepartmentName());
 	            ps.executeUpdate();
@@ -38,11 +38,11 @@ public class department_service {
 
 	    
 
-	    public void updateDepartment(String id, department depart) {
+	    public void updateDepartment(String id, Department depart) {
 	        try {
 
 	            PreparedStatement ps = this.dbConfig.getConnection()
-	                    .prepareStatement("UPDATE department SET name = ? WHERE department_id = ?");
+	                    .prepareStatement("UPDATE department SET department_name = ? WHERE department_id = ?");
 
 	            ps.setString(1, depart.getDepartmentName());
 	            ps.setString(2, id);
@@ -55,8 +55,8 @@ public class department_service {
 	        }
 	    }
 
-	    public List<department> getAllDepartment() {
-	        List<department> departmentList = new ArrayList<>();
+	    public List<Department> getAllDepartment() {
+	        List<Department> departmentList = new ArrayList<>();
 
 	        try (Statement st = this.dbConfig.getConnection().createStatement()) {
 
@@ -65,9 +65,9 @@ public class department_service {
 	            ResultSet rs = st.executeQuery(query);
 
 	            while (rs.next()) {
-	                department depart = new department();
+	                Department depart = new Department();
 	                depart.setId(rs.getInt("department_id"));
-	                depart.setDepartmentName(rs.getString("name"));
+	                depart.setDepartmentName(rs.getString("department_name"));
 	                departmentList.add(depart);
 	            }
 
@@ -77,8 +77,8 @@ public class department_service {
 	        return departmentList;
 	    }
 
-	    public department getById(String id) {
-	        department depart = new department();
+	    public Department getById(String id) {
+	        Department depart = new Department();
 
 	        try (Statement st = connection.createStatement()) {
 
@@ -88,7 +88,7 @@ public class department_service {
 
 	            while (rs.next()) {
 	                depart.setId(rs.getInt("department_id"));
-	                depart.setDepartmentName(rs.getString("name"));
+	                depart.setDepartmentName(rs.getString("department_name"));
 	            }
 
 	        } catch (Exception e) {

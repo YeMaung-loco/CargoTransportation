@@ -8,24 +8,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 import config.DBConfig;
-import mapper.customer_mapper;
-import Model.customer;
+import mapper.Customer_mapper;
+import Model.Customer;
 
-public class customer_service {
+public class Customer_service {
 	private final DBConfig dbConfig;
 	private final Connection connection;
 
-	public customer_service() throws SQLException {
+	public Customer_service() throws SQLException {
 		this.dbConfig = new DBConfig();
 		this.connection = dbConfig.getConnection();
 
 	}
 
-	public int createcustomer(customer customer) {
+	public int createcustomer(Customer customer) {
 		int status=0;
 		try {
 			PreparedStatement ps = this.dbConfig.getConnection()
-					.prepareStatement("INSERT INTO customer (name, phone, address) VALUES (?, ?, ?)");
+					.prepareStatement("INSERT INTO customer (c_name, c_phone, c_address) VALUES (?, ?, ?)");
 
 			ps.setString(1, customer.getName());
 			ps.setInt(2, customer.getPhone());
@@ -39,11 +39,11 @@ public class customer_service {
 		return status;
 	}
 
-	public int updatecustomer(String id, customer customer) {
+	public int updatecustomer(String id, Customer customer) {
 		int status=0;
 		try {
 			PreparedStatement ps = connection
-					.prepareStatement("UPDATE customer SET name=?, phone=?,address=? WHERE customer_id=?");
+					.prepareStatement("UPDATE customer SET c_name=?, c_phone=?,c_address=? WHERE customer_id=?");
 
 			ps.setString(1, customer.getName());
 			ps.setInt(2, customer.getPhone());
@@ -57,16 +57,16 @@ public class customer_service {
 	return status;
 	}
 
-	public customer getById(String Id) {
+	public Customer getById(String Id) {
 
-		customer customer = new customer();
+		Customer customer = new Customer();
 
 		try {
 			PreparedStatement ps = connection
 					.prepareStatement("select * from cargotransportation.customer where customer_id=" + Id + ";");
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
-				customer = customer_mapper.mapper(customer, rs);
+				customer = Customer_mapper.mapper(customer, rs);
 			}
 			ps.close();
 		} catch (SQLException e) {
@@ -76,15 +76,15 @@ public class customer_service {
 		return customer;
 	}
 
-	public List<customer> getAllcustomers() {
+	public List<Customer> getAllcustomers() {
 
-		List<customer> customerList = new ArrayList<customer>();
+		List<Customer> customerList = new ArrayList<Customer>();
 		try {
 			PreparedStatement ps = connection.prepareStatement("select * from cargotransportation.customer");
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				customer customer = new customer();
-				customer = customer_mapper.mapper(customer, rs);
+				Customer customer = new Customer();
+				customer = Customer_mapper.mapper(customer, rs);
 				customerList.add(customer);
 			}
 		} catch (SQLException e) {

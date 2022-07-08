@@ -11,24 +11,24 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import config.DBConfig;
-import mapper.destination_mapper;
-import Model.destination;
+import mapper.Destination_mapper;
+import Model.Destination;
 
-public class destinationPrice_service {
+public class DestinationPrice_service {
 	private final DBConfig dbConfig;
 	private final Connection connection;
 
-	public destinationPrice_service() throws SQLException {
+	public DestinationPrice_service() throws SQLException {
 		this.dbConfig = new DBConfig();
 		this.connection = dbConfig.getConnection();
 
 	}
 
-	public int createdestinationPrice(destination dest) {
+	public int createdestinationPrice(Destination dest) {
 		int status = 0;
 		try {
 			PreparedStatement ps = connection
-					.prepareStatement("INSERT INTO cargotransportation.destination_price(destination_name,price)VALUES(?,?)");
+					.prepareStatement("INSERT INTO cargotransportation.destination_price(destination_name,destination_price)VALUES(?,?)");
 			ps.setString(1, dest.getDestinationname());
 			ps.setInt(2, dest.getPrice());
 			status = ps.executeUpdate();
@@ -54,11 +54,11 @@ public class destinationPrice_service {
 		return status;
 	}
 
-	public int updatedestinationPrice(int id, destination dest) {
+	public int updatedestinationPrice(int id, Destination dest) {
 		int status = 0;
 		try {
 			PreparedStatement ps = connection.prepareStatement(
-					"UPDATE cargotransportation.destination_price SET destination_name=?, price=?, WHERE destination_id=" + id
+					"UPDATE cargotransportation.destination_price SET destination_name=?, destination_price=?, WHERE destination_id=" + id
 							+ ";");
 			ps.setString(1, dest.getDestinationname());
 			ps.setInt(2, dest.getPrice());
@@ -72,14 +72,14 @@ public class destinationPrice_service {
 		}
 		return status;
 	}
-	public List<destination> getAlldestinationPrice() {
-		List<destination> destinationPriceList = new ArrayList<destination>();
+	public List<Destination> getAlldestinationPrice() {
+		List<Destination> destinationPriceList = new ArrayList<Destination>();
 		try {
 			PreparedStatement ps = connection.prepareStatement("select * from cargotransportation.destination_price");
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				destination dest = new destination();
-				dest = destination_mapper.mapper(dest, rs);
+				Destination dest = new Destination();
+				dest = Destination_mapper.mapper(dest, rs);
 				destinationPriceList.add(dest);
 			}
 		} catch (SQLException e) {
@@ -89,14 +89,14 @@ public class destinationPrice_service {
 	}
 
 
-public destination getdestinationPriceById(int Id) {
-	destination dest = new destination();
+public Destination getdestinationPriceById(int Id) {
+	Destination dest = new Destination();
 	try {
 		PreparedStatement ps = connection
 				.prepareStatement("select * from cargotransportation.destination_price where destination_id=" + Id + ";");
 		ResultSet rs = ps.executeQuery();
 		if (rs.next()) {
-			dest = destination_mapper.mapper(dest, rs);
+			dest = Destination_mapper.mapper(dest, rs);
 		}
 		ps.close();
 	} catch (SQLException e) {

@@ -1,16 +1,16 @@
 package Model;
 
-public class destination {
+public class Destination {
 
 	private int price;
 	private String destinationname;
 	private int id;
 
-	public destination() {
+	public Destination() {
 
 	}
 
-	public destination(int price, String destinationname) {
+	public Destination(int price, String destinationname) {
 		super();
 		this.price = price;
 		this.destinationname = destinationname;

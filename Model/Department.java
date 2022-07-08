@@ -2,7 +2,7 @@ package Model;
 
 import java.util.List;
 
-public class department {
+public class Department {
 	private int id;
 	private String departmentName;
 	
@@ -25,13 +25,13 @@ public class department {
 
 	
 
-	public department(int id, String departmentName, List<department> department) {
+	public Department(int id, String departmentName, List<Department> department) {
 		super();
 		this.id = id;
 		this.departmentName = departmentName;
 	
 	}
 
-	public department() {
+	public Department() {
 	}
 }

@@ -10,7 +10,7 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import mapper.staff_mapper;
+import mapper.Staff_mapper;
 import Model.Staff;
 import config.DBConfig;
 
@@ -30,17 +30,15 @@ public class Staff_Service {
 		long millis = System.currentTimeMillis();
 		try {
 			PreparedStatement ps = connection.prepareStatement(
-					"INSERT INTO cargotransportation.staff (name, phone_number,address,nrc,user_name,password, role ,department_id,active,created_date) VALUES (?, ?, ?, ?, ?, ?,?,?,?,?)");
+					"INSERT INTO cargotransportation.staff (name, phone_number,address,nrc,role_id,department_id,is_active,created_date) VALUES (?, ?, ?, ?, ?, ?,?,?,?,?)");
 			ps.setString(1, staff.getName());
 			ps.setString(2, staff.getPhone());
 			ps.setString(3, staff.getAddress());
 			ps.setString(4, staff.getNrc());
-			ps.setString(5, staff.getUsername());
-			ps.setString(6, staff.getPassword());
-			ps.setString(7, staff.getRole());
-			ps.setString(8, staff.getDepartmentId());
-			ps.setBoolean(9, true);
-			ps.setDate(10, new java.sql.Date(millis));
+			ps.setInt(5, staff.getRole());
+			ps.setString(6, staff.getDepartmentId());
+			ps.setBoolean(7, true);
+			ps.setDate(8, new java.sql.Date(millis));
 			status = ps.executeUpdate();
 			ps.close();
 
@@ -59,7 +57,7 @@ public class Staff_Service {
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				Staff staff = new Staff();
-				staff = staff_mapper.mapper(staff, rs);
+				staff = Staff_mapper.mapper(staff, rs);
 				staffList.add(staff);
 			}
 		} catch (SQLException e) {
@@ -75,7 +73,7 @@ public class Staff_Service {
 					.prepareStatement("select * from cargotransportation.staff where staff_id=" + Id + ";");
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
-				staff = staff_mapper.mapper(staff, rs);
+				staff = Staff_mapper.mapper(staff, rs);
 			}
 			ps.close();
 		} catch (SQLException e) {
@@ -92,7 +90,7 @@ public class Staff_Service {
 					"SELECT * FROM cargptansportation.staff WHERE staff_id=(SELECT MAX(staff_id) FROM cargotransportation.staff);");
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
-				staff = staff_mapper.mapper(staff, rs);
+				staff = Staff_mapper.mapper(staff, rs);
 			}
 			ps.close();
 		} catch (SQLException e) {
@@ -121,18 +119,16 @@ public class Staff_Service {
 		int status = 0;
 		try {
 			PreparedStatement ps = this.dbConfig.getConnection().prepareStatement(
-					"UPDATE cargotransportation.staff SET name=?, phone_number=?, , address=?,nrc=?, username=?, password=?,role=?, department=?,active=? WHERE staff_id="
-							+ id + ";");
+					"UPDATE cargotransportation.staff SET name=?, phone_number=?, address=?,nrc=?,role_id=?, department_id=?,is_active=? WHERE staff_id="+ id + ";");
 
 			ps.setString(1, staff.getName());
 			ps.setString(2, staff.getPhone());
 			ps.setString(3, staff.getAddress());
 			ps.setString(4, staff.getNrc());
-			ps.setString(5, staff.getUsername());
-			ps.setString(6, staff.getPassword());
-			ps.setString(7, staff.getRole());
-			ps.setString(8, staff.getDepartmentId());
-			ps.setBoolean(9, staff.getActive());
+			ps.setInt(5, staff.getRole());
+			ps.setString(6, staff.getDepartmentId());
+			ps.setBoolean(7, staff.getActive());
+			
 
 			// ps.setString(9, id);
 
