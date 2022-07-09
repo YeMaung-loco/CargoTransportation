@@ -194,7 +194,7 @@ public class Office_view {
 	public JFrame getFrame() {
 		return frame;
 	}
-
+	
 	public JLabel getLabel() {
 		return lblStaff;
 	}

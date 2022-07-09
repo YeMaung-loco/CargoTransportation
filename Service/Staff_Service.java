@@ -1,28 +1,30 @@
 package Service;
 
 import java.sql.Connection;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
 
+<<<<<<< Updated upstream
 import mapper.Staff_mapper;
+=======
+>>>>>>> Stashed changes
 import Model.Staff;
 import config.DBConfig;
+import mapper.staff_mapper;
 
 public class Staff_Service {
-
 	private final DBConfig dbConfig;
 	private final Connection connection;
 
 	public Staff_Service() throws SQLException {
 		this.dbConfig = new DBConfig();
 		this.connection = dbConfig.getConnection();
-
 	}
 
 	public int createStaff(Staff staff) {
@@ -30,16 +32,28 @@ public class Staff_Service {
 		long millis = System.currentTimeMillis();
 		try {
 			PreparedStatement ps = connection.prepareStatement(
+<<<<<<< Updated upstream
 					"INSERT INTO cargotransportation.staff (name, phone_number,address,nrc,role_id,department_id,is_active,created_date) VALUES (?, ?, ?, ?, ?, ? , ? , ?)");
+=======
+					"INSERT INTO cargotransportation.staff (staff_name, phone_number,address,nrc,department_id,is_active,created_date) VALUES (?, ?, ?, ?, ?, ?,?)");
+>>>>>>> Stashed changes
 			ps.setString(1, staff.getName());
 			ps.setString(2, staff.getPhone());
 			ps.setString(3, staff.getAddress());
 			ps.setString(4, staff.getNrc());
+<<<<<<< Updated upstream
 			ps.setInt(5, staff.getRoleId());
 			ps.setInt(6, staff.getDepartmentId());
 			ps.setBoolean(7, true);
 			ps.setDate(8, new java.sql.Date(millis));
+=======
+			ps.setInt(5, staff.getDepartmentId());
+			ps.setBoolean(6, true);
+			ps.setDate(7, new java.sql.Date(millis));
+>>>>>>> Stashed changes
 			status = ps.executeUpdate();
+			
+			//ps=connection.prepareStatement("INSERT INTO cargotransportation.staff_role(,role_id) VALUES(?,?)");
 			ps.close();
 
 		} catch (Exception e) {
@@ -52,6 +66,11 @@ public class Staff_Service {
 	}
 
 	public List<Staff> getAllstaff() {
+		//SELECT *
+//		FROM staff
+//		INNER JOIN staff_role
+//		ON staff.staff_id = staff_role.staff_id
+//		where staff.staff_id=35;
 		List<Staff> staffList = new ArrayList<Staff>();
 		try {
 			PreparedStatement ps = connection.prepareStatement("SELECT * FROM cargotransportation.staff\r\n"
@@ -134,10 +153,16 @@ public class Staff_Service {
 			ps.setString(2, staff.getPhone());
 			ps.setString(3, staff.getAddress());
 			ps.setString(4, staff.getNrc());
+<<<<<<< Updated upstream
 			ps.setInt(5, staff.getRoleId());
 			ps.setInt(6, staff.getDepartmentId());
 			ps.setBoolean(7, staff.getActive());
 			
+=======
+			ps.setInt(7, staff.getRole());
+			ps.setInt(8, staff.getDepartmentId());
+			ps.setBoolean(9, staff.getActive());
+>>>>>>> Stashed changes
 
 			// ps.setString(9, id);
 

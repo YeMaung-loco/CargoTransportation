@@ -1,8 +1,17 @@
 package Model;
 
 import java.sql.Date;
+<<<<<<< Updated upstream
 
 public class Staff extends PersonInfo {
+=======
+
+public class Staff extends PersonInfo {
+
+	private String nrc, date;
+	int departmentId;
+	int roleId;
+>>>>>>> Stashed changes
 
 	private String nrc, departmentName, roleName;
 	int roleId, departmentId;
@@ -15,7 +24,11 @@ public class Staff extends PersonInfo {
 	}
 
 	public Staff(String name, String phone, String address, String nrc, int roleId, int departmentId, boolean active,
+<<<<<<< Updated upstream
 			Date date) {
+=======
+			String date) {
+>>>>>>> Stashed changes
 
 		super(name, phone, address);
 		this.nrc = nrc;
@@ -23,6 +36,7 @@ public class Staff extends PersonInfo {
 		this.date = date;
 		this.roleId = roleId;
 		this.active = active;
+		this.date = date;
 	}
 
 	public void setActive(boolean active) {
@@ -33,6 +47,7 @@ public class Staff extends PersonInfo {
 		return active;
 	}
 
+<<<<<<< Updated upstream
 	public void setDepartmentName(String department) {
 		this.departmentName = department;
 	}
@@ -42,6 +57,9 @@ public class Staff extends PersonInfo {
 	}
 
 	public int getRoleId() {
+=======
+	public int getRole() {
+>>>>>>> Stashed changes
 		return roleId;
 	}
 

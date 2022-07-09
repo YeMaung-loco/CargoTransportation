@@ -5,7 +5,11 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBConfig {
+<<<<<<< Updated upstream
 	private final String CONNECTION = "jdbc:mysql://localhost:3306/cargotransportation?";
+=======
+	private final String CONNECTION = "jdbc:mysql://localhost:3306/Cargotransportation?";
+>>>>>>> Stashed changes
 	private final String PASSWORD = "root";
 	private static Connection con = null;
 

@@ -11,16 +11,27 @@ import java.util.List;
 import config.DBConfig;
 import Model.Department;
 
+<<<<<<< Updated upstream:Service/Department_service.java
 public class Department_service {
 	private final DBConfig dbConfig;
 	private final Connection connection;
 	public Department_service() throws SQLException {
+=======
+public class Department_Service {
+	private final DBConfig dbConfig;
+	private final Connection connection;
+	public Department_Service() throws SQLException {
+>>>>>>> Stashed changes:Service/department_service.java
 		this.dbConfig = new DBConfig();
 		this.connection = dbConfig.getConnection();
 
 	}
+<<<<<<< Updated upstream:Service/Department_service.java
 	 
 	    public void createDepartment(Department depart) {
+=======
+	    public void createDepartment(department depart) {
+>>>>>>> Stashed changes:Service/department_service.java
 	        try {
 
 	            PreparedStatement ps = this.dbConfig.getConnection()
