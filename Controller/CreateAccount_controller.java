@@ -15,7 +15,13 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import javax.swing.JOptionPane;
+=======
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+>>>>>>> Stashed changes
 =======
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -25,6 +31,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -56,11 +63,29 @@ import TableModel.tableModel_Staff;
 import View.Office_view;
 import View.Staff_Panel;
 
+=======
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MaximizeAction;
+
+import com.mysql.cj.x.protobuf.MysqlxCrud.Delete;
+import com.mysql.cj.x.protobuf.MysqlxCrud.Update;
+
+import Model.Staff;
+import Model.department;
+import Service.Staff_Service;
+import Service.Department_Service;
+import TableModel.tableModel_Staff;
+import View.Office_view;
+import View.Staff_Panel;
+
+>>>>>>> Stashed changes
 public class CreateAccount_controller implements ActionListener, MouseListener {
 	Office_view office_view;
 	Staff_Panel cePanel;
 	Staff staff;
 	tableModel_Staff model_Staff;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 	JTable table;
 	JTextField txtName, txtNRC, txtPhone, txtDepartment, txtsearch;
@@ -73,8 +98,12 @@ public class CreateAccount_controller implements ActionListener, MouseListener {
 	JButton btnSave, btnUpdate, btnDelete, btnClear, btnMinimize, btnMaximize, btnSearch;
 	Staff_Service staff_Service;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 	Department_service department_Service;
 	int temp_id;
+=======
+	Department_Service department_Service;
+>>>>>>> Stashed changes
 =======
 	Department_Service department_Service;
 >>>>>>> Stashed changes
@@ -87,7 +116,11 @@ public class CreateAccount_controller implements ActionListener, MouseListener {
 
 		loadComboData();
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 		showList();
+=======
+		// System.out.println(cePanel.getComboDepartment().getSelectedItem());
+>>>>>>> Stashed changes
 =======
 		// System.out.println(cePanel.getComboDepartment().getSelectedItem());
 >>>>>>> Stashed changes
@@ -97,7 +130,11 @@ public class CreateAccount_controller implements ActionListener, MouseListener {
 		try {
 			this.staff_Service = new Staff_Service();
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 			this.department_Service = new Department_service();
+=======
+			this.department_Service = new Department_Service();
+>>>>>>> Stashed changes
 =======
 			this.department_Service = new Department_Service();
 >>>>>>> Stashed changes
@@ -194,6 +231,7 @@ public class CreateAccount_controller implements ActionListener, MouseListener {
 
 		// chckActive = cePanel.getCheckBox();
 
+<<<<<<< Updated upstream
 	}
 
 	private void loadComboData() {
@@ -264,6 +302,8 @@ public class CreateAccount_controller implements ActionListener, MouseListener {
 		chckActive = cePanel.getChckbxActive();
 		
 		table = cePanel.getTable();
+=======
+>>>>>>> Stashed changes
 	}
 
 	private void collapseInputForm(boolean collapse) {
@@ -315,6 +355,9 @@ public class CreateAccount_controller implements ActionListener, MouseListener {
 		}
 
 	}
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
 	private void save() {
@@ -331,6 +374,7 @@ public class CreateAccount_controller implements ActionListener, MouseListener {
 
 		} else {
 			alert("Failed Save!");
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 		}
 		staff = null;
@@ -362,11 +406,15 @@ public class CreateAccount_controller implements ActionListener, MouseListener {
 =======
 
 >>>>>>> Stashed changes
+=======
+
+>>>>>>> Stashed changes
 		}
 		staff = null;
 		dataToView(staff);
 	}
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 	private void delete() {
 		int modelRowIndex = table.convertRowIndexToModel(table.getSelectedRow());
@@ -386,6 +434,8 @@ public class CreateAccount_controller implements ActionListener, MouseListener {
 	@SuppressWarnings("unused")
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 	private void dataToView(Staff staff) {
 		txtName.setText(staff == null ? "" : staff.getName());
 		txtPhone.setText(staff == null ? "" : staff.getPhone());
@@ -394,6 +444,7 @@ public class CreateAccount_controller implements ActionListener, MouseListener {
 		comboDepartment.setSelectedIndex(staff == null ? 0 : staff.getDepartmentId());
 		chckActive.setSelected(staff != null && staff.getActive() ? true : false);
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 		if (staff == null) {
 			radioGroup.clearSelection();
@@ -407,10 +458,15 @@ public class CreateAccount_controller implements ActionListener, MouseListener {
 		if (staff != null)
 			switch (staff.getRole()) {
 >>>>>>> Stashed changes
+=======
+		if (staff != null)
+			switch (staff.getRole()) {
+>>>>>>> Stashed changes
 			case 1: {
 				rdbtnOffice.setSelected(true);
 				chckbxupload.setSelected(true);
 				chckbxManage.setSelected(false);
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 				return;
 			}
@@ -462,6 +518,37 @@ public class CreateAccount_controller implements ActionListener, MouseListener {
 
 			}
 =======
+=======
+			}
+			case 2: {
+				rdbtnOffice.setSelected(true);
+				chckbxupload.setSelected(true);
+				chckbxManage.setSelected(true);
+			}
+			case 3: {
+				rdbtnOffice.setSelected(true);
+				chckbxupload.setSelected(true);
+				chckbxManage.setSelected(false);
+			}
+			case 4: {
+				rdbtnOffice.setSelected(true);
+				chckbxupload.setSelected(false);
+				chckbxManage.setSelected(false);
+
+			}
+			case 5: {
+				rdbtnDelivery.setSelected(true);
+				chckbxupload.setSelected(false);
+				chckbxManage.setSelected(false);
+
+			}
+			}
+		else {
+			radioGroup.clearSelection();
+			chckbxupload.setSelected(false);
+			chckbxManage.setSelected(false);
+		}
+>>>>>>> Stashed changes
 
 			}
 			case 5: {
@@ -478,6 +565,10 @@ public class CreateAccount_controller implements ActionListener, MouseListener {
 >>>>>>> Stashed changes
 		}
 
+	}
+
+	private void alert(String msg) {
+		JOptionPane.showMessageDialog(office_view.getFrame(), msg);
 	}
 
 	private void alert(String msg) {
@@ -550,6 +641,7 @@ public class CreateAccount_controller implements ActionListener, MouseListener {
 	}
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
 		if (!table.getSelectionModel().isSelectionEmpty()) {
@@ -558,6 +650,8 @@ public class CreateAccount_controller implements ActionListener, MouseListener {
 			System.out.println("Empty");
 		}
 =======
+=======
+>>>>>>> Stashed changes
 	private void update() {
 		// TODO Auto-generated method stub
 
@@ -565,6 +659,9 @@ public class CreateAccount_controller implements ActionListener, MouseListener {
 
 	private void delete() {
 		// TODO Auto-generated method stub
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
 	}
