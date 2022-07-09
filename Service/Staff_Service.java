@@ -11,6 +11,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import mapper.Staff_mapper;
+import Model.Department;
 import Model.Staff;
 import config.DBConfig;
 
@@ -35,8 +36,8 @@ public class Staff_Service {
 			ps.setString(2, staff.getPhone());
 			ps.setString(3, staff.getAddress());
 			ps.setString(4, staff.getNrc());
-			ps.setInt(5, staff.getRole());
-			ps.setString(6, staff.getDepartmentId());
+			ps.setInt(5, staff.getRole().getId());
+			ps.setInt(6, staff.getDepartment().getId());
 			ps.setBoolean(7, true);
 			ps.setDate(8, new java.sql.Date(millis));
 			status = ps.executeUpdate();
@@ -53,7 +54,10 @@ public class Staff_Service {
 	public List<Staff> getAllstaff() {
 		List<Staff> staffList = new ArrayList<Staff>();
 		try {
-			PreparedStatement ps = connection.prepareStatement("select * from cargotransportation.staff");
+			PreparedStatement ps = connection.prepareStatement(
+					"select staff_id,name,phone_number,nrc,address,department.department_name /n"
+							+ "from cargotransportation.staff " + "inner join role on role.role_id=staff.role_id/n"
+							+ " inner join department on department.department_id=staff.department_id");
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				Staff staff = new Staff();
@@ -64,13 +68,42 @@ public class Staff_Service {
 			e.printStackTrace();
 		}
 		return staffList;
+		
 	}
-
+	//search by department
+	public List<Staff>getstaffBydepartmentId(int department_id){
+		List<Staff>StaffList=new ArrayList<Staff>();
+		int status=0;
+		try {
+			PreparedStatement ps=connection.prepareStatement("Select staff_id,name,phone_number,nrc,address,department.department_name/n"
+					+ "from cargotransportation.staff/n"
+					+ "inner join role on role.role_id=staff.role_id/n"
+					+ "inner join department on department.department_id=staff.department_id/n"
+					+ "where department_id="+ department_id+";");
+			ResultSet rs=ps.executeQuery();
+			if(rs.next()) {
+				Staff staff=new Staff();
+				staff=Staff_mapper.mapper(staff,rs);
+				StaffList.add(staff);
+				
+			}
+		}catch(SQLException e) {
+				e.printStackTrace();
+			}return StaffList;
+		}
+	
+//search by staffid
 	public Staff getstaffById(int Id) {
 		Staff staff = new Staff();
 		try {
 			PreparedStatement ps = connection
-					.prepareStatement("select * from cargotransportation.staff where staff_id=" + Id + ";");
+					.prepareStatement("select staff_id,name,phone_number,nrc,address,department.department_name/n"
+							+ "from cargotransportation.staff/n "
+							+ "inner join role /n"
+							+ "on role.role_id=staff.role_id/n"
+							+ "inner join department /n"
+							+ "on department.department_id=staff.department_id"
+							+ "where staff_id="+Id+";");
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
 				staff = Staff_mapper.mapper(staff, rs);
@@ -119,16 +152,16 @@ public class Staff_Service {
 		int status = 0;
 		try {
 			PreparedStatement ps = this.dbConfig.getConnection().prepareStatement(
-					"UPDATE cargotransportation.staff SET name=?, phone_number=?, address=?,nrc=?,role_id=?, department_id=?,is_active=? WHERE staff_id="+ id + ";");
+					"UPDATE cargotransportation.staff SET name=?, phone_number=?, address=?,nrc=?,role_id=?, department_id=?,is_active=? WHERE staff_id="
+							+ id + ";");
 
 			ps.setString(1, staff.getName());
 			ps.setString(2, staff.getPhone());
 			ps.setString(3, staff.getAddress());
 			ps.setString(4, staff.getNrc());
-			ps.setInt(5, staff.getRole());
-			ps.setString(6, staff.getDepartmentId());
+			ps.setInt(5, staff.getRole().getId());
+			ps.setInt(6, staff.getDepartment().getId());
 			ps.setBoolean(7, staff.getActive());
-			
 
 			// ps.setString(9, id);
 

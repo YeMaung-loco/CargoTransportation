@@ -1,6 +1,8 @@
 package mapper;
 
 import java.sql.ResultSet;
+
+import Model.Department;
 import Model.Staff;
 
 public class Staff_mapper {
@@ -9,12 +11,13 @@ public class Staff_mapper {
 		 try {
 	            staff.setId(rs.getInt("staff_id"));
 	            staff.setName(rs.getString("name"));
+	            staff.setNrc(rs.getString("nrc"));
 	            staff.setPhone(rs.getString("phone_number"));
 	            staff.setAddress(rs.getString("address"));
-	            staff.setNrc(rs.getString("nrc"));
-	            staff.setRole(rs.getInt("role_id"));
-	            staff.setDepartmentId(rs.getString("department_id"));
-	            staff.setActive(rs.getBoolean("is_active"));
+	            Department department=new Department();
+	            department.setId(rs.getInt("department_id"));
+	            department.setDepartmentName(rs.getString("department_name"));
+	            staff.setDepartment(department);
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	        }

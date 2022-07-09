@@ -2,23 +2,26 @@ package Model;
 
 public class Staff extends PersonInfo {
 
-	private String nrc, departmentId, date;
-	int roleId;
+	private String nrc, date;
+	private  Role role;
+	private Department department;
 
 	private boolean active;
+	private String name;
+	
 
 	public Staff() {
 		super();
 	}
 
-	public Staff(String name, String phone, String address, String nrc, int roleId, String departmentId, boolean active,
+	public Staff(String name, String phone, String address, String nrc, int roleId, Department depart, boolean active,
 			String date) {
 
 		super(name, phone, address);
 		this.nrc = nrc;
-		this.departmentId = departmentId;
+		this.department = depart;
 		this.date = date;
-		this.roleId = roleId;
+		this.role = role;
 		this.active = active;
 	}
 
@@ -31,13 +34,7 @@ public class Staff extends PersonInfo {
 		return active;
 	}
 
-	public int getRole() {
-		return roleId;
-	}
-
-	public void setRole(int role) {
-		this.roleId = role;
-	}
+	
 
 	public String getNrc() {
 		return nrc;
@@ -47,13 +44,7 @@ public class Staff extends PersonInfo {
 		this.nrc = nrc;
 	}
 
-	public String getDepartmentId() {
-		return departmentId;
-	}
-
-	public void setDepartmentId(String departmentId) {
-		this.departmentId = departmentId;
-	}
+	
 
 	public String getDate() {
 		return date;
@@ -62,5 +53,21 @@ public class Staff extends PersonInfo {
 	public void setDate(String date) {
 		this.date = date;
 	}
+
+	public void setDepartment(Department department) {
+		this.department=department;
+		
+		
+	}
+	public Department getDepartment() {
+		return department;
+	}
+	public void setRole(Role role) {
+		this.role=role;
+	}public Role getRole() {
+		return role;
+	}
+
+	
 
 }
