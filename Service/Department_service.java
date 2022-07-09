@@ -19,8 +19,7 @@ public class Department_service {
 		this.connection = dbConfig.getConnection();
 
 	}
-	    
-
+	 
 	    public void createDepartment(Department depart) {
 	        try {
 

@@ -21,14 +21,14 @@ import Utility.RoundedBorder;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import javax.swing.SwingConstants;
+import javax.swing.JComboBox;
 
 public class Staff_Panel extends JFrame {
 	JFrame frame;
 	JPanel panel_list, panel_inputForm;
 
-	JLabel lblName, lblUsername, lblPassword, lblStaffid, lblAddress, lblPhone, lblNrc, lblDepartment, lblInputform,
-			lblAccountType, lblFunction;
-	JTextField txtName, txtUserName, txtNRC, txtPhone, txtStaffid, txtPassword, txtDepartment, txtsearch;
+	JLabel lblName, lblAddress, lblPhone, lblNrc, lblDepartment, lblInputform, lblAccountType, lblFunction;
+	JTextField txtName, txtNRC, txtPhone, txtsearch;
 	JRadioButton rdbtnOffice, rdbtnDelivery;
 	JCheckBox chckbxupload, chckbxManage;
 	JTextArea txtareaAddress;
@@ -42,6 +42,8 @@ public class Staff_Panel extends JFrame {
 	ButtonGroup group;
 
 	JFrame containerFrame;
+	private JCheckBox chckbxActive;
+	private JComboBox<String> comboDepartment;
 
 	public Staff_Panel(JFrame frame) {
 		this.containerFrame = frame;
@@ -67,10 +69,10 @@ public class Staff_Panel extends JFrame {
 	private void setTableDesign() {
 		dtm.addColumn("ID");
 		dtm.addColumn("Name");
-		dtm.addColumn("NRC");
 		dtm.addColumn("Phone");
-		dtm.addColumn("Address");
+		dtm.addColumn("Role");
 		dtm.addColumn("Department");
+		dtm.addColumn("Is Active");
 		this.tblStaff.setModel(dtm);
 	}
 
@@ -79,11 +81,8 @@ public class Staff_Panel extends JFrame {
 		frame = new JFrame();
 		panel_inputForm = new JPanel();
 		lblName = new JLabel();
-		lblUsername = new JLabel();
 		txtName = new JTextField();
 		txtName.setFont(new Font("Tahoma", Font.BOLD, 15));
-		txtUserName = new JTextField();
-		txtUserName.setFont(new Font("Tahoma", Font.BOLD, 15));
 		rdbtnOffice = new JRadioButton();
 		rdbtnDelivery = new JRadioButton();
 
@@ -95,21 +94,17 @@ public class Staff_Panel extends JFrame {
 		txtPhone = new JTextField();
 		txtPhone.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblInputform = new JLabel();
-		lblPassword = new JLabel();
-		txtPassword = new JTextField();
-		txtPassword.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblStaffid = new JLabel();
-		txtStaffid = new JTextField();
-		txtStaffid.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblDepartment = new JLabel();
-		txtDepartment = new JTextField();
-		txtDepartment.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblAddress = new JLabel();
 		txtareaAddress = new JTextArea();
 		txtareaAddress.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblFunction = new JLabel();
 		chckbxupload = new JCheckBox();
 		chckbxManage = new JCheckBox();
+		chckbxActive = new JCheckBox();
+
+		comboDepartment = new JComboBox();
+		comboDepartment.setFont(new Font("Tahoma", Font.BOLD, 15));
 
 		btnMaximize = new JButton();
 		btnMinimize = new JButton();
@@ -137,10 +132,10 @@ public class Staff_Panel extends JFrame {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		panel_inputForm.setBackground(new Color(255, 255, 204));
-		panel_inputForm.setBounds(200, 0, 1144, 370);
+		panel_inputForm.setBounds(200, 0, 1144, 310);
 		panel_inputForm.setLayout(null);
 
-		panel_list.setBounds(200, 370, 1144, 370);
+		panel_list.setBounds(200, 310, 1144, 430);
 		panel_list.setLayout(null);
 		panel_list.setBorder(new RoundedBorder(20));
 
@@ -151,19 +146,14 @@ public class Staff_Panel extends JFrame {
 		txtName.setBounds(167, 112, 200, 32);
 		txtName.setColumns(10);
 
-		lblUsername.setText("UserName");
-		lblUsername.setFont(new Font("Tahoma", Font.BOLD, 18));
-		lblUsername.setBounds(30, 173, 97, 32);
-
-		txtUserName.setColumns(10);
-		txtUserName.setBounds(167, 177, 200, 32);
-
 		rdbtnOffice.setText("Office");
+		rdbtnOffice.setActionCommand("Office");
 		rdbtnOffice.setFont(new Font("Tahoma", Font.BOLD, 16));
 		rdbtnOffice.setBounds(167, 62, 82, 40);
 		rdbtnOffice.setBackground(new Color(255, 255, 204));
 
 		rdbtnDelivery.setText("Delivery");
+		rdbtnDelivery.setActionCommand("Delivery");
 		rdbtnDelivery.setFont(new Font("Tahoma", Font.BOLD, 16));
 		rdbtnDelivery.setBackground(new Color(255, 255, 204));
 		rdbtnDelivery.setBounds(264, 62, 103, 40);
@@ -190,32 +180,15 @@ public class Staff_Panel extends JFrame {
 		lblInputform.setFont(new Font("Tahoma", Font.BOLD, 20));
 		lblInputform.setBounds(32, 10, 125, 32);
 
-		lblStaffid.setText("Staff ID");
-		lblStaffid.setFont(new Font("Tahoma", Font.BOLD, 18));
-		lblStaffid.setBounds(420, 177, 74, 32);
-
-		txtStaffid.setColumns(10);
-		txtStaffid.setBounds(532, 177, 200, 32);
-
-		lblPassword.setText("Password");
-		lblPassword.setFont(new Font("Tahoma", Font.BOLD, 18));
-		lblPassword.setBounds(801, 177, 89, 32);
-
-		txtPassword.setColumns(10);
-		txtPassword.setBounds(916, 177, 200, 32);
-
 		lblDepartment.setText("Department");
 		lblDepartment.setFont(new Font("Tahoma", Font.BOLD, 18));
-		lblDepartment.setBounds(30, 237, 112, 32);
-
-		txtDepartment.setColumns(10);
-		txtDepartment.setBounds(167, 241, 200, 32);
+		lblDepartment.setBounds(30, 173, 112, 32);
 
 		lblAddress.setText("Address");
 		lblAddress.setFont(new Font("Tahoma", Font.BOLD, 18));
-		lblAddress.setBounds(420, 241, 74, 32);
+		lblAddress.setBounds(420, 177, 74, 32);
 
-		txtareaAddress.setBounds(530, 241, 202, 47);
+		txtareaAddress.setBounds(530, 177, 202, 47);
 
 		lblFunction.setText("Function");
 		lblFunction.setFont(new Font("Tahoma", Font.BOLD, 18));
@@ -231,6 +204,13 @@ public class Staff_Panel extends JFrame {
 		chckbxManage.setBounds(635, 68, 97, 30);
 		chckbxManage.setBackground(new Color(255, 255, 204));
 
+		chckbxActive.setText("Active");
+		chckbxActive.setFont(new Font("Tahoma", Font.BOLD, 16));
+		chckbxActive.setBackground(new Color(255, 255, 204));
+		chckbxActive.setBounds(801, 173, 97, 30);
+
+		comboDepartment.setBounds(167, 177, 200, 32);
+
 		btnMaximize.setText("Maximize");
 		btnMaximize.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnMaximize.setBounds(987, 10, 130, 32);
@@ -241,19 +221,19 @@ public class Staff_Panel extends JFrame {
 
 		btnSave.setText("Save");
 		btnSave.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnSave.setBounds(30, 303, 130, 32);
+		btnSave.setBounds(30, 259, 130, 32);
 
 		btnUpdate.setText("Update");
 		btnUpdate.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnUpdate.setBounds(238, 303, 130, 32);
+		btnUpdate.setBounds(238, 259, 130, 32);
 
 		btnDelete.setText("Delete");
 		btnDelete.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnDelete.setBounds(420, 303, 130, 32);
+		btnDelete.setBounds(420, 259, 130, 32);
 
 		btnClear.setText("Clear");
 		btnClear.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnClear.setBounds(602, 303, 130, 32);
+		btnClear.setBounds(602, 259, 130, 32);
 
 		btnSearch.setText("Search");
 		btnSearch.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -263,7 +243,7 @@ public class Staff_Panel extends JFrame {
 		txtsearch.setFont(new Font("Tahoma", Font.BOLD, 15));
 		txtsearch.setColumns(10);
 
-		scrollPane.setBounds(10, 46, 1110, 310);
+		scrollPane.setBounds(10, 46, 1110, 370);
 		tblStaff.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		scrollPane.setViewportView(tblStaff);
 
@@ -278,18 +258,11 @@ public class Staff_Panel extends JFrame {
 		panel_inputForm.add(lblInputform);
 		panel_inputForm.add(lblName);
 		panel_inputForm.add(lblNrc);
-		panel_inputForm.add(lblPassword);
 		panel_inputForm.add(lblPhone);
-		panel_inputForm.add(lblStaffid);
-		panel_inputForm.add(lblUsername);
 		panel_inputForm.add(txtareaAddress);
-		panel_inputForm.add(txtDepartment);
 		panel_inputForm.add(txtNRC);
 		panel_inputForm.add(txtName);
-		panel_inputForm.add(txtPassword);
 		panel_inputForm.add(txtPhone);
-		panel_inputForm.add(txtStaffid);
-		panel_inputForm.add(txtUserName);
 
 		panel_inputForm.add(rdbtnDelivery);
 		panel_inputForm.add(rdbtnOffice);
@@ -298,6 +271,7 @@ public class Staff_Panel extends JFrame {
 
 		panel_inputForm.add(chckbxManage);
 		panel_inputForm.add(chckbxupload);
+		panel_inputForm.add(chckbxActive);
 
 		panel_inputForm.add(btnMaximize);
 		panel_inputForm.add(btnMinimize);
@@ -305,6 +279,8 @@ public class Staff_Panel extends JFrame {
 		panel_inputForm.add(btnUpdate);
 		panel_inputForm.add(btnSave);
 		panel_inputForm.add(btnClear);
+
+		panel_inputForm.add(comboDepartment);
 
 		panel_list.add(txtsearch);
 		panel_list.add(btnSearch);
@@ -315,6 +291,10 @@ public class Staff_Panel extends JFrame {
 			containerFrame.getContentPane().add(panel_list, BorderLayout.CENTER);
 		}
 
+	}
+
+	public ButtonGroup getRadioGroup() {
+		return group;
 	}
 
 	public JRadioButton getRdbtnOffice() {
@@ -343,22 +323,6 @@ public class Staff_Panel extends JFrame {
 
 	public JTextField getTxtPhone() {
 		return txtPhone;
-	}
-
-	public JTextField getTxtUserName() {
-		return txtUserName;
-	}
-
-	public JTextField getTxtStaffid() {
-		return txtStaffid;
-	}
-
-	public JTextField getTxtPassword() {
-		return txtPassword;
-	}
-
-	public JTextField getTxtDepartment() {
-		return txtDepartment;
 	}
 
 	public JTextArea getTxtareaAddress() {
@@ -407,5 +371,17 @@ public class Staff_Panel extends JFrame {
 
 	public JScrollPane getScrollPane() {
 		return scrollPane;
+	}
+
+	public JCheckBox getChckbxActive() {
+		return chckbxActive;
+	}
+
+	public JComboBox getComboDepartment() {
+		return comboDepartment;
+	}
+	
+	public JTable getTable() {
+		return tblStaff;
 	}
 }
