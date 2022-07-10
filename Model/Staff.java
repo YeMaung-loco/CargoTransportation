@@ -1,79 +1,38 @@
 package Model;
 
 import java.sql.Date;
-<<<<<<< Updated upstream
-
-public class Staff extends PersonInfo {
-=======
 
 public class Staff extends PersonInfo {
 
-	private String nrc, date;
-	int departmentId;
-	int roleId;
->>>>>>> Stashed changes
-
-	private String nrc, departmentName, roleName;
-	int roleId, departmentId;
-	Date date;
-	
+	private String nrc;
+	private Role role;
+	private Department department;
+	Date  date;
 	private boolean active;
+	private String name;
 
 	public Staff() {
 		super();
 	}
 
-	public Staff(String name, String phone, String address, String nrc, int roleId, int departmentId, boolean active,
-<<<<<<< Updated upstream
+	public Staff(String name, String phone, String address, String nrc, int roleId, Department depart,Role role, boolean active,
 			Date date) {
-=======
-			String date) {
->>>>>>> Stashed changes
 
 		super(name, phone, address);
 		this.nrc = nrc;
-		this.departmentId = departmentId;
+		this.department = depart;
 		this.date = date;
-		this.roleId = roleId;
+		this.role = role;
 		this.active = active;
-		this.date = date;
 	}
 
 	public void setActive(boolean active) {
+		System.out.println("Staff.java" + active);
 		this.active = active;
 	}
 
 	public boolean getActive() {
 		return active;
-	}
-
-<<<<<<< Updated upstream
-	public void setDepartmentName(String department) {
-		this.departmentName = department;
-	}
-
-	public String getDepartmentName() {
-		return departmentName;
-	}
-
-	public int getRoleId() {
-=======
-	public int getRole() {
->>>>>>> Stashed changes
-		return roleId;
-	}
-
-	public void setRoleId(int role) {
-		this.roleId = role;
-	}
-
-	public String getRoleName() {
-		return roleName;
-	}
-
-	public void setRoleName(String role) {
-		this.roleName = role;
-
 	}
 
 	public String getNrc() {
@@ -84,20 +43,29 @@ public class Staff extends PersonInfo {
 		this.nrc = nrc;
 	}
 
-	public int getDepartmentId() {
-		return departmentId;
-	}
-
-	public void setDepartmentId(int departmentId) {
-		this.departmentId = departmentId;
-	}
-
 	public Date getDate() {
 		return date;
 	}
 
 	public void setDate(Date date) {
 		this.date = date;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
+
+	}
+
+	public Department getDepartment() {
+		return department;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
+	public Role getRole() {
+		return role;
 	}
 
 }
