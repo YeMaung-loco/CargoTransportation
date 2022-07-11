@@ -7,18 +7,17 @@ import javax.swing.table.AbstractTableModel;
 import Model.Staff;
 import Utility.Department_enum;
 
-public class tableModel_Staff extends AbstractTableModel {
+public class TableModel_Staff extends AbstractTableModel {
 
 	private static final long serialVersionUID = -4026402599426071004L;
-
 	List<Staff> staffList;
-	String headerList[] = new String[] { "Id", "Name", "Phone", "Address", "Role", "Active" };
+	String headerList[] = new String[] { "Id", "Name", "Phone", "Department", "Role", "Active"};
 
-	public tableModel_Staff(List<Staff> list) {
+	public TableModel_Staff(List<Staff> list) {
 		staffList = list;
 	}
 
-	public tableModel_Staff() {
+	public TableModel_Staff() {
 
 	}
 
@@ -51,21 +50,28 @@ public class tableModel_Staff extends AbstractTableModel {
 		Staff entity = null;
 		entity = staffList.get(rowIndex);
 		switch (columnIndex) {
-		case 0:
+		case 0:{
+			System.out.println("Id"+entity.getId());
 			return entity.getId();
+		}
 		case 1:
 			return entity.getName();
 		case 2:
 			return entity.getPhone();
 		case 3:
-			return entity.getDepartmentId();
+			return entity.getDepartment().getDepartmentName();
 		case 4:
-			return entity.getRole();
+			return entity.getRole().getRole_name();
 		case 5:
 			return entity.getActive();
 		default:
 			return "";
 		}
+	}
+	
+	public int getStaff_Id(int rowIndex) {
+		Staff staff = staffList.get(rowIndex);
+		return staff.getId();
 	}
 
 	public void setValueAt(Staff e, int rowIndex) {
@@ -83,11 +89,11 @@ public class tableModel_Staff extends AbstractTableModel {
 				break;
 
 			case 3:
-				staff.setDepartmentId(e.getDepartmentId());
+				staff.getDepartment().setDepartmentName(e.getDepartment().getDepartmentName());
 				fireTableCellUpdated(rowIndex, i);
 				
 			case 4:
-				staff.setRole(e.getRole());
+				staff.getRole().setRole_name(e.getRole().getRole_name());
 				fireTableCellUpdated(rowIndex, i);
 				break;
 
