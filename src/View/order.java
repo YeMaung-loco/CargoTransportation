@@ -13,19 +13,29 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import java.awt.FlowLayout;
+import javax.swing.JButton;
 
 public class order {
 	private JFrame frame;
-	private JTextField txtc_name, txtc_phone, txtc_address, txt_weight;
+	private JTextField txtc_name, txtc_phone, txtc_address;
 	private JTable tblorder;
 	private DefaultTableModel dtm = new DefaultTableModel();
 	private JComboBox Jcombo_destination;
-	private JLabel lbl_transporation, lblc_name, lblNewLabel, lblTransportationFees, lblWeightKg, lbldestination,
-			lblorder, lbl_customersave_1, lblc_address, lblc_phone, lbl_ordersave;
-	private JPanel panel_customer, panel_orderlist, panel_ordersave, panel_order, panel_customersave;
+	private JLabel lbl_transporation, lblc_name, lblNewLabel, lblTransportationFees, lbldestination,
+			lblorder, lblc_address, lblc_phone;
+	private JLabel lblorder_id;
+	private JPanel panel_customer, panel_orderlist, panel_order;
 	private JScrollPane scrollpane_orderlist;
 	private JTextField txt_searchorder;
 	private JLabel lbl_searchorder;
+	private JComboBox<Object> Jcombo_destination_1;
+	private JLabel lbldestination_1;
+	private JLabel lblNewLabel_1;
+	private JLabel lblNewLabel_2;
+	private JButton btnDone;
+	private JButton btnDelete;
+	private JButton btnNewButton;
 
 	public order() {
 		initialize();
@@ -41,6 +51,8 @@ public class order {
 		dtm.addColumn("CustomerName");
 		dtm.addColumn("Phone");
 		dtm.addColumn("Destination");
+		dtm.addColumn("Package");
+		dtm.addColumn("Total Package");
 		dtm.addColumn("Transportation Fees");
 		this.tblorder.setModel(dtm);
 	}
@@ -48,14 +60,10 @@ public class order {
 	private void initialize() {
 		frame = new JFrame();
 		panel_customer = new JPanel();
-		panel_customersave = new JPanel();
 		panel_order = new JPanel();
 		panel_orderlist = new JPanel();
-		panel_ordersave = new JPanel();
-
-		lbl_customersave_1 = new JLabel();
-		lbl_ordersave = new JLabel();
 		lbl_transporation = new JLabel();
+		lbl_transporation.setText("23000");
 		lbl_transporation.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		lblNewLabel = new JLabel();
 		lblc_name = new JLabel();
@@ -63,19 +71,17 @@ public class order {
 		lblc_address = new JLabel();
 		lbldestination = new JLabel();
 		lblorder = new JLabel();
-		lblWeightKg = new JLabel();
-		lblorder = new JLabel();
+		lblorder_id = new JLabel();
 		lblTransportationFees = new JLabel();
 
 		txtc_name = new JTextField();
 		txtc_address = new JTextField();
 		txtc_phone = new JTextField();
-		txt_weight = new JTextField();
 		Jcombo_destination = new JComboBox<>();
 		scrollpane_orderlist = new JScrollPane();
 		lbl_searchorder = new JLabel();
 		txt_searchorder = new JTextField();
-		txt_searchorder.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		txt_searchorder.setFont(new Font("Tahoma", Font.PLAIN, 18));
 	}
 
 	private void properties() {
@@ -117,32 +123,17 @@ public class order {
 		txtc_address.setColumns(10);
 		txtc_address.setBounds(229, 244, 227, 40);
 
-		panel_customersave.setLayout(null);
-		panel_customersave.setBounds(327, 303, 120, 41);
-
-		lbl_customersave_1.setText("Save");
-		lbl_customersave_1.setFont(new Font("Tahoma", Font.BOLD, 21));
-		lbl_customersave_1.setBounds(32, 7, 55, 26);
-
 		panel_order.setBackground(new Color(0, 139, 139));
 		panel_order.setBounds(572, 0, 572, 370);
 		panel_order.setLayout(null);
 
-		lblorder.setText("Order Input Form");
-		lblorder.setFont(new Font("Tahoma", Font.BOLD, 22));
-		lblorder.setBounds(172, 10, 227, 33);
+		lblorder_id.setText("OrderId");
+		lblorder_id.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblorder_id.setBounds(195, 10, 86, 33);
 
 		lbldestination.setText("Destination City");
 		lbldestination.setFont(new Font("Tahoma", Font.BOLD, 17));
-		lbldestination.setBounds(56, 88, 159, 40);
-
-		lblWeightKg.setText("Package Weight");
-		lblWeightKg.setFont(new Font("Tahoma", Font.BOLD, 17));
-		lblWeightKg.setBounds(56, 169, 159, 40);
-
-		txt_weight.setFont(new Font("Tahoma", Font.PLAIN, 17));
-		txt_weight.setColumns(10);
-		txt_weight.setBounds(275, 170, 227, 40);
+		lbldestination.setBounds(56, 53, 159, 40);
 
 		lblTransportationFees.setText("Transportation Fees");
 		lblTransportationFees.setFont(new Font("Tahoma", Font.BOLD, 17));
@@ -150,17 +141,8 @@ public class order {
 
 		Jcombo_destination.setFont(new Font("Tahoma", Font.BOLD, 17));
 		String city[] = new String[] { "KyalGaung", "Musal", "Mandalay", "Yangon" };
-		Jcombo_destination.setModel(new DefaultComboBoxModel(city));
 
-		Jcombo_destination.setBounds(275, 88, 227, 40);
-
-		panel_ordersave.setBounds(374, 303, 120, 41);
-		panel_ordersave.setLayout(null);
-
-		lbl_ordersave.setText("Save");
-		lbl_ordersave.setBounds(32, 7, 56, 26);
-		lbl_ordersave.setFont(new Font("Tahoma", Font.BOLD, 21));
-		lbl_ordersave.setLabelFor(panel_ordersave);
+		Jcombo_destination.setBounds(275, 53, 227, 40);
 
 		lbl_transporation.setBackground(Color.LIGHT_GRAY);
 		lbl_transporation.setForeground(Color.LIGHT_GRAY);
@@ -172,12 +154,12 @@ public class order {
 
 		scrollpane_orderlist.setBounds(0, 63, 1144, 307);
 		
-		lbl_searchorder.setText("Search");
-		lbl_searchorder.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lbl_searchorder.setBounds(728, 17, 79, 36);
+		lbl_searchorder.setText("Search OrderId");
+		lbl_searchorder.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lbl_searchorder.setBounds(739, 13, 142, 40);
 		
 		
-		txt_searchorder.setBounds(854, 17, 212, 36);
+		txt_searchorder.setBounds(891, 10, 212, 40);
 
 		tblorder = new JTable();
 //		{
@@ -210,18 +192,37 @@ public class order {
 		panel_customer.add(txtc_name);
 		panel_customer.add(txtc_address);
 		panel_customer.add(txtc_phone);
-		panel_customersave.add(lbl_customersave_1);
-		panel_customer.add(panel_customersave);
 
-		panel_order.add(lblorder);
+		panel_order.add(lblorder_id);
 		panel_order.add(lbldestination);
-		panel_order.add(lblWeightKg);
 		panel_order.add(Jcombo_destination);
 		panel_order.add(lblTransportationFees);
 		panel_order.add(lbl_transporation);
-		panel_order.add(txt_weight);
-		panel_ordersave.add(lbl_ordersave);
-		panel_order.add(panel_ordersave);
+		
+		lblNewLabel_2 = new JLabel("order_ 01");
+		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblNewLabel_2.setBounds(291, 13, 111, 28);
+		panel_order.add(lblNewLabel_2);
+		
+		JPanel panel = new JPanel();
+		panel.setBounds(56, 113, 446, 124);
+		panel_order.add(panel);
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		
+		btnNewButton = new JButton("Add Item");
+		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 15));
+		btnNewButton.setBounds(56, 301, 111, 40);
+		panel_order.add(btnNewButton);
+		
+		btnDelete = new JButton("Delete");
+		btnDelete.setFont(new Font("Tahoma", Font.BOLD, 15));
+		btnDelete.setBounds(235, 301, 111, 40);
+		panel_order.add(btnDelete);
+		
+		btnDone = new JButton("Done");
+		btnDone.setFont(new Font("Tahoma", Font.BOLD, 15));
+		btnDone.setBounds(391, 301, 111, 40);
+		panel_order.add(btnDone);
 		panel_orderlist.add(scrollpane_orderlist);
 		
 		
@@ -231,6 +232,22 @@ public class order {
 		
 		panel_orderlist.add(txt_searchorder);
 		txt_searchorder.setColumns(10);
+		
+		Jcombo_destination_1 = new JComboBox<Object>();
+		Jcombo_destination_1.setFont(new Font("Tahoma", Font.BOLD, 18));
+		Jcombo_destination_1.setBounds(491, 13, 203, 40);
+		panel_orderlist.add(Jcombo_destination_1);
+		
+		lbldestination_1 = new JLabel();
+		lbldestination_1.setText("Destination City");
+		lbldestination_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lbldestination_1.setBounds(315, 15, 166, 38);
+		panel_orderlist.add(lbldestination_1);
+		
+		lblNewLabel_1 = new JLabel("Filter by:");
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 23));
+		lblNewLabel_1.setBounds(199, 15, 106, 32);
+		panel_orderlist.add(lblNewLabel_1);
 
 	}
 
@@ -250,23 +267,29 @@ public class order {
 		return Jcombo_destination;
 	}
 
-	public JTextField getTxt_weight() {
-		return txt_weight;
-	}
-
 	public JLabel getLbl_transporation() {
 		return lbl_transporation;
 	}
-	public JPanel getPanel_customersave() {
-		return panel_customersave;
-	}
-	public JPanel getPanel_ordersave() {
-		return panel_ordersave;
-	}
+	
 	public JLabel getLbl_searchorder() {
 		return lbl_searchorder;
 	}
 	public JTextField getTxt_searchorder() {
 		return txt_searchorder;
+	}
+	public JButton getBtnDone() {
+		return btnDone;
+	}
+	public JButton getBtnDelete() {
+		return btnDelete;
+	}
+	public JButton getBtnNewButton() {
+		return btnNewButton;
+	}
+	public JLabel getLblNewLabel_2() {
+		return lblNewLabel_2;
+	}
+	public JComboBox getJcombo_destination_1() {
+		return Jcombo_destination_1;
 	}
 }
