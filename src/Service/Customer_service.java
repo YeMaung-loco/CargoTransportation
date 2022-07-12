@@ -28,7 +28,7 @@ public class Customer_service {
 					.prepareStatement("INSERT INTO customer (c_name, c_phone, c_address) VALUES (?, ?, ?)");
 
 			ps.setString(1, customer.getName());
-			ps.setInt(2, customer.getPhone());
+			ps.setString(2, customer.getPhone());
 			ps.setString(3, customer.getAddress());
 			status=ps.executeUpdate();
 			ps.close();
@@ -46,7 +46,7 @@ public class Customer_service {
 					.prepareStatement("UPDATE customer SET c_name=?, c_phone=?,c_address=? WHERE customer_id=?");
 
 			ps.setString(1, customer.getName());
-			ps.setInt(2, customer.getPhone());
+			ps.setString(2, customer.getPhone());
 			ps.setString(3, customer.getAddress());
 			ps.setString(4, id);
 			status=ps.executeUpdate();
