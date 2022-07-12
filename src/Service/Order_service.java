@@ -7,9 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import Mapper.Order_mapper;
 import Model.Order;
 import config.DBConfig;
-import Mapper.Order_mapper;
 
 public class Order_service {
 	private final DBConfig dbConfig;
@@ -23,12 +23,14 @@ public class Order_service {
 
 	public int createOrder(Order order) {
 		int status = 0;
+		long millis = System.currentTimeMillis();
 		try {
 			PreparedStatement ps = connection.prepareStatement("Insert into cargotransportation.order "
-					+ "(customer_id,destinationPrice_id,transportation_fees)VALUES(?,?,?)");
-			ps.setInt(1,order.getcustomer().getId());
+					+ "(customer_id,destinationPrice_id,created_date,transportation_fees)VALUES(?,?,?,?)");
+			ps.setInt(1, order.getCustomer().getId());
 			ps.setInt(2, order.getDestination().getId());
-		    ps.setInt(3, order.getTransportationfees());
+			ps.setDate(3, new java.sql.Date(millis));
+			ps.setInt(4, order.getTransportationfees());
 			status = ps.executeUpdate();
 			ps.close();
 		} catch (SQLException e) {
@@ -37,29 +39,49 @@ public class Order_service {
 		return status;
 	}
 
-//	public int updateOrder(int id, Order order) {
-//		int status = 0;
-//		try {
-//			PreparedStatement ps = connection.prepareStatement("Update into cargotransportation.order"
-//					+ "customer_id=?,destinationPrice_id=?,transportation_fees=? where order_id=" + id + ";");
-//			ps.setString(1, order.getDestination().getDestinationname());
-//			ps.setInt(2, order.getWeight().getWeight_kg());
-//			ps.setInt(3, order.getWeight().getWeightprice());
-//			status = ps.executeUpdate();
-//			ps.close();
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//		return status;
-//
-//	}
+	public int updateOrder(int id, Order order) {
+		int status = 0;
+		try {
+			PreparedStatement ps = connection.prepareStatement("Update into cargotransportation.order"
+					+ "customer_id=?,destinationPrice_id=?,transportation_fees=? where order_id=" + id + ";");
+			ps.setInt(1, order.getCustomer().getId());
+			ps.setInt(2, order.getDestination().getId());
+			ps.setInt(3, order.getTransportationfees());
+			status = ps.executeUpdate();
+			ps.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return status;
 
-	public Order getorderById(int Id) {
+	}
+
+	public Order getlastOrder() {
+		Order order = new Order();
+		try {
+			PreparedStatement ps = connection.prepareStatement(
+					"SELECT * FROM cargotransportation.order inner join destination_price as d on d.destinationPrice_id=order.destinationPrice_id"
+							+ "inner join customer as c on c.customer_id=order.customer_id"
+							+ "where order.order_id=(SELECT MAX(order.order_id) FROM cargotransportation.order);");
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				order = Order_mapper.mapper(order, rs);
+			}
+			ps.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return order;
+	}
+
+	public Order getOrderById(int Id) {
 		Order order = new Order();
 		try {
 			PreparedStatement ps = connection.prepareStatement("SELECT * FROM cargotransportation.order"
-					+ "INNER JOIN destination_price ON destination_price.destinationPrice_id = order.destinationPrice_id"
-					+"inner join package on package.package_id=order.package_id"
+					+ "INNER JOIN destination_price as d ON d.destinationPrice_id = order.destinationPrice_id"
+					+ "inner join customer on customer.customer_id=order.customer_id"
+					// +"inner join package on package.package_id=order.package_id"
 					+ "WHERE order_id = " + Id + ";");
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
@@ -73,12 +95,12 @@ public class Order_service {
 		return order;
 	}
 
-	public List<Order> getorderBydestinationId(int destination_id) {
+	public List<Order> getOrderBydestinationId(int destination_id) {
 		List<Order> orderList = new ArrayList<Order>();
 		try {
 			PreparedStatement ps = connection.prepareStatement("Select * from cargotransportation.order"
-					+ "inner join destination_price on destination_price.roledestinationPrice_id=order.destinationPrice_id"
-					+ "inner join weight_price on weight_price.weightPrice_id=order.weightPrice_id"
+					+ "inner join destination_price on destination_price.destinationPrice_id=order.destinationPrice_id"
+					+ "inner join customer on customer.customer_id=order.customer_id"
 					+ "where order.destinationPrice_id=" + destination_id + ";");
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
@@ -93,14 +115,11 @@ public class Order_service {
 		return orderList;
 	}
 
-	public List<Order> getAllorderlist() {
+	public List<Order> getAllOrderlist() {
 		List<Order> orderList = new ArrayList<Order>();
 		try {
-			PreparedStatement ps = connection.prepareStatement("select customer.c_name,customer.c_address,"
-					+ "customer.c_phone,destination.destination_name,package.packageid,order.transporatation_fees"
-					+ " from cargotransportation.order"
-					+ "Inner join destination_price on destinaton_price.destinationPrice_id=order.destinationPrice_id"
-					+"inner join package on order.order_id=package.order_id"
+			PreparedStatement ps = connection.prepareStatement("select * from cargotransportation.order"
+					+ "Inner join destination_price on destination_price.destinationPrice_id=order.destinationPrice_id"
 					+ "inner join customer on customer.customer_id=order.customer_id");
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
