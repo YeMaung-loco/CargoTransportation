@@ -2,7 +2,7 @@ package Model;
 
 public class Customer {
 	private String name;
-	private int phone;
+	private String phone;
 	private String address;
 	private int id;
 
@@ -10,7 +10,7 @@ public class Customer {
 
 	}
 
-	public Customer(String name, int phone, String address) {
+	public Customer(String name, String phone, String address) {
 		this.name = name;
 		this.phone = phone;
 		this.address = address;
@@ -24,11 +24,11 @@ public class Customer {
 		this.name = name;
 	}
 
-	public int getPhone() {
+	public String getPhone() {
 		return phone;
 	}
 
-	public void setPhone(int phone) {
+	public void setPhone(String phone) {
 		this.phone = phone;
 	}
 
