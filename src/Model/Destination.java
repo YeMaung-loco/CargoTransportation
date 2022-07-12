@@ -11,7 +11,6 @@ public class Destination {
 	}
 
 	public Destination(int price, String destinationname) {
-		super();
 		this.price = price;
 		this.destinationname = destinationname;
 	}
@@ -24,11 +23,11 @@ public class Destination {
 		this.price = price;
 	}
 
-	public String getDestinationname() {
+	public String getDestinationName() {
 		return destinationname;
 	}
 
-	public void setDestinationname(String destinationname) {
+	public void setDestinationName(String destinationname) {
 		this.destinationname = destinationname;
 	}
 
@@ -36,6 +35,9 @@ public class Destination {
 		this.id=id;
 		// TODO Auto-generated method stub
 		
+	}
+	public int getId() {
+		return this.id;
 	}
 
 }
