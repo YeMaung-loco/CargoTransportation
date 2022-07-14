@@ -1,6 +1,8 @@
 package Controller;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.SQLException;
@@ -10,22 +12,23 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.table.TableRowSorter;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import Model.Destination;
-import Model.Order;
+import Model.Staff;
 import Model.Weight;
 import Service.DestinationPrice_service;
 import Service.WeightPrice_service;
 import TableModel.TableModel_Destination;
-import TableModel.TableModel_Order;
 import TableModel.TableModel_Weight;
 import View.Office_view;
 import View.SetPrice_Panel;
 
-public class SetPrice_controller implements MouseListener {
+public class SetPrice_controller implements MouseListener, ActionListener, ListSelectionListener {
 	WeightPrice_service weight_service;
 	DestinationPrice_service destination_service;
 
@@ -35,6 +38,8 @@ public class SetPrice_controller implements MouseListener {
 	List<Weight> weightList;
 	TableModel_Weight model_Weight;
 	TableModel_Destination model_Destination;
+	int temp_destination_id;
+	int temp_weight_id;
 
 	JFrame frame;
 	JTable tbldestination, tblweight;
@@ -53,7 +58,7 @@ public class SetPrice_controller implements MouseListener {
 		initController();
 
 		showList();
-		
+
 		loadPrice();
 	}
 
@@ -69,7 +74,7 @@ public class SetPrice_controller implements MouseListener {
 
 		tbldestination.setModel(model_Destination);
 		tblweight.setModel(model_Weight);
-		//sorter = new TableRowSorter<TableModel_Order>(model_Order);
+		// sorter = new TableRowSorter<TableModel_Order>(model_Order);
 	}
 
 	private void loadPrice() {
@@ -85,20 +90,22 @@ public class SetPrice_controller implements MouseListener {
 
 	private void initController() {
 
-		txt_weightprice = setPrice_Panel.getTxt_weightprice();
-		txt_destinationprice = setPrice_Panel.getTxt_DestinationPrice();
+		navigationPanel.getPanel_btnStaff().addMouseListener(this);
+		navigationPanel.getPanel_btnOrder().addMouseListener(this);
+		navigationPanel.getPanel_btnDelivery().addMouseListener(this);
+		navigationPanel.getPanel_btnSetPrice().addMouseListener(this);
 
-		cbox_destination = setPrice_Panel.getCbox_destination();
-		
-		tbldestination=setPrice_Panel.getTblDestination();
-		tblweight=setPrice_Panel.getTblWeight();
+		tbldestination.addMouseListener(this);
+		tbldestination.getSelectionModel().addListSelectionListener(this);
+		tblweight.addMouseListener(this);
+		tblweight.getSelectionModel().addListSelectionListener(this);
 
-		btn_destinationsave = setPrice_Panel.getBtn_destinationsave();
-		btn_weightpricesave = setPrice_Panel.getBtn_weightpricesave();
-		btn_destinationdelete = setPrice_Panel.getBtn_destinationdelete();
-		btn_destinationedit = setPrice_Panel.getBtn_destinationedit();
-		btn_weightdelete = setPrice_Panel.getBtn_weightdelete();
-		btn_weightedit = setPrice_Panel.getBtn_weightedit();
+		btn_weightdelete.addActionListener(this);
+		btn_weightedit.addActionListener(this);
+		btn_weightpricesave.addActionListener(this);
+		btn_destinationdelete.addActionListener(this);
+		btn_destinationedit.addActionListener(this);
+		btn_destinationsave.addActionListener(this);
 
 	}
 
@@ -118,10 +125,21 @@ public class SetPrice_controller implements MouseListener {
 	}
 
 	private void initComponents() {
-		navigationPanel.getPanel_btnStaff().addMouseListener(this);
-		navigationPanel.getPanel_btnOrder().addMouseListener(this);
-		navigationPanel.getPanel_btnDelivery().addMouseListener(this);
-		navigationPanel.getPanel_btnSetPrice().addMouseListener(this);
+		txt_startweight_1=setPrice_Panel.getTxt_startweight();
+		txt_weightprice = setPrice_Panel.getTxt_weightprice();
+		txt_destinationprice = setPrice_Panel.getTxt_DestinationPrice();
+
+		cbox_destination = setPrice_Panel.getCbox_destination();
+
+		tbldestination = setPrice_Panel.getTblDestination();
+		tblweight = setPrice_Panel.getTblWeight();
+
+		btn_destinationsave = setPrice_Panel.getBtn_destinationsave();
+		btn_weightpricesave = setPrice_Panel.getBtn_weightpricesave();
+		btn_destinationdelete = setPrice_Panel.getBtn_destinationdelete();
+		btn_destinationedit = setPrice_Panel.getBtn_destinationedit();
+		btn_weightdelete = setPrice_Panel.getBtn_weightdelete();
+		btn_weightedit = setPrice_Panel.getBtn_weightedit();
 
 	}
 
@@ -131,6 +149,23 @@ public class SetPrice_controller implements MouseListener {
 		setPrice_Panel = new SetPrice_Panel(frame);
 		navigationPanel.getPanel_btnSetPrice().setBackground(new Color(218, 165, 32));
 
+	}
+	
+	
+	void setDestinationModel() {
+		destination=new Destination();
+		int price=Integer.parseInt(txt_destinationprice.getText());
+		destination.setPrice(price);
+		
+		
+	}
+	void setWeightModel() {
+		weight=new Weight();
+		int price=Integer.parseInt(txt_weightprice.getText());
+		int kg=Integer.parseInt(txt_startweight_1.getText());
+		weight.setId(weight_service.getLastWeightId()+1);
+		weight.setWeightprice(price);
+		weight.setWeight_kg(kg);
 	}
 
 	private void dependencyInjection() {
@@ -145,6 +180,12 @@ public class SetPrice_controller implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		if(e.getSource().equals(tblweight)) {
+			if(e.getClickCount()==2) {
+				editWeight();
+			}
+		}
+		
 		if (e.getSource().equals(navigationPanel.getPanel_btnOrder())) {
 			frame.remove(setPrice_Panel.getDestination_panel());
 			frame.remove(setPrice_Panel.getWeight_panel());
@@ -184,6 +225,105 @@ public class SetPrice_controller implements MouseListener {
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource().equals(btn_destinationsave)) {
+			saveDestination();
+		}
+		if (e.getSource().equals(btn_destinationedit)) {
+			editDestination();
+		}
+		if (e.getSource().equals(btn_destinationdelete)) {
+			deleteDestination();
+		}
+		if (e.getSource().equals(btn_weightpricesave)) {
+			saveWeight();
+		}
+		if (e.getSource().equals(btn_weightedit)) {
+			editWeight();
+		}
+		if (e.getSource().equals(btn_weightdelete)) {
+			deleteWeight();
+		}
+	}
+
+	private void deleteWeight() {
+		int modelRowIndex = tblweight.convertRowIndexToModel(tblweight.getSelectedRow());
+		System.out.println("delete " + modelRowIndex);
+		if (modelRowIndex != -1) {
+			int status = weight_service.deleteweightPrice(temp_weight_id);
+			if (status > 0) {
+				model_Weight.removeRow(modelRowIndex);
+				alert("Successfully Deleted!");
+			} else
+				alert("Delete Failed!");
+		} else {
+			alert("Select a row to Delete!!");
+		}
+	}
+
+	private void editWeight() {
+		Weight weight = new Weight();
+		weight = weight_service.getweightPriceById(temp_weight_id);
+		weightdataToView(weight);
+	}
+
+	private void weightdataToView(Weight weight) {
+		txt_startweight_1.setText(weight ==null? "":String.valueOf(weight.getWeight_kg()));
+		txt_weightprice.setText(weight ==null? "":String.valueOf(weight.getWeightprice()));
+		
+	}
+
+	private void saveWeight() {
+		setWeightModel();
+		int status = weight_service.createweightPrice(weight);
+
+		System.out.println(weight.getWeight_kg());
+		if (status > 0) {
+			if (model_Weight != null)
+				model_Weight.insertRow(weight);
+
+			alert("Successfully Saved!");
+
+		} else {
+			alert("Failed Save!");
+		}
+		weight = null;
+		weightdataToView(weight);
+	}
+
+	private void deleteDestination() {
+
+	}
+
+	private void editDestination() {
+
+	}
+
+	private void saveDestination() {
+
+	}
+
+	private void alert(String msg) {
+		JOptionPane.showMessageDialog(frame, msg);
+	}
+
+	@Override
+	public void valueChanged(ListSelectionEvent e) {
+
+		if (!tbldestination.getSelectionModel().isSelectionEmpty()) {
+			temp_destination_id = model_Destination
+					.getDestination_Id(tbldestination.convertRowIndexToModel(tbldestination.getSelectedRow()));
+			System.out.println("temp_destination_id" + temp_destination_id);
+		}
+
+		if (!tblweight.getSelectionModel().isSelectionEmpty()) {
+			temp_weight_id = model_Weight.getWeight_Id(tblweight.convertRowIndexToModel(tblweight.getSelectedRow()));
+			System.out.println("temp_weight_id" + temp_weight_id);
+		}
 
 	}
 }

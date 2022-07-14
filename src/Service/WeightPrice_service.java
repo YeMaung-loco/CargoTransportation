@@ -27,8 +27,8 @@ public class WeightPrice_service {
 	public int createweightPrice(Weight w) {
 		int status = 0;
 		try {
-			PreparedStatement ps = connection
-					.prepareStatement("INSERT INTO cargotransportation.weight_price(weight_kg,weight_price)VALUES(?,?)");
+			PreparedStatement ps = connection.prepareStatement(
+					"INSERT INTO cargotransportation.weight_price(weight_kg,weight_price)VALUES(?,?)");
 			ps.setInt(1, w.getWeight_kg());
 			ps.setInt(2, w.getWeightprice());
 			status = ps.executeUpdate();
@@ -53,13 +53,14 @@ public class WeightPrice_service {
 		}
 		return status;
 	}
+
 //update weightprice
 	public int updateweightPrice(int id, Weight w) {
 		int status = 0;
 		try {
 			PreparedStatement ps = this.dbConfig.getConnection().prepareStatement(
-					"UPDATE cargotransportation.weight_price SET weight_kg=?, weight_price=?, WHERE weightPrice_id=" + id
-							+ ";");
+					"UPDATE cargotransportation.weight_price SET weight_kg=?, weight_price=?, WHERE weightPrice_id="
+							+ id + ";");
 			ps.setInt(1, w.getWeight_kg());
 			ps.setInt(2, w.getWeightprice());
 
@@ -72,7 +73,8 @@ public class WeightPrice_service {
 		}
 		return status;
 	}
-	//print weightprice list
+
+	// print weightprice list
 	public List<Weight> getAllweightPrice() {
 		List<Weight> weightPriceList = new ArrayList<Weight>();
 		try {
@@ -88,12 +90,12 @@ public class WeightPrice_service {
 		}
 		return weightPriceList;
 	}
-	//print weightprice by id
+
 	public Weight getweightPriceById(int Id) {
 		Weight w = new Weight();
 		try {
-			PreparedStatement ps = connection
-					.prepareStatement("select * from cargotransportation.weight_price where weightPrice_id=" + Id + ";");
+			PreparedStatement ps = connection.prepareStatement(
+					"select * from cargotransportation.weight_price where weightPrice_id=" + Id + ";");
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
 				w = Weight_mapper.mapper(w, rs);
@@ -105,7 +107,29 @@ public class WeightPrice_service {
 
 		return w;
 	}
-	
+
+	public int getLastWeightId() {
+		int id = 0;
+		try {
+			PreparedStatement ps = connection
+					.prepareStatement("SELECT MAX(weight_price.weightPrice_id) FROM cargotransportation.weight_price;");
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				id = rs.getInt("MAX(weight_price.weightPrice_id)");
+			} else {
+				PreparedStatement query = connection
+						.prepareStatement("ALTER TABLE cargotransportation.weight AUTO_INCREMENT = 1;");
+				boolean reset = query.execute();
+				System.out.println("Auto increment reset is " + reset);
+
+			}
+			ps.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return id;
+
+	}
 
 }
-

@@ -45,6 +45,8 @@ public class OrderManage_controller
 		implements MouseListener, ActionListener, CaretListener, ItemListener, ListSelectionListener {
 	List<Destination> destinationList;
 	List<Weight> weightList;
+	ArrayList<Integer> weightkg;
+	ArrayList<Integer> weightPrice;
 	DestinationPrice_service destination_service;
 	Order_service order_service;
 	WeightPrice_service weight_service;
@@ -55,7 +57,7 @@ public class OrderManage_controller
 	int fee = 0;
 	String order_no;
 	int customer_id;
-	
+
 	Office_view office_view;
 	JFrame containerFrame;
 	Order_Panel order_Panel;
@@ -68,9 +70,9 @@ public class OrderManage_controller
 	JButton btnAdd, btnDelete, btnDone;
 
 	boolean insertCO = false;
+	boolean addedDestinationFee = false;
 	JCheckBox[] checkBoxList = new JCheckBox[50];
 	int i = 0;
-	//String orderId;
 
 	public OrderManage_controller(JFrame frame) {
 		containerFrame = frame;
@@ -108,8 +110,16 @@ public class OrderManage_controller
 	}
 
 	private void loadAllPrice() {
+		weightkg = new ArrayList<>();
+		weightPrice = new ArrayList<>();
+
 		destinationList = destination_service.getAlldestinationPrice();
 		weightList = weight_service.getAllweightPrice();
+
+		for (Weight weight : weightList) {
+			weightkg.add(weight.getWeight_kg());
+			weightPrice.add(weight.getWeightprice());
+		}
 
 	}
 
@@ -121,7 +131,6 @@ public class OrderManage_controller
 			package_service = new Package_service();
 			customer_service = new Customer_service();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -257,22 +266,18 @@ public class OrderManage_controller
 		if (insertCO) {
 			System.out.println("Customer and order success " + order_no);
 			String packageId = Prefix.getPrimaryKey("CK-", package_service.getLastPackageId() + 1);
-			String weight = JOptionPane.showInputDialog(null, packageId, "Input weight in kg",
+			String weight = JOptionPane.showInputDialog(containerFrame, packageId, "Input weight in kg",
 					JOptionPane.INFORMATION_MESSAGE);
 
-			if (!weight.equals("")) {
-				int destinationPrice = destination_service.getdestinationPriceById(order.getDestination().getId());
-				fee += destinationPrice;
-				int packageWeight = Integer.parseInt(weight);
-				if (packageWeight <= weightList.get(0).getWeight_kg()) {
-					fee += weightList.get(0).getWeightprice();
-				} else if (packageWeight >= 2 && packageWeight <= 6) {
-					fee += weightList.get(1).getWeightprice();
-				} else if (packageWeight >= 6 && packageWeight <= 10) {
-					fee += weightList.get(2).getWeightprice();
-				} else {
-					fee += weightList.get(3).getWeightprice();
+			if (weight != null && !weight.equals("")) {
+				if (!addedDestinationFee) {
+					addedDestinationFee = true;
+					int destinationPrice = destination_service.getdestinationPriceById(order.getDestination().getId());
+					fee += destinationPrice;
 				}
+				int packageWeight = Integer.parseInt(weight);
+				fee += weightPrice.get(calculateWeight(0, weightkg.size() - 1, packageWeight));
+
 				System.out.println("PackageId" + packageId + "and" + packageWeight);
 				int status = package_service.createPackage(packageId, order_no);
 				if (status > 0) {
@@ -285,6 +290,7 @@ public class OrderManage_controller
 					i++;
 				}
 			}
+
 		}
 	}
 
@@ -296,13 +302,13 @@ public class OrderManage_controller
 			int orderDelete = order_service.deleteOrder(order_no);
 			int customerDelete = customer_service.deleteCustomer(customer_id);
 
-			if(packageDelete>0)
+			if (packageDelete > 0)
 				System.out.println("Package delete success");
-			if(orderDelete>0)
+			if (orderDelete > 0)
 				System.out.println("Order delete success");
-			if(customerDelete>0)
+			if (customerDelete > 0)
 				System.out.println("customer delete success");
-			
+
 			if (packageDelete > 0 && orderDelete > 0 && customerDelete > 0) {
 				model_Order.removeRow(modelRowIndex);
 				alert("Successfully Deleted!");
@@ -311,6 +317,62 @@ public class OrderManage_controller
 		} else {
 			alert("Select a row to Delete!!");
 		}
+	}
+
+	public int calculateWeight(int first, int last, int weight) {
+		int index = 0;
+		if (weightkg.get(first) > weight) {
+			System.out.println("Element is not found!" + index);
+			return first;
+		}
+		if (weightkg.get(last) < weight) {
+			return last;
+		}
+		int mid = (first + last) / 2;
+		while (first <= last) {
+			if (weightkg.get(mid) < weight) {
+				first = mid + 1;
+			} else if (weightkg.get(mid) == weight) {
+				index = mid;
+				System.out.println("weight kg is found at index: " + mid);
+				break;
+			} else {
+				last = mid - 1;
+			}
+			mid = (first + last) / 2;
+		}
+		if (first > last) {
+			if (weightkg.get(last) > weight) {
+				index = last;
+			} else {
+				index = last + 1;
+			}
+			System.out.println("Element is not found!" + index);
+		}
+		return index;
+	}
+
+	private void done() {
+		order.setTransportationfees(fee);
+		int status = order_service.updateOrder(order_no, order);
+		if (status > 0) {
+			order = order_service.getlastOrder();
+			if (model_Order != null)
+				model_Order.insertRow(order);
+
+			alert("Successfully Saved!");
+			i = 0;
+
+		} else {
+			alert("Failed Save!");
+		}
+		order = null;
+		dataToView(order);
+
+	}
+
+	private void alert(String msg) {
+		JOptionPane.showMessageDialog(office_view.getFrame(), msg);
 	}
 
 	@Override
@@ -353,7 +415,6 @@ public class OrderManage_controller
 			containerFrame.remove(office_view.getPanel_navigation());
 			CreateAccount_controller account_controller = new CreateAccount_controller(containerFrame);
 		}
-		
 		if (e.getSource().equals(office_view.getPanel_btnSetPrice())) {
 			containerFrame.remove(order_Panel.getPanelCustomer());
 			containerFrame.remove(order_Panel.getPanelOrder());
@@ -361,7 +422,6 @@ public class OrderManage_controller
 			containerFrame.remove(office_view.getPanel_navigation());
 			SetPrice_controller setPrice_controller = new SetPrice_controller(containerFrame);
 		}
-
 	}
 
 	@Override
@@ -375,30 +435,6 @@ public class OrderManage_controller
 		if (e.getSource().equals(btnDelete))
 			delete();
 
-	}
-
-	private void done() {
-		order.setTransportationfees(fee);
-		int status = order_service.updateOrder(order_no, order);
-		
-		if (status > 0) {
-			order = order_service.getlastOrder();
-			if (model_Order != null)
-				model_Order.insertRow(order);
-
-			alert("Successfully Saved!");
-			i = 0;
-
-		} else {
-			alert("Failed Save!");
-		}
-		order = null;
-		dataToView(order);
-
-	}
-
-	private void alert(String msg) {
-		JOptionPane.showMessageDialog(office_view.getFrame(), msg);
 	}
 
 	@Override
