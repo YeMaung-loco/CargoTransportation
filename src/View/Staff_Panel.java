@@ -4,7 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.SystemColor;
 
+import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -17,6 +19,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
@@ -51,11 +55,11 @@ public class Staff_Panel extends JFrame {
 		setProperties();
 		addComponents();
 
-		//panel_inputForm.revalidate();
-		//panel_inputForm.repaint();
+		// panel_inputForm.revalidate();
+		// panel_inputForm.repaint();
 
-		//panel_list.revalidate();
-		//panel_list.repaint();
+		// panel_list.revalidate();
+		// panel_list.repaint();
 
 		containerFrame.revalidate();
 		containerFrame.repaint();
@@ -74,9 +78,9 @@ public class Staff_Panel extends JFrame {
 		dtm.addColumn("Department");
 		dtm.addColumn("Is Active");
 		this.tblStaff.setModel(dtm);
-		//resizeColumnWidth(tblStaff);
+		// resizeColumnWidth(tblStaff);
 	}
-	
+
 	/*
 	 * public void resizeColumnWidth(JTable table) { final TableColumnModel
 	 * columnModel = table.getColumnModel(); for (int column = 0; column <
@@ -91,7 +95,7 @@ public class Staff_Panel extends JFrame {
 
 	private void initcomponent() {
 
-		frame = new JFrame();
+		//frame = new JFrame();
 		panel_inputForm = new JPanel();
 		lblName = new JLabel();
 		txtName = new JTextField();
@@ -140,9 +144,10 @@ public class Staff_Panel extends JFrame {
 	}
 
 	private void setProperties() {
-		getContentPane().setLayout(null);
-		frame.setBounds(0, 0, 1300, 760);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		/*
+		 * frame.getContentPane().setLayout(null); frame.setBounds(0, 0, 1300, 760);
+		 * frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		 */
 
 		panel_inputForm.setBackground(new Color(255, 255, 204));
 		panel_inputForm.setBounds(200, 0, 1144, 310);
@@ -153,10 +158,9 @@ public class Staff_Panel extends JFrame {
 		panel_list.setBorder(new RoundedBorder(20));
 
 		tblStaff.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		tblStaff.getTableHeader().setFont(new Font("Tahoma", Font.PLAIN, 15));
-		//tblStaff.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-		
-	
+		tblStaff.getTableHeader().setFont(new Font("Tahoma", Font.BOLD, 15));
+		// tblStaff.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+
 		lblName.setText("Name");
 		lblName.setFont(new Font("Tahoma", Font.BOLD, 18));
 		lblName.setBounds(30, 108, 54, 32);
@@ -206,7 +210,10 @@ public class Staff_Panel extends JFrame {
 		lblAddress.setFont(new Font("Tahoma", Font.BOLD, 18));
 		lblAddress.setBounds(420, 177, 74, 32);
 
+		Border border = BorderFactory.createLineBorder(SystemColor.activeCaptionBorder);
 		txtareaAddress.setBounds(530, 177, 202, 47);
+		txtareaAddress
+				.setBorder(BorderFactory.createCompoundBorder(border, BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
 		lblFunction.setText("Function");
 		lblFunction.setFont(new Font("Tahoma", Font.BOLD, 18));
@@ -304,10 +311,12 @@ public class Staff_Panel extends JFrame {
 		panel_list.add(btnSearch);
 		panel_list.add(scrollPane);
 
-		if (containerFrame != null) {
-			containerFrame.getContentPane().add(panel_inputForm);
-			containerFrame.getContentPane().add(panel_list, BorderLayout.CENTER);
-		}
+		
+		  if (containerFrame != null) {
+		  containerFrame.getContentPane().add(panel_inputForm);
+		  containerFrame.getContentPane().add(panel_list, BorderLayout.CENTER); }
+		 
+		//frame.getContentPane().add(panel_inputForm);
 
 	}
 

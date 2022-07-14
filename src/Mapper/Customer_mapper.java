@@ -11,7 +11,7 @@ public class Customer_mapper {
 	        try {
 	            customer.setId(rs.getInt("customer_id"));
 	            customer.setName(rs.getString("c_name"));
-	            customer.setPhone(rs.getInt("c_phone"));
+	            customer.setPhone(rs.getString("c_phone"));
 	            customer.setAddress(rs.getString("c_address"));
 	        } catch (SQLException e) {
 	            e.printStackTrace();

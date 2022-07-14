@@ -36,5 +36,8 @@ public class Weight {
 		// TODO Auto-generated method stub
 		
 	}
+	public int getId() {
+		return this.id;
+	}
 
 }

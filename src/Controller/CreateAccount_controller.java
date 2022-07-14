@@ -28,13 +28,12 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableRowSorter;
 
 import Model.Department;
-import Model.Staff;
 import Model.Role;
+import Model.Staff;
 import Service.Department_service;
 import Service.Staff_Service;
 import TableModel.TableModel_Staff;
 import View.Office_view;
-import View.Order_Panel;
 import View.Staff_Panel;
 
 public class CreateAccount_controller implements ActionListener, MouseListener, ListSelectionListener, CaretListener {
@@ -120,6 +119,7 @@ public class CreateAccount_controller implements ActionListener, MouseListener, 
 		office_view.getPanel_btnStaff().addMouseListener(this);
 		office_view.getPanel_btnOrder().addMouseListener(this);
 		office_view.getPanel_btnDelivery().addMouseListener(this);
+		office_view.getPanel_btnSetPrice().addMouseListener(this);
 
 		btnMinimize.addActionListener(this);
 		btnMaximize.addActionListener(this);
@@ -363,26 +363,16 @@ public class CreateAccount_controller implements ActionListener, MouseListener, 
 			frame.remove(inputPanel);
 			frame.remove(listPanel);
 			frame.remove(office_view.getPanel_navigation());
-			// frame.revalidate();
-			// frame.repaint();
-			System.out.println("mouse clink test for panel_btnOrder");
 			order_controller = new OrderManage_controller(frame);
 		}
+		
+		if (e.getSource().equals(office_view.getPanel_btnSetPrice())) {
+			frame.remove(inputPanel);
+			frame.remove(listPanel);
+			frame.remove(office_view.getPanel_navigation());
+			SetPrice_controller setPrice_controller = new SetPrice_controller(frame);
+		}
 
-		// if (e.getSource().equals(office_view.getPanel_btnStaff())) {
-
-		// Order_Panel order_Panel=new Order_Panel();
-
-//			frame.remove(order_Panel.getPanel_customer());
-//			frame.remove(order_Panel.getPanel_order());
-//			frame.remove(order_Panel.getPanel_orderList());
-//			
-		// System.out.println("remove");
-		// frame.revalidate();
-		// frame.repaint();
-		// CreateAccount_controller account_controller = new
-		// CreateAccount_controller(frame);
-		// }
 	}
 
 	@Override
@@ -414,7 +404,6 @@ public class CreateAccount_controller implements ActionListener, MouseListener, 
 	public void valueChanged(ListSelectionEvent e) {
 		if (!table.getSelectionModel().isSelectionEmpty()) {
 			temp_id = model_Staff.getStaff_Id(table.convertRowIndexToModel(table.getSelectedRow()));
-			//System.out.println("temp_id" + temp_id);
 		} else {
 			System.out.println("Empty");
 		}
@@ -424,9 +413,7 @@ public class CreateAccount_controller implements ActionListener, MouseListener, 
 	@Override
 	public void caretUpdate(CaretEvent e) {
 		if (e.getSource().equals(txtsearch)) {
-
 			try {
-
 				java.util.List<RowFilter<Object, Object>> filters = new ArrayList<RowFilter<Object, Object>>(1);
 				filters.add(RowFilter.regexFilter("(?i)" + txtsearch.getText(), 1));
 				RowFilter<Object, Object> serviceFilter = RowFilter.andFilter(filters);

@@ -9,7 +9,5 @@ public class FrameMoveDetect extends ComponentAdapter {
 	   public void componentMoved(ComponentEvent e) {
 	       x = e.getComponent().getX();
 	       y = e.getComponent().getY();
-	      System.out.println("x: " + x);
-	      System.out.println("y: " + y);
-	   }//from   w  ww. j  av a2 s .  c  o  m
+	   }
 	}

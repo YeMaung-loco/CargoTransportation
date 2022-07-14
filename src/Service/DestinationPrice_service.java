@@ -29,7 +29,7 @@ public class DestinationPrice_service {
 		try {
 			PreparedStatement ps = connection
 					.prepareStatement("INSERT INTO cargotransportation.destination_price(destination_name,destination_price)VALUES(?,?)");
-			ps.setString(1, dest.getDestinationname());
+			ps.setString(1, dest.getDestinationName());
 			ps.setInt(2, dest.getPrice());
 			status = ps.executeUpdate();
 			ps.close();
@@ -60,7 +60,7 @@ public class DestinationPrice_service {
 			PreparedStatement ps = connection.prepareStatement(
 					"UPDATE cargotransportation.destination_price SET destination_name=?, destination_price=?, WHERE destination_id=" + id
 							+ ";");
-			ps.setString(1, dest.getDestinationname());
+			ps.setString(1, dest.getDestinationName());
 			ps.setInt(2, dest.getPrice());
 
 			status = ps.executeUpdate();
@@ -89,20 +89,22 @@ public class DestinationPrice_service {
 	}
 
 
-public Destination getdestinationPriceById(int Id) {
-	Destination dest = new Destination();
+public int getdestinationPriceById(int Id) {
+	//Destination dest = new Destination();
+	int price=0;
 	try {
 		PreparedStatement ps = connection
 				.prepareStatement("select * from cargotransportation.destination_price where destination_id=" + Id + ";");
 		ResultSet rs = ps.executeQuery();
 		if (rs.next()) {
-			dest = Destination_mapper.mapper(dest, rs);
+			price=rs.getInt("destination_price");
+			//dest = Destination_mapper.mapper(dest, rs);
 		}
 		ps.close();
 	} catch (SQLException e) {
 		e.printStackTrace();
 	}
 
-	return dest;
+	return price;
 }
 }

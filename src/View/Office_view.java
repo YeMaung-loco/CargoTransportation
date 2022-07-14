@@ -38,6 +38,7 @@ public class Office_view {
 	// JPanel panel_Container;
 	JPanel panel_btnLogout;
 	JLabel lblIcon, lbl_iconLogout, lblLogout;
+	private JPanel panel_btnSetPrice;
 
 	public Office_view(JFrame cotainer) {
 		this.frame=cotainer;
@@ -95,6 +96,23 @@ public class Office_view {
 		panel_btnLogout.add(lbl_iconLogout);
 		
 		frame.getContentPane().add(panel_navigation);
+		
+		panel_btnSetPrice = new JPanel();
+		panel_btnSetPrice.setLayout(null);
+		panel_btnSetPrice.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		panel_btnSetPrice.setBackground(new Color(255, 215, 0));
+		panel_btnSetPrice.setBounds(0, 374, 200, 70);
+		panel_navigation.add(panel_btnSetPrice);
+		
+		JLabel lblSet = new JLabel("Set Price");
+		lblSet.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblSet.setBounds(62, 10, 128, 39);
+		panel_btnSetPrice.add(lblSet);
+		
+		JLabel iconSetPrice = new JLabel();
+		iconSetPrice.setVerticalAlignment(SwingConstants.TOP);
+		iconSetPrice.setBounds(20, 14, 32, 32);
+		panel_btnSetPrice.add(iconSetPrice);
 
 	}
 
@@ -217,16 +235,13 @@ public class Office_view {
 		return panel_inputForm;
 	}
 	
-	//public JPanel 
-
-	/*
-	 * public JPanel getPanel_Container() { return panel_Container; }
-	 */
-
 	public JPanel getPanel_btnLogout() {
 		return panel_btnLogout;
 	}
 	public JPanel getPanel_navigation() {
 		return panel_navigation;
+	}
+	public JPanel getPanel_btnSetPrice() {
+		return panel_btnSetPrice;
 	}
 }

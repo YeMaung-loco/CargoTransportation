@@ -93,6 +93,25 @@ public class Customer_service {
 
 		return customer;
 	}
+	
+	public int getLastCustomerId() {
+		int id = 0;
+		try {
+			PreparedStatement ps = connection.prepareStatement("SELECT MAX(customer.customer_id) FROM cargotransportation.customer;");
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				id=rs.getInt("MAX(customer.customer_id)");
+			}
+			/*
+			 * else { id=0; }
+			 */
+			ps.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return id;
+	}
 
 	public List<Customer> getAllCustomer() {
 

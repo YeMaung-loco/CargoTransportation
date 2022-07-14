@@ -3,7 +3,7 @@ package Model;
 import java.sql.Date;
 
 public class Order {
-	private int order_id;
+	private String order_no;
 	private Destination destination;
 	private Customer customer;
 	private int transportationfees;
@@ -13,9 +13,9 @@ public class Order {
 
 	}
 
-	public Order(int order_id, Destination destination, Customer customer, int transfees) {
+	public Order(String order_no, Destination destination, Customer customer, int transfees) {
 
-		this.order_id = order_id;
+		this.order_no = order_no;
 		this.destination = destination;
 		this.customer = customer;
 		this.transportationfees = transfees;
@@ -29,12 +29,12 @@ public class Order {
 		this.transportationfees = transportationfees;
 	}
 
-	public int getOrder_id() {
-		return order_id;
+	public String getOrder_no() {
+		return this.order_no;
 	}
 
-	public void setOrder_id(int order_id) {
-		this.order_id = order_id;
+	public void setOrder_no(String order_no) {
+		this.order_no = order_no;
 	}
 
 	public Customer getCustomer() {
@@ -46,7 +46,7 @@ public class Order {
 	}
 
 	public Destination getDestination() {
-		return destination;
+		return this.destination;
 	}
 
 	public void setDestination(Destination dest) {

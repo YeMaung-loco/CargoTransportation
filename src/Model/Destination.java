@@ -16,7 +16,7 @@ public class Destination {
 	}
 
 	public int getPrice() {
-		return price;
+		return this.price;
 	}
 
 	public void setPrice(int price) {

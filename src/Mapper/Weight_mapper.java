@@ -9,7 +9,7 @@ public class Weight_mapper {
 		 try {
 			 w.setId(rs.getInt("weightPrice_id"));
 	            w.setWeight_kg(rs.getInt("weight_kg"));
-	            w.setWeightprice(rs.getInt("weightprice"));
+	            w.setWeightprice(rs.getInt("weight_price"));
 		 }catch(Exception e) {
 			 e.printStackTrace();
 		 }
