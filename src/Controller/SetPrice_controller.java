@@ -43,10 +43,9 @@ public class SetPrice_controller implements MouseListener, ActionListener, ListS
 
 	JFrame frame;
 	JTable tbldestination, tblweight;
-	private JComboBox<String> cbox_destination;
-	JTextField txt_weightprice, txt_startweight_1, txt_destinationprice;
+	JTextField txt_weightprice, txt_startweight_1, txt_destinationprice, txt_destinationName;
 	JButton btn_destinationdelete, btn_destinationedit, btn_weightdelete, btn_weightedit, btn_weightpricesave,
-			btn_destinationsave;
+			btn_destinationsave, btn_destinationUpdate, btn_weightUpdate;
 	Office_view navigationPanel;
 	SetPrice_Panel setPrice_Panel;
 
@@ -58,8 +57,7 @@ public class SetPrice_controller implements MouseListener, ActionListener, ListS
 		initController();
 
 		showList();
-
-		loadPrice();
+		// loadPrice();
 	}
 
 	private void showList() {
@@ -77,17 +75,6 @@ public class SetPrice_controller implements MouseListener, ActionListener, ListS
 		// sorter = new TableRowSorter<TableModel_Order>(model_Order);
 	}
 
-	private void loadPrice() {
-		destinationList = destination_service.getAlldestinationPrice();
-		weightList = weight_service.getAllweightPrice();
-
-		cbox_destination.addItem("- Select -");
-		for (Destination destination : destinationList) {
-			cbox_destination.addItem(destination.getDestinationName());
-		}
-
-	}
-
 	private void initController() {
 
 		navigationPanel.getPanel_btnStaff().addMouseListener(this);
@@ -103,43 +90,33 @@ public class SetPrice_controller implements MouseListener, ActionListener, ListS
 		btn_weightdelete.addActionListener(this);
 		btn_weightedit.addActionListener(this);
 		btn_weightpricesave.addActionListener(this);
+		btn_weightUpdate.addActionListener(this);
+
 		btn_destinationdelete.addActionListener(this);
 		btn_destinationedit.addActionListener(this);
 		btn_destinationsave.addActionListener(this);
-
-	}
-
-	void setModel() {
-		weight = new Weight();
-		destination = new Destination();
-
-		int destinationPrice = Integer.parseInt(txt_destinationprice.getText());
-		int weightPrice = Integer.parseInt(txt_weightprice.getText());
-
-		destination.setId(cbox_destination.getSelectedIndex());
-		destination.setDestinationName(cbox_destination.getSelectedItem().toString());
-		destination.setPrice(destinationPrice);
-
-		weight.setWeightprice(weightPrice);
+		btn_destinationUpdate.addActionListener(this);
 
 	}
 
 	private void initComponents() {
-		txt_startweight_1=setPrice_Panel.getTxt_startweight();
+		txt_startweight_1 = setPrice_Panel.getTxt_startweight();
 		txt_weightprice = setPrice_Panel.getTxt_weightprice();
 		txt_destinationprice = setPrice_Panel.getTxt_DestinationPrice();
-
-		cbox_destination = setPrice_Panel.getCbox_destination();
+		txt_destinationName = setPrice_Panel.getTxt_DestinationName();
 
 		tbldestination = setPrice_Panel.getTblDestination();
 		tblweight = setPrice_Panel.getTblWeight();
 
 		btn_destinationsave = setPrice_Panel.getBtn_destinationsave();
-		btn_weightpricesave = setPrice_Panel.getBtn_weightpricesave();
 		btn_destinationdelete = setPrice_Panel.getBtn_destinationdelete();
 		btn_destinationedit = setPrice_Panel.getBtn_destinationedit();
+		btn_destinationUpdate = setPrice_Panel.getBtnDestinationUpdate();
+
+		btn_weightpricesave = setPrice_Panel.getBtn_weightpricesave();
 		btn_weightdelete = setPrice_Panel.getBtn_weightdelete();
 		btn_weightedit = setPrice_Panel.getBtn_weightedit();
+		btn_weightUpdate = setPrice_Panel.getBtnWeightUpdate();
 
 	}
 
@@ -150,20 +127,22 @@ public class SetPrice_controller implements MouseListener, ActionListener, ListS
 		navigationPanel.getPanel_btnSetPrice().setBackground(new Color(218, 165, 32));
 
 	}
-	
-	
+
 	void setDestinationModel() {
-		destination=new Destination();
-		int price=Integer.parseInt(txt_destinationprice.getText());
+		destination = new Destination();
+		String destinationName = txt_destinationName.getText();
+		int price = Integer.parseInt(txt_destinationprice.getText());
+		destination.setDestinationName(destinationName);
 		destination.setPrice(price);
-		
-		
+		// return false;
+
 	}
+
 	void setWeightModel() {
-		weight=new Weight();
-		int price=Integer.parseInt(txt_weightprice.getText());
-		int kg=Integer.parseInt(txt_startweight_1.getText());
-		weight.setId(weight_service.getLastWeightId()+1);
+		weight = new Weight();
+		int price = Integer.parseInt(txt_weightprice.getText());
+		int kg = Integer.parseInt(txt_startweight_1.getText());
+		weight.setId(weight_service.getLastWeightId() + 1);
 		weight.setWeightprice(price);
 		weight.setWeight_kg(kg);
 	}
@@ -180,12 +159,18 @@ public class SetPrice_controller implements MouseListener, ActionListener, ListS
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if(e.getSource().equals(tblweight)) {
-			if(e.getClickCount()==2) {
+		if (e.getSource().equals(tblweight)) {
+			if (e.getClickCount() == 2) {
 				editWeight();
 			}
 		}
-		
+
+		if (e.getSource().equals(tbldestination)) {
+			if (e.getClickCount() == 2) {
+				editDestination();
+			}
+		}
+
 		if (e.getSource().equals(navigationPanel.getPanel_btnOrder())) {
 			frame.remove(setPrice_Panel.getDestination_panel());
 			frame.remove(setPrice_Panel.getWeight_panel());
@@ -239,6 +224,11 @@ public class SetPrice_controller implements MouseListener, ActionListener, ListS
 		if (e.getSource().equals(btn_destinationdelete)) {
 			deleteDestination();
 		}
+
+		if (e.getSource().equals(btn_destinationUpdate)) {
+			updateDestination();
+		}
+
 		if (e.getSource().equals(btn_weightpricesave)) {
 			saveWeight();
 		}
@@ -248,6 +238,45 @@ public class SetPrice_controller implements MouseListener, ActionListener, ListS
 		if (e.getSource().equals(btn_weightdelete)) {
 			deleteWeight();
 		}
+		if (e.getSource().equals(btn_weightUpdate)) {
+			updateWeight();
+		}
+	}
+
+	private void updateWeight() {
+		btn_weightUpdate.setVisible(false);
+		btn_weightpricesave.setVisible(true);
+
+		setWeightModel();
+		int status = weight_service.updateweightPrice(temp_weight_id, weight);
+		if (status > 0) {
+			alert("Successfully Updated!");
+			int modelRowIndex = tblweight.convertRowIndexToModel(tblweight.getSelectedRow());
+			model_Weight.setValueAt(weight, modelRowIndex);
+		} else {
+			alert("Failed update!");
+		}
+		weight = null;
+		weightdataToView(weight);
+
+	}
+
+	private void updateDestination() {
+		btn_destinationUpdate.setVisible(false);
+		btn_destinationsave.setVisible(true);
+
+		setDestinationModel();
+		int status = destination_service.updatedestinationPrice(temp_destination_id, destination);
+		if (status > 0) {
+			alert("Successfully Updated!");
+			int modelRowIndex = tbldestination.convertRowIndexToModel(tbldestination.getSelectedRow());
+			model_Destination.setValueAt(destination, modelRowIndex);
+		} else {
+			alert("Failed update!");
+		}
+		destination = null;
+		destinationdataToView(destination);
+
 	}
 
 	private void deleteWeight() {
@@ -266,15 +295,24 @@ public class SetPrice_controller implements MouseListener, ActionListener, ListS
 	}
 
 	private void editWeight() {
+		btn_weightpricesave.setVisible(false);
+		btn_weightUpdate.setVisible(true);
+
 		Weight weight = new Weight();
 		weight = weight_service.getweightPriceById(temp_weight_id);
 		weightdataToView(weight);
 	}
 
 	private void weightdataToView(Weight weight) {
-		txt_startweight_1.setText(weight ==null? "":String.valueOf(weight.getWeight_kg()));
-		txt_weightprice.setText(weight ==null? "":String.valueOf(weight.getWeightprice()));
-		
+		txt_startweight_1.setText(weight == null ? "" : String.valueOf(weight.getWeight_kg()));
+		txt_weightprice.setText(weight == null ? "" : String.valueOf(weight.getWeightprice()));
+
+	}
+
+	private void destinationdataToView(Destination destination) {
+		txt_destinationName.setText(destination == null ? "" : String.valueOf(destination.getDestinationName()));
+		txt_destinationprice.setText(destination == null ? "" : String.valueOf(destination.getPrice()));
+
 	}
 
 	private void saveWeight() {
@@ -297,13 +335,44 @@ public class SetPrice_controller implements MouseListener, ActionListener, ListS
 
 	private void deleteDestination() {
 
+		int modelRowIndex = tbldestination.convertRowIndexToModel(tbldestination.getSelectedRow());
+		System.out.println("delete " + modelRowIndex);
+		if (modelRowIndex != -1) {
+			int status = destination_service.deletedestinationPrice(temp_destination_id);
+			if (status > 0) {
+				model_Destination.removeRow(modelRowIndex);
+				alert("Successfully Deleted!");
+			} else
+				alert("Delete Failed!");
+		} else {
+			alert("Select a row to Delete!!");
+		}
+
 	}
 
 	private void editDestination() {
+		btn_destinationsave.setVisible(false);
+		btn_destinationUpdate.setVisible(true);
 
+		Destination destination = new Destination();
+		destination = destination_service.getDestinationById(temp_destination_id);
+		destinationdataToView(destination);
 	}
 
 	private void saveDestination() {
+		setDestinationModel();
+		int status = destination_service.createdestinationPrice(destination);
+		if (status > 0) {
+			if (model_Destination != null)
+				model_Destination.insertRow(destination);
+
+			alert("Successfully Saved!");
+
+		} else {
+			alert("Failed Save!");
+		}
+		destination = null;
+		destinationdataToView(destination);
 
 	}
 
@@ -317,7 +386,7 @@ public class SetPrice_controller implements MouseListener, ActionListener, ListS
 		if (!tbldestination.getSelectionModel().isSelectionEmpty()) {
 			temp_destination_id = model_Destination
 					.getDestination_Id(tbldestination.convertRowIndexToModel(tbldestination.getSelectedRow()));
-			System.out.println("temp_destination_id" + temp_destination_id);
+			// System.out.println("temp_destination_id" + temp_destination_id);
 		}
 
 		if (!tblweight.getSelectionModel().isSelectionEmpty()) {

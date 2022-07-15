@@ -58,7 +58,7 @@ public class DestinationPrice_service {
 		int status = 0;
 		try {
 			PreparedStatement ps = connection.prepareStatement(
-					"UPDATE cargotransportation.destination_price SET destination_name=?, destination_price=?, WHERE destination_id=" + id
+					"UPDATE cargotransportation.destination_price SET destination_name=?, destination_price=? WHERE destination_id=" + id
 							+ ";");
 			ps.setString(1, dest.getDestinationName());
 			ps.setInt(2, dest.getPrice());
@@ -106,5 +106,24 @@ public int getdestinationPriceById(int Id) {
 	}
 
 	return price;
+}
+
+public Destination getDestinationById(int Id) {
+	Destination dest = new Destination();
+	int price=0;
+	try {
+		PreparedStatement ps = connection
+				.prepareStatement("select * from cargotransportation.destination_price where destination_id=" + Id + ";");
+		ResultSet rs = ps.executeQuery();
+		if (rs.next()) {
+			//price=rs.getInt("destination_price");
+			dest = Destination_mapper.mapper(dest, rs);
+		}
+		ps.close();
+	} catch (SQLException e) {
+		e.printStackTrace();
+	}
+
+	return dest;
 }
 }

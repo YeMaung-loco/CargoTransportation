@@ -76,12 +76,12 @@ public class TableModel_Weight extends AbstractTableModel {
 		for (int i = 1; headerList.length > i; i++)
 			switch (i) {
 			case 1:
-				weight.setWeight_kg(i);
+				weight.setWeight_kg(e.getWeight_kg());
 				fireTableCellUpdated(rowIndex, i);
 				break;
 
 			case 2:
-				weight.setWeightprice(i);
+				weight.setWeightprice(e.getWeightprice());
 				fireTableCellUpdated(rowIndex, i);
 				break;
 

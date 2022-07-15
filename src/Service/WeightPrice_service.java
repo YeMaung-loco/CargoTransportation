@@ -59,16 +59,17 @@ public class WeightPrice_service {
 		int status = 0;
 		try {
 			PreparedStatement ps = this.dbConfig.getConnection().prepareStatement(
-					"UPDATE cargotransportation.weight_price SET weight_kg=?, weight_price=?, WHERE weightPrice_id="
+					"UPDATE cargotransportation.weight_price SET weight_kg=?, weight_price=? WHERE weightPrice_id="
 							+ id + ";");
 			ps.setInt(1, w.getWeight_kg());
 			ps.setInt(2, w.getWeightprice());
-
+			System.out.println(ps);
 			status = ps.executeUpdate();
 			ps.close();
 		} catch (Exception e) {
 			if (e instanceof SQLIntegrityConstraintViolationException) {
 				JOptionPane.showMessageDialog(null, "Already Exists");
+				e.printStackTrace();
 			}
 		}
 		return status;

@@ -1,6 +1,7 @@
 package Controller;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -25,6 +27,7 @@ import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
 import Model.Customer;
@@ -68,6 +71,7 @@ public class OrderManage_controller
 	JTextField txtc_name, txtc_phone, txtc_address, txt_search;
 	JComboBox<String> comboDestination, searchComboDestination;
 	JButton btnAdd, btnDelete, btnDone;
+	JButton btn_viewDetail;
 
 	boolean insertCO = false;
 	boolean addedDestinationFee = false;
@@ -76,6 +80,11 @@ public class OrderManage_controller
 
 	public OrderManage_controller(JFrame frame) {
 		containerFrame = frame;
+		
+		btn_viewDetail=new JButton("View");
+		//btn_viewDetail= model_Order.getBtnViewDetail();
+		btn_viewDetail.addActionListener(this);
+		
 		dependencyInjection();
 		loadAllPrice();
 
@@ -92,9 +101,16 @@ public class OrderManage_controller
 	private void showList() {
 		List<Order> orderList = new ArrayList<Order>();
 		orderList = order_service.getAllOrderlist();
-		model_Order = new TableModel_Order(orderList);
+		model_Order = new TableModel_Order(orderList,btn_viewDetail);
+		
+		
+		
 		tblorder.setModel(model_Order);
-		sorter = new TableRowSorter<TableModel_Order>(model_Order);
+
+		TableCellRenderer tableRenderer = tblorder.getDefaultRenderer(JButton.class);
+		tblorder.setDefaultRenderer(JButton.class, new JTableButtonRenderer(tableRenderer));
+	      
+				sorter = new TableRowSorter<TableModel_Order>(model_Order);
 	}
 
 	private void loadData() {
@@ -120,7 +136,8 @@ public class OrderManage_controller
 			weightkg.add(weight.getWeight_kg());
 			weightPrice.add(weight.getWeightprice());
 		}
-
+		Collections.sort(weightkg);
+		Collections.sort(weightPrice);
 	}
 
 	public void dependencyInjection() {
@@ -156,6 +173,8 @@ public class OrderManage_controller
 		btnAdd = order_Panel.getBtnNewButton();
 		btnDelete = order_Panel.getBtnDelete();
 		btnDone = order_Panel.getBtnDone();
+		
+		
 
 		comboDestination = order_Panel.getJcombo_destination();
 		searchComboDestination = order_Panel.getJcombo_destination_1();
@@ -174,6 +193,8 @@ public class OrderManage_controller
 		btnAdd.addActionListener(this);
 		btnDelete.addActionListener(this);
 		btnDone.addActionListener(this);
+		
+
 
 		searchComboDestination.addItemListener(this);
 
@@ -434,6 +455,11 @@ public class OrderManage_controller
 
 		if (e.getSource().equals(btnDelete))
 			delete();
+		
+		if(e.getSource().equals(btn_viewDetail)) {
+			alert("View Detail");
+			System.out.println("View detail");
+		}
 
 	}
 
@@ -480,11 +506,32 @@ public class OrderManage_controller
 		if (!tblorder.getSelectionModel().isSelectionEmpty()) {
 			order_no = model_Order.getOrder_no(tblorder.convertRowIndexToModel(tblorder.getSelectedRow()));
 			customer_id = model_Order.getCustomer_Id(tblorder.convertRowIndexToModel(tblorder.getSelectedRow()));
-			System.out.println("Order_No" + order_no);
+		//	System.out.println("Order_No" + order_no);
 		} else {
 			System.out.println("Empty");
 		}
+		
+		if (!tblorder.getSelectionModel().isSelectionEmpty()) {
+			if(tblorder.getSelectedColumn()==7) {
+				order_no = model_Order.getOrder_no(tblorder.convertRowIndexToModel(tblorder.getSelectedRow()));
+				customer_id = model_Order.getCustomer_Id(tblorder.convertRowIndexToModel(tblorder.getSelectedRow()));
+				System.out.println("Order_No for view detail" + order_no);
+				alert("view detail");
+			}
+		} 
 
 	}
 
 }
+
+class JTableButtonRenderer implements TableCellRenderer {
+	   private TableCellRenderer defaultRenderer;
+	   public JTableButtonRenderer(TableCellRenderer renderer) {
+	      defaultRenderer = renderer;
+	   }
+	   public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+	      if(value instanceof Component)
+	         return (Component)value;
+	         return defaultRenderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+	   }
+	}

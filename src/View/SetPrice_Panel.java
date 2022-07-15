@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -24,11 +23,12 @@ public class SetPrice_Panel {
 	private JScrollPane scrollPane_destination, scrollPane_weight;
 	// JTextField txt_startweight, txt_lastweight, txt_weightprice,
 	// txt_destinationprice;
-	private JTextField txt_weightprice, txt_startweight_1, txt_destinationprice;
+	private JTextField txt_weightprice, txt_startweight_1, txt_destinationprice, txt_destinationName;
 	private JButton btn_weightpricesave, btn_destinationsave;
+	JButton btn_weightUpdate, btn_destinationUpdate;
 	private JLabel lbldestinationinput, lblNewLabel, lbl_priceweight, lbl_weighterate, lbl_startweight,
 			lbl_destinationto, lbl_price;
-	private JComboBox<String> cbox_destination;
+	// private JComboBox<String> cbox_destination;
 	private JButton btn_destinationdelete, btn_destinationedit, btn_weightdelete, btn_weightedit;
 
 	public SetPrice_Panel(JFrame container) {
@@ -66,8 +66,16 @@ public class SetPrice_Panel {
 		weight_panel = new JPanel();
 		tbldestination = new JTable();
 		tblweight = new JTable();
-		btn_weightpricesave = new JButton();
+		btn_destinationUpdate = new JButton();
 		btn_destinationsave = new JButton();
+		btn_destinationdelete = new JButton();
+		btn_destinationedit = new JButton();
+
+		btn_weightUpdate = new JButton();
+		btn_weightpricesave = new JButton();
+		btn_weightdelete = new JButton();
+		btn_weightedit = new JButton();
+
 		lbl_destinationto = new JLabel();
 		lbl_price = new JLabel();
 		lbl_priceweight = new JLabel();
@@ -75,17 +83,18 @@ public class SetPrice_Panel {
 		lbl_weighterate = new JLabel();
 		lbldestinationinput = new JLabel();
 		lblNewLabel = new JLabel();
+
+		txt_destinationprice = new JTextField();
+		txt_weightprice = new JTextField();
+		txt_startweight_1 = new JTextField();
+		txt_destinationName = new JTextField();
 		/*
 		 * txt_lastweight = new JTextField(); txt_weightprice = new JTextField();
 		 * txt_destinationprice = new JTextField(); txt_startweight = new JTextField();
 		 */
-		cbox_destination = new JComboBox();
+		// cbox_destination = new JComboBox();
 		scrollPane_destination = new JScrollPane();
 		scrollPane_weight = new JScrollPane();
-		btn_destinationdelete = new JButton();
-		btn_destinationedit = new JButton();
-		btn_weightdelete = new JButton();
-		btn_weightedit = new JButton();
 
 	}
 
@@ -110,19 +119,23 @@ public class SetPrice_Panel {
 		lbl_destinationto.setFont(new Font("Tahoma", Font.BOLD, 18));
 		lbl_destinationto.setBounds(83, 98, 133, 27);
 
-		cbox_destination.setBounds(276, 96, 179, 37);
+		txt_destinationName.setBounds(276, 96, 179, 37);
 
 		lbl_price.setText("Price");
 		lbl_price.setFont(new Font("Tahoma", Font.BOLD, 18));
 		lbl_price.setBounds(83, 172, 56, 27);
 
-		txt_destinationprice = new JTextField();
 		txt_destinationprice.setBounds(276, 170, 179, 37);
 		txt_destinationprice.setColumns(10);
 
 		btn_destinationsave.setText("Save");
 		btn_destinationsave.setFont(new Font("Tahoma", Font.BOLD, 20));
 		btn_destinationsave.setBounds(421, 303, 116, 48);
+
+		btn_destinationUpdate.setText("Update");
+		btn_destinationUpdate.setFont(new Font("Tahoma", Font.BOLD, 20));
+		btn_destinationUpdate.setBounds(421, 303, 116, 48);
+		btn_destinationUpdate.setVisible(false);
 
 		scrollPane_destination = new JScrollPane();
 		scrollPane_destination.setBounds(0, 361, 572, 398);
@@ -137,7 +150,6 @@ public class SetPrice_Panel {
 		lbl_startweight.setFont(new Font("Tahoma", Font.BOLD, 17));
 		lbl_startweight.setBounds(101, 98, 76, 37);
 
-		txt_startweight_1 = new JTextField();
 		txt_startweight_1.setBounds(266, 101, 166, 37);
 		txt_startweight_1.setColumns(10);
 
@@ -145,13 +157,17 @@ public class SetPrice_Panel {
 		lbl_priceweight.setFont(new Font("Tahoma", Font.BOLD, 18));
 		lbl_priceweight.setBounds(109, 178, 56, 31);
 
-		txt_weightprice = new JTextField();
 		txt_weightprice.setBounds(266, 178, 166, 37);
 		txt_weightprice.setColumns(10);
 
 		btn_weightpricesave.setText("Save");
 		btn_weightpricesave.setFont(new Font("Tahoma", Font.BOLD, 20));
 		btn_weightpricesave.setBounds(409, 299, 116, 48);
+
+		btn_weightUpdate.setText("Update");
+		btn_weightUpdate.setFont(new Font("Tahoma", Font.BOLD, 20));
+		btn_weightUpdate.setBounds(409, 299, 116, 48);
+		btn_weightUpdate.setVisible(false);
 
 		scrollPane_weight = new JScrollPane();
 		scrollPane_weight.setBounds(0, 361, 572, 398);
@@ -182,14 +198,15 @@ public class SetPrice_Panel {
 	private void addComponent() {
 		destination_panel.add(lbldestinationinput);
 		destination_panel.add(lbl_destinationto);
-		destination_panel.add(cbox_destination);
+		destination_panel.add(txt_destinationName);
 		destination_panel.add(lbl_price);
 		destination_panel.add(txt_destinationprice);
 		destination_panel.add(btn_destinationsave);
 		destination_panel.add(scrollPane_destination);
-
 		destination_panel.add(btn_destinationdelete);
 		destination_panel.add(btn_destinationedit);
+		destination_panel.add(btn_destinationUpdate);
+		
 		weight_panel.add(lbl_weighterate);
 		weight_panel.add(lbl_startweight);
 		weight_panel.add(txt_startweight_1);
@@ -198,7 +215,7 @@ public class SetPrice_Panel {
 		weight_panel.add(btn_weightpricesave);
 		weight_panel.add(scrollPane_weight);
 		weight_panel.add(lblNewLabel);
-
+		weight_panel.add(btn_weightUpdate);
 		weight_panel.add(btn_weightdelete);
 		weight_panel.add(btn_weightedit);
 		if (frame != null) {
@@ -208,8 +225,8 @@ public class SetPrice_Panel {
 
 	}
 
-	public JComboBox getCbox_destination() {
-		return cbox_destination;
+	public JTextField getTxt_DestinationName() {
+		return txt_destinationName;
 	}
 
 	public JTextField getTxt_DestinationPrice() {
@@ -247,8 +264,6 @@ public class SetPrice_Panel {
 	public JButton getBtn_weightedit() {
 		return btn_weightedit;
 	}
-	
-	
 
 	public JPanel getDestination_panel() {
 		return destination_panel;
@@ -257,12 +272,20 @@ public class SetPrice_Panel {
 	public JPanel getWeight_panel() {
 		return weight_panel;
 	}
-	
+
 	public JTable getTblDestination() {
 		return tbldestination;
 	}
-	
+
 	public JTable getTblWeight() {
 		return tblweight;
+	}
+	
+	public JButton getBtnDestinationUpdate() {
+		return btn_destinationUpdate;
+	}
+	
+	public JButton getBtnWeightUpdate() {
+		return btn_weightUpdate;
 	}
 }

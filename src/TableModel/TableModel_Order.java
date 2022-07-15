@@ -1,19 +1,25 @@
 package TableModel;
 
+import java.util.EventObject;
 import java.util.List;
 
+import javax.swing.JButton;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.text.View;
 
 import Model.Order;
 
 public class TableModel_Order extends AbstractTableModel {
 
+	JButton btn_viewDetail;
 	private static final long serialVersionUID = -4026402599426071004L;
 	List<Order> orderList;
-	String headerList[] = new String[] { "No", "Order_Id", "Name", "Phone", "Destination", "Date", "Fee" };
+	String headerList[] = new String[] { "No", "Order_Id", "Name", "Phone", "Destination", "Date", "Fee",
+			"View Detail" };
 
-	public TableModel_Order(List<Order> list) {
+	public TableModel_Order(List<Order> list, JButton btnDetail) {
 		orderList = list;
+		this.btn_viewDetail = btnDetail;
 	}
 
 	public TableModel_Order() {
@@ -27,11 +33,18 @@ public class TableModel_Order extends AbstractTableModel {
 
 	@Override
 	public int getColumnCount() {
-		return 7;
+		return 8;
 	}
 
 	public String getColumnName(int col) {
 		return headerList[col];
+	}
+
+	/*
+	 * public boolean isCellEditable(EventObject e) { return true; }
+	 */
+	public Class getColumnClass(int column) {
+		return getValueAt(0, column).getClass();
 	}
 
 	public void removeRow(int rowIndex) {
@@ -65,6 +78,8 @@ public class TableModel_Order extends AbstractTableModel {
 			return entity.getDate();
 		case 6:
 			return entity.getTransportationfees();
+		case 7:
+			return btn_viewDetail;
 		default:
 			return "";
 		}
