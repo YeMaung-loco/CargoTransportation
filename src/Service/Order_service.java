@@ -72,7 +72,7 @@ public class Order_service {
 				PreparedStatement query = connection
 						.prepareStatement("ALTER TABLE cargotransportation.order AUTO_INCREMENT = 1;");
 				boolean reset = query.execute();
-				System.out.println("Auto increment reset is "+ reset);
+				System.out.println("Order Table Auto increment reset is "+ reset);
 				
 			}
 			ps.close();

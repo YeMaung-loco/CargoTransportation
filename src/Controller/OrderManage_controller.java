@@ -9,6 +9,9 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.beans.DesignMode;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,6 +43,7 @@ import Service.Order_service;
 import Service.Package_service;
 import Service.WeightPrice_service;
 import TableModel.TableModel_Order;
+import Utility.ExportDataToExcel;
 import Utility.Prefix;
 import View.Office_view;
 import View.Order_Panel;
@@ -83,7 +87,7 @@ public class OrderManage_controller
 		
 		btn_viewDetail=new JButton("View");
 		//btn_viewDetail= model_Order.getBtnViewDetail();
-		btn_viewDetail.addActionListener(this);
+		//btn_viewDetail.addActionListener(this);
 		
 		dependencyInjection();
 		loadAllPrice();
@@ -95,6 +99,7 @@ public class OrderManage_controller
 		loadAllPrice();
 		loadData();
 		showList();
+		newOrderId();
 
 	}
 
@@ -120,9 +125,6 @@ public class OrderManage_controller
 			comboDestination.addItem(d.getDestinationName());
 			searchComboDestination.addItem(d.getDestinationName());
 		}
-
-		lblOrderId.setText(order_no);
-
 	}
 
 	private void loadAllPrice() {
@@ -154,11 +156,16 @@ public class OrderManage_controller
 	}
 
 	public void initForm() {
-		order_no = Prefix.getPrimaryKey("CO-", order_service.getLastOrderId() + 1);
-		System.out.println("Order_Controller initform" + order_no);
+		
 		office_view = new Office_view(containerFrame);
 		order_Panel = new Order_Panel(containerFrame);
 		office_view.getPanel_btnOrder().setBackground(new Color(218, 165, 32));
+	}
+	
+	private void newOrderId() {
+		order_no = Prefix.getPrimaryKey("CO-", order_service.getLastOrderId() + 1);
+		lblOrderId.setText(order_no);
+		System.out.println("Order_Controller initform" + order_no);
 	}
 
 	public void initComponents() {
@@ -256,7 +263,7 @@ public class OrderManage_controller
 			destination.setId(comboDestination.getSelectedIndex());
 			destination.setDestinationName(comboDestination.getSelectedItem().toString());
 
-			System.out.println("inner" + order_no);
+			System.out.println("destination id and name" + comboDestination.getSelectedIndex());
 			order.setOrder_no(order_no);
 			order.setCustomer(customer);
 			order.setDestination(destination);
@@ -294,6 +301,7 @@ public class OrderManage_controller
 				if (!addedDestinationFee) {
 					addedDestinationFee = true;
 					int destinationPrice = destination_service.getdestinationPriceById(order.getDestination().getId());
+					System.out.println("Destination Price-"+ destinationPrice);
 					fee += destinationPrice;
 				}
 				int packageWeight = Integer.parseInt(weight);
@@ -383,12 +391,15 @@ public class OrderManage_controller
 
 			alert("Successfully Saved!");
 			i = 0;
+			insertCO=false;
 
 		} else {
 			alert("Failed Save!");
 		}
 		order = null;
+		customer=null;
 		dataToView(order);
+		newOrderId();
 
 	}
 
@@ -517,6 +528,16 @@ public class OrderManage_controller
 				customer_id = model_Order.getCustomer_Id(tblorder.convertRowIndexToModel(tblorder.getSelectedRow()));
 				System.out.println("Order_No for view detail" + order_no);
 				alert("view detail");
+				
+				try {
+					ExportDataToExcel.writeToExcell(tblorder," ");
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		} 
 

@@ -33,6 +33,7 @@ public class Package_service {
 			ps.setString(2, orderNo);
 			// ps.setInt(2, Package.getWeight().getId());
 			status = ps.executeUpdate();
+			System.out.println(ps);
 			ps.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -92,6 +93,13 @@ public class Package_service {
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
 				id = rs.getInt("MAX(package.package_id)");
+			}
+			else {
+				PreparedStatement query = connection
+						.prepareStatement("ALTER TABLE cargotransportation.package AUTO_INCREMENT = 1;");
+				boolean reset = query.execute();
+				System.out.println("Package table Auto increment reset is "+ reset);
+				
 			}
 			ps.close();
 		} catch (SQLException e) {

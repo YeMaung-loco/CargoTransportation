@@ -86,6 +86,13 @@ public class Customer_service {
 			if (rs.next()) {
 				customer = Customer_mapper.mapper(customer, rs);
 			}
+			else {
+				PreparedStatement query = connection
+						.prepareStatement("ALTER TABLE cargotransportation.customer AUTO_INCREMENT = 1;");
+				boolean reset = query.execute();
+				System.out.println("Customer Table Auto increment reset is "+ reset);
+				
+			}
 			ps.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
