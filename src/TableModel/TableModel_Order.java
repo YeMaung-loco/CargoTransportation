@@ -121,6 +121,10 @@ public class TableModel_Order extends AbstractTableModel {
 				order.setTransportationfees(e.getTransportationfees());
 				fireTableCellUpdated(rowIndex, i);
 				break;
+				
+			/*
+			 * case 7: this.btn_viewDetail;
+			 */
 			}
 
 	}

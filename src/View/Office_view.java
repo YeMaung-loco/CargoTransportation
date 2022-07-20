@@ -113,6 +113,23 @@ public class Office_view {
 		iconSetPrice.setVerticalAlignment(SwingConstants.TOP);
 		iconSetPrice.setBounds(20, 14, 32, 32);
 		panel_btnSetPrice.add(iconSetPrice);
+		
+		JPanel panel_btn_approve = new JPanel();
+		panel_btn_approve.setLayout(null);
+		panel_btn_approve.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		panel_btn_approve.setBackground(new Color(255, 215, 0));
+		panel_btn_approve.setBounds(0, 443, 200, 70);
+		panel_navigation.add(panel_btn_approve);
+		
+		JLabel lblPaymentApprove = new JLabel("Approve");
+		lblPaymentApprove.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblPaymentApprove.setBounds(62, 10, 128, 39);
+		panel_btn_approve.add(lblPaymentApprove);
+		
+		JLabel iconSetPrice_1 = new JLabel();
+		iconSetPrice_1.setVerticalAlignment(SwingConstants.TOP);
+		iconSetPrice_1.setBounds(20, 14, 32, 32);
+		panel_btn_approve.add(iconSetPrice_1);
 
 	}
 

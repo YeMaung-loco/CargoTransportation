@@ -10,7 +10,7 @@ public class Package_Mapper {
 	public static Package mapper(Package pack, ResultSet rs) {
 
 	        try {
-	        	pack.setPackage_id(rs.getString("package_no"));
+	        	pack.setPackage_id(rs.getInt("package_id"));
 	        	
 //	        	Weight weight=new Weight();
 //	        	weight.setWeight_kg(rs.getInt("package_weight"));

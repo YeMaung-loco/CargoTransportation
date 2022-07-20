@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Mapper.Customer_mapper;
+import Mapper.Order_mapper;
+import Mapper.Package_Mapper;
 import Mapper.Staff_mapper;
 import config.DBConfig;
 import Model.Customer;
@@ -24,16 +26,15 @@ public class Package_service {
 
 	}
 
-	public int createPackage(String packageNo, String orderNo, int weight) {
+	public int createPackage(String packageNo, String orderNo) {
 		int status = 0;
 		try {
-			PreparedStatement ps = connection.prepareStatement(
-					"insert into cargotransportation.package(package_no,order_no,weight_kg)values(?,?,?)");
+			PreparedStatement ps = connection
+					.prepareStatement("insert into cargotransportation.package(package_no,order_no)values(?,?)");
 			ps.setString(1, packageNo);
 			ps.setString(2, orderNo);
-			ps.setInt(3, weight);
+			// ps.setInt(2, Package.getWeight().getId());
 			status = ps.executeUpdate();
-			System.out.println(ps);
 			ps.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -41,12 +42,11 @@ public class Package_service {
 		return status;
 	}
 
-	public int deletePackageById(String package_no) {
+	public int deletePackageById(int id) {
 		int status = 0;
 		try {
 			PreparedStatement ps = connection
-					.prepareStatement("delete from cargotransportation.package where package_no=?;");
-			ps.setString(1, package_no);
+					.prepareStatement("delete from cargotransportation.package where package_id=" + id + ";");
 			status = ps.executeUpdate();
 			ps.close();
 
@@ -69,35 +69,19 @@ public class Package_service {
 		}
 		return status;
 	}
+	
 
-	public List<String> getPackageByOrderNo(String orderNo) {
-		List<String> packageList = new ArrayList<String>();
-		try {
-			PreparedStatement ps = connection
-					.prepareStatement("SELECT * FROM cargotransportation.package where order_no=\"" + orderNo + "\";");
-			ResultSet rs = ps.executeQuery();
-			while (rs.next()) {
-				packageList.add(rs.getString("package_no"));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return packageList;
-
-	}
-
-	public List<Package> getPackageModelByOrderNo(String orderNo) {
+	public List<Package> getPackageByOrderNo(String orderNo) {
 		List<Package> packageList = new ArrayList<Package>();
-
 		try {
 			PreparedStatement ps = connection
 					.prepareStatement("SELECT * FROM cargotransportation.package where order_no=\"" + orderNo + "\";");
 			ResultSet rs = ps.executeQuery();
+			System.out.println(ps);
 			while (rs.next()) {
-				Package pack = new Package();
-				pack.setPackage_id(rs.getString("package_no"));
-				// String order_no=rs.getString("order_no");
-				Integer weightId = rs.getInt("weightPrice_id");
+				System.out.println("is exist");
+				Package pack=new Package();
+				pack = Package_Mapper.mapper(pack, rs);
 				packageList.add(pack);
 			}
 		} catch (SQLException e) {
@@ -105,6 +89,38 @@ public class Package_service {
 		}
 		return packageList;
 
+	}
+	
+//	public List<String> getPackagelistByOrderNo(String orderNo) {
+//		List<String> packageList = new ArrayList<>();
+//		try {
+//			PreparedStatement ps = connection
+//					.prepareStatement("SELECT * FROM cargotransportation.package where order_no=\"" + orderNo + "\";");
+//			ResultSet rs = ps.executeQuery();
+//			while (rs.next()) {
+//				String pack=new Package();
+//				pack = Package_Mapper.mapper(pack, rs);
+//				packageList.add(pack);
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		return packageList;
+//
+//	}
+	public Package getlastPackageId(String orderNo) {
+		Package pack=new Package();
+		try {
+			PreparedStatement ps=connection.prepareStatement("select * from cargotransportation.package where order_no=\"" + orderNo +"\";");
+		ResultSet rs=ps.executeQuery();
+		while(rs.next()) {
+			pack=Package_Mapper.mapper(pack, rs);
+		}ps.close();
+		
+		
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}return pack;
 	}
 
 	public int getLastPackageId() {
@@ -115,12 +131,6 @@ public class Package_service {
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
 				id = rs.getInt("MAX(package.package_id)");
-			} else {
-				PreparedStatement query = connection
-						.prepareStatement("ALTER TABLE cargotransportation.package AUTO_INCREMENT = 1;");
-				boolean reset = query.execute();
-				System.out.println("Package table Auto increment reset is " + reset);
-
 			}
 			ps.close();
 		} catch (SQLException e) {

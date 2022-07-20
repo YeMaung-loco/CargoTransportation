@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -36,6 +37,7 @@ import javax.swing.table.TableRowSorter;
 import Model.Customer;
 import Model.Destination;
 import Model.Order;
+import Model.Package;
 import Model.Weight;
 import Service.Customer_service;
 import Service.DestinationPrice_service;
@@ -79,16 +81,17 @@ public class OrderManage_controller
 
 	boolean insertCO = false;
 	boolean addedDestinationFee = false;
-	JCheckBox[] checkBoxList = new JCheckBox[50];
+	// JCheckBox[] checkBoxList = new JCheckBox[50];
+	HashMap<String, Integer> temp_packageList = new HashMap<String, Integer>();
+
+	ArrayList<JCheckBox> checkBoxList = new ArrayList<JCheckBox>();
 	int i = 0;
 
 	public OrderManage_controller(JFrame frame) {
 		containerFrame = frame;
-		
-		btn_viewDetail=new JButton("View");
-		//btn_viewDetail= model_Order.getBtnViewDetail();
-		//btn_viewDetail.addActionListener(this);
-		
+
+		btn_viewDetail = new JButton("View");
+
 		dependencyInjection();
 		loadAllPrice();
 
@@ -106,16 +109,14 @@ public class OrderManage_controller
 	private void showList() {
 		List<Order> orderList = new ArrayList<Order>();
 		orderList = order_service.getAllOrderlist();
-		model_Order = new TableModel_Order(orderList,btn_viewDetail);
-		
-		
-		
+		model_Order = new TableModel_Order(orderList, btn_viewDetail);
+
 		tblorder.setModel(model_Order);
 
 		TableCellRenderer tableRenderer = tblorder.getDefaultRenderer(JButton.class);
 		tblorder.setDefaultRenderer(JButton.class, new JTableButtonRenderer(tableRenderer));
-	      
-				sorter = new TableRowSorter<TableModel_Order>(model_Order);
+
+		sorter = new TableRowSorter<TableModel_Order>(model_Order);
 	}
 
 	private void loadData() {
@@ -156,12 +157,12 @@ public class OrderManage_controller
 	}
 
 	public void initForm() {
-		
+
 		office_view = new Office_view(containerFrame);
 		order_Panel = new Order_Panel(containerFrame);
 		office_view.getPanel_btnOrder().setBackground(new Color(218, 165, 32));
 	}
-	
+
 	private void newOrderId() {
 		order_no = Prefix.getPrimaryKey("CO-", order_service.getLastOrderId() + 1);
 		lblOrderId.setText(order_no);
@@ -180,8 +181,6 @@ public class OrderManage_controller
 		btnAdd = order_Panel.getBtnNewButton();
 		btnDelete = order_Panel.getBtnDelete();
 		btnDone = order_Panel.getBtnDone();
-		
-		
 
 		comboDestination = order_Panel.getJcombo_destination();
 		searchComboDestination = order_Panel.getJcombo_destination_1();
@@ -200,8 +199,6 @@ public class OrderManage_controller
 		btnAdd.addActionListener(this);
 		btnDelete.addActionListener(this);
 		btnDone.addActionListener(this);
-		
-
 
 		searchComboDestination.addItemListener(this);
 
@@ -219,7 +216,7 @@ public class OrderManage_controller
 	}
 
 	private void dataToView(Order order) {
-
+		checkBoxList.removeAll(checkBoxList);
 		order_Panel.getPanel_Package().removeAll();
 		order_Panel.getPanel_Package().revalidate();
 		order_Panel.getPanel_Package().repaint();
@@ -231,11 +228,15 @@ public class OrderManage_controller
 		lblOrderId.setText(order == null ? "" : order.getOrder_no());
 		lblFee.setText(order == null ? "" : String.valueOf(order.getTransportationfees()));
 		if (order != null) {
-			List<String> packList = package_service.getPackageByOrderNo(order_no);
-			for (String packageId : packList) {
-				checkBoxList[i] = new JCheckBox(packageId);
-				checkBoxList[i].setFont(new Font("Tahoma", Font.PLAIN, 15));
-				order_Panel.getPanel_Package().add(checkBoxList[i]);
+			List<Package> packList = package_service.getPackageModelByOrderNo(order_no);
+			for (Package pack : packList) {
+				checkBoxList.add(new JCheckBox(pack.getPackage_id()));
+
+			}
+			for (JCheckBox checkBox : checkBoxList) {
+				// checkBoxList[i] = new JCheckBox(packageId);
+				checkBox.setFont(new Font("Tahoma", Font.PLAIN, 15));
+				order_Panel.getPanel_Package().add(checkBox);
 
 				order_Panel.getPanel_Package().revalidate();
 				order_Panel.getPanel_Package().repaint();
@@ -301,26 +302,45 @@ public class OrderManage_controller
 				if (!addedDestinationFee) {
 					addedDestinationFee = true;
 					int destinationPrice = destination_service.getdestinationPriceById(order.getDestination().getId());
-					System.out.println("Destination Price-"+ destinationPrice);
+					System.out.println("Destination Price-" + destinationPrice);
 					fee += destinationPrice;
 				}
 				int packageWeight = Integer.parseInt(weight);
-				fee += weightPrice.get(calculateWeight(0, weightkg.size() - 1, packageWeight));
+				int price = weightPrice.get(calculateWeight(0, weightkg.size() - 1, packageWeight));
+				fee += price;
 
 				System.out.println("PackageId" + packageId + "and" + packageWeight);
-				int status = package_service.createPackage(packageId, order_no);
+				int status = package_service.createPackage(packageId, order_no,packageWeight);
 				if (status > 0) {
-					checkBoxList[i] = new JCheckBox(packageId);
-					checkBoxList[i].setFont(new Font("Tahoma", Font.PLAIN, 15));
-					order_Panel.getPanel_Package().add(checkBoxList[i]);
+					JCheckBox checkbox = new JCheckBox(packageId);
+					checkbox.setFont(new Font("Tahoma", Font.PLAIN, 15));
+					order_Panel.getPanel_Package().add(checkbox);
+					checkBoxList.add(checkbox);
+					temp_packageList.put(packageId, price);
 					lblFee.setText(String.valueOf(fee));
 					order_Panel.getPanel_Package().revalidate();
 					order_Panel.getPanel_Package().repaint();
-					i++;
+					// i++;
 				}
 			}
 
 		}
+	}
+
+	void removePackage() {
+		System.out.println("Remove Package");
+		for (int i = 0; i < checkBoxList.size(); i++) {
+			if (checkBoxList.get(i).isSelected()) {
+				order_Panel.getPanel_Package().remove(checkBoxList.get(i));
+				fee -= temp_packageList.get(checkBoxList.get(i).getText());
+				checkBoxList.remove(i);
+				lblFee.setText(String.valueOf(fee));
+				order_Panel.getPanel_Package().revalidate();
+				order_Panel.getPanel_Package().repaint();
+			}
+
+		}
+
 	}
 
 	private void delete() {
@@ -391,13 +411,13 @@ public class OrderManage_controller
 
 			alert("Successfully Saved!");
 			i = 0;
-			insertCO=false;
+			insertCO = false;
 
 		} else {
 			alert("Failed Save!");
 		}
 		order = null;
-		customer=null;
+		customer = null;
 		dataToView(order);
 		newOrderId();
 
@@ -465,9 +485,10 @@ public class OrderManage_controller
 			done();
 
 		if (e.getSource().equals(btnDelete))
-			delete();
-		
-		if(e.getSource().equals(btn_viewDetail)) {
+			removePackage();
+		// delete();
+
+		if (e.getSource().equals(btn_viewDetail)) {
 			alert("View Detail");
 			System.out.println("View detail");
 		}
@@ -517,42 +538,47 @@ public class OrderManage_controller
 		if (!tblorder.getSelectionModel().isSelectionEmpty()) {
 			order_no = model_Order.getOrder_no(tblorder.convertRowIndexToModel(tblorder.getSelectedRow()));
 			customer_id = model_Order.getCustomer_Id(tblorder.convertRowIndexToModel(tblorder.getSelectedRow()));
-		//	System.out.println("Order_No" + order_no);
+			// System.out.println("Order_No" + order_no);
 		} else {
 			System.out.println("Empty");
 		}
-		
+
 		if (!tblorder.getSelectionModel().isSelectionEmpty()) {
-			if(tblorder.getSelectedColumn()==7) {
+			if (tblorder.getSelectedColumn() == 7) {
 				order_no = model_Order.getOrder_no(tblorder.convertRowIndexToModel(tblorder.getSelectedRow()));
 				customer_id = model_Order.getCustomer_Id(tblorder.convertRowIndexToModel(tblorder.getSelectedRow()));
 				System.out.println("Order_No for view detail" + order_no);
-				alert("view detail");
-				
-				try {
-					ExportDataToExcel.writeToExcell(tblorder," ");
-				} catch (FileNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				// alert("view detail");
+
+				/*
+				 * order_Panel.getPanelCustomer().setVisible(false);
+				 * order_Panel.getPanelOrder().setVisible(false);
+				 * order_Panel.getPanelOrderList().setVisible(false);
+				 */
+				containerFrame.remove(order_Panel.getPanelCustomer());
+				containerFrame.remove(order_Panel.getPanelOrder());
+				containerFrame.remove(order_Panel.getPanelOrderList());
+				containerFrame.remove(office_view.getPanel_navigation());
+				Orderdetail_controller orderdetail_controller = new Orderdetail_controller(order_no, containerFrame);
+
 			}
-		} 
+		}
 
 	}
 
 }
 
 class JTableButtonRenderer implements TableCellRenderer {
-	   private TableCellRenderer defaultRenderer;
-	   public JTableButtonRenderer(TableCellRenderer renderer) {
-	      defaultRenderer = renderer;
-	   }
-	   public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-	      if(value instanceof Component)
-	         return (Component)value;
-	         return defaultRenderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-	   }
+	private TableCellRenderer defaultRenderer;
+
+	public JTableButtonRenderer(TableCellRenderer renderer) {
+		defaultRenderer = renderer;
 	}
+
+	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
+			int row, int column) {
+		if (value instanceof Component)
+			return (Component) value;
+		return defaultRenderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+	}
+}

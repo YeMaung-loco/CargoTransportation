@@ -40,7 +40,7 @@ public class Customer_service {
 		return status;
 	}
 
-	public int updateCustomer(String id, Customer customer) {
+	public int updateCustomer(int id, Customer customer) {
 		int status = 0;
 		try {
 			PreparedStatement ps = connection.prepareStatement(
@@ -49,7 +49,7 @@ public class Customer_service {
 			ps.setString(1, customer.getName());
 			ps.setString(2, customer.getPhone());
 			ps.setString(3, customer.getAddress());
-			// ps.setString(4, id);
+			 ps.setInt(4, id);
 			status = ps.executeUpdate();
 			ps.close();
 		} catch (Exception e) {

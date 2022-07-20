@@ -1,22 +1,22 @@
 package Model;
 
 public class Package {
-private int package_id;
+private String package_id;
 private Order order;
 private Weight weight;
 public Package() {
 
 }
-public Package(int package_id, Order order, Weight weight) {
+public Package(String package_id, Order order, Weight weight) {
 	
 	this.package_id = package_id;
 	this.order = order;
 	this.weight = weight;
 }
-public int getPackage_id() {
+public String getPackage_id() {
 	return package_id;
 }
-public void setPackage_id(int package_id) {
+public void setPackage_id(String package_id) {
 	this.package_id = package_id;
 }
 public Order getOrder() {

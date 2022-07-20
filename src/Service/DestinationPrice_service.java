@@ -108,12 +108,12 @@ public int getdestinationPriceById(int Id) {
 	return price;
 }
 
-public Destination getDestinationById(int Id) {
+public Destination getDestinationById(int id) {
 	Destination dest = new Destination();
-	int price=0;
+	//int price=0;
 	try {
 		PreparedStatement ps = connection
-				.prepareStatement("select * from cargotransportation.destination_price where destination_id=" + Id + ";");
+				.prepareStatement("select * from cargotransportation.destination_price where destination_id="+id+";");
 		ResultSet rs = ps.executeQuery();
 		if (rs.next()) {
 			//price=rs.getInt("destination_price");
