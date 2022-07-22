@@ -90,8 +90,6 @@ public class OrderManage_controller
 	public OrderManage_controller(JFrame frame) {
 		containerFrame = frame;
 
-		btn_viewDetail = new JButton("View");
-
 		dependencyInjection();
 		loadAllPrice();
 
@@ -109,6 +107,7 @@ public class OrderManage_controller
 	private void showList() {
 		List<Order> orderList = new ArrayList<Order>();
 		orderList = order_service.getAllOrderlist();
+		btn_viewDetail = new JButton("View");
 		model_Order = new TableModel_Order(orderList, btn_viewDetail);
 
 		tblorder.setModel(model_Order);
@@ -216,6 +215,8 @@ public class OrderManage_controller
 	}
 
 	private void dataToView(Order order) {
+		temp_packageList.clear();
+		fee = 0;
 		checkBoxList.removeAll(checkBoxList);
 		order_Panel.getPanel_Package().removeAll();
 		order_Panel.getPanel_Package().revalidate();
@@ -228,10 +229,14 @@ public class OrderManage_controller
 		lblOrderId.setText(order == null ? "" : order.getOrder_no());
 		lblFee.setText(order == null ? "" : String.valueOf(order.getTransportationfees()));
 		if (order != null) {
+			fee = order.getTransportationfees();
 			List<Package> packList = package_service.getPackageModelByOrderNo(order_no);
 			for (Package pack : packList) {
 				checkBoxList.add(new JCheckBox(pack.getPackage_id()));
 
+				int price = weightPrice.get(calculateWeight(0, weightkg.size() - 1, pack.getWeight()));
+
+				temp_packageList.put(pack.getPackage_id(), price);
 			}
 			for (JCheckBox checkBox : checkBoxList) {
 				// checkBoxList[i] = new JCheckBox(packageId);
@@ -310,7 +315,7 @@ public class OrderManage_controller
 				fee += price;
 
 				System.out.println("PackageId" + packageId + "and" + packageWeight);
-				int status = package_service.createPackage(packageId, order_no,packageWeight);
+				int status = package_service.createPackage(packageId, order_no, packageWeight);
 				if (status > 0) {
 					JCheckBox checkbox = new JCheckBox(packageId);
 					checkbox.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -474,6 +479,14 @@ public class OrderManage_controller
 			containerFrame.remove(office_view.getPanel_navigation());
 			SetPrice_controller setPrice_controller = new SetPrice_controller(containerFrame);
 		}
+		
+		if (e.getSource().equals(office_view.getPanel_btnDelivery())) {
+			containerFrame.remove(order_Panel.getPanelCustomer());
+			containerFrame.remove(order_Panel.getPanelOrder());
+			containerFrame.remove(order_Panel.getPanelOrderList());
+			containerFrame.remove(office_view.getPanel_navigation());
+			DeliveryManage_Controller next_controller = new DeliveryManage_Controller(containerFrame);
+		}
 	}
 
 	@Override
@@ -538,34 +551,25 @@ public class OrderManage_controller
 		if (!tblorder.getSelectionModel().isSelectionEmpty()) {
 			order_no = model_Order.getOrder_no(tblorder.convertRowIndexToModel(tblorder.getSelectedRow()));
 			customer_id = model_Order.getCustomer_Id(tblorder.convertRowIndexToModel(tblorder.getSelectedRow()));
-			// System.out.println("Order_No" + order_no);
-		} else {
-			System.out.println("Empty");
-		}
 
-		if (!tblorder.getSelectionModel().isSelectionEmpty()) {
 			if (tblorder.getSelectedColumn() == 7) {
-				order_no = model_Order.getOrder_no(tblorder.convertRowIndexToModel(tblorder.getSelectedRow()));
-				customer_id = model_Order.getCustomer_Id(tblorder.convertRowIndexToModel(tblorder.getSelectedRow()));
-				System.out.println("Order_No for view detail" + order_no);
-				// alert("view detail");
-
-				/*
-				 * order_Panel.getPanelCustomer().setVisible(false);
-				 * order_Panel.getPanelOrder().setVisible(false);
-				 * order_Panel.getPanelOrderList().setVisible(false);
-				 */
 				containerFrame.remove(order_Panel.getPanelCustomer());
 				containerFrame.remove(order_Panel.getPanelOrder());
 				containerFrame.remove(order_Panel.getPanelOrderList());
 				containerFrame.remove(office_view.getPanel_navigation());
-				Orderdetail_controller orderdetail_controller = new Orderdetail_controller(order_no, containerFrame);
+				Orderdetail_controller orderdetail_controller = new Orderdetail_controller(null,this,order_no, containerFrame);
 
 			}
+
+			// System.out.println("Order_No" + order_no);
+		}
+
+		else {
+			System.out.println("Empty");
+
 		}
 
 	}
-
 }
 
 class JTableButtonRenderer implements TableCellRenderer {

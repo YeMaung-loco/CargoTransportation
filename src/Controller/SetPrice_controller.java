@@ -186,6 +186,15 @@ public class SetPrice_controller implements MouseListener, ActionListener, ListS
 			frame.remove(navigationPanel.getPanel_navigation());
 			CreateAccount_controller account_controller = new CreateAccount_controller(frame);
 		}
+		
+		if (e.getSource().equals(navigationPanel.getPanel_btnDelivery())) {
+			System.out.println("order manage btnstaff");
+
+			frame.remove(setPrice_Panel.getDestination_panel());
+			frame.remove(setPrice_Panel.getWeight_panel());
+			frame.remove(navigationPanel.getPanel_navigation());
+			DeliveryManage_Controller next_controller = new DeliveryManage_Controller(frame);
+		}
 
 	}
 

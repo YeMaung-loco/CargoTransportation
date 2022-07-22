@@ -97,7 +97,9 @@ public class Package_service {
 				Package pack = new Package();
 				pack.setPackage_id(rs.getString("package_no"));
 				// String order_no=rs.getString("order_no");
-				Integer weightId = rs.getInt("weightPrice_id");
+			//	Integer weightId = rs.getInt("weight_kg");
+				
+				pack.setWeight(rs.getInt("weight_kg"));
 				packageList.add(pack);
 			}
 		} catch (SQLException e) {

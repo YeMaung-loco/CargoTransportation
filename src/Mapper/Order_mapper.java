@@ -26,6 +26,9 @@ public class Order_mapper {
 
 			order.setTransportationfees(rs.getInt("transportation_fees"));
 			order.setDate(rs.getDate("created_date"));
+			
+			order.setAssign(rs.getBoolean("assign"));
+			order.setStatus(rs.getString("status"));
 
 		} catch (SQLException e) {
 			e.printStackTrace();

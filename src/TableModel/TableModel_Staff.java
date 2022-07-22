@@ -5,7 +5,6 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 import Model.Staff;
-import Utility.Department_enum;
 
 public class TableModel_Staff extends AbstractTableModel {
 
@@ -45,13 +44,14 @@ public class TableModel_Staff extends AbstractTableModel {
 		fireTableRowsInserted(staffList.size() - 1, staffList.size() - 1);
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		Staff entity = null;
 		entity = staffList.get(rowIndex);
 		switch (columnIndex) {
 		case 0:
-			return rowIndex+1;
+			return rowIndex + 1;
 		case 1:
 			return entity.getName();
 		case 2:
@@ -62,6 +62,7 @@ public class TableModel_Staff extends AbstractTableModel {
 			return entity.getRole().getRole_name();
 		case 5:
 			return entity.getActive();
+
 		default:
 			return "";
 		}

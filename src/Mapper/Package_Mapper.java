@@ -11,7 +11,7 @@ public class Package_Mapper {
 
 	        try {
 	        	pack.setPackage_id(rs.getString("package_no"));
-	        	
+	        	pack.setWeight(rs.getInt("weight_kg"));
 //	        	Weight weight=new Weight();
 //	        	weight.setWeight_kg(rs.getInt("package_weight"));
 //	        	pack.setWeight(weight);

@@ -365,6 +365,12 @@ public class CreateAccount_controller implements ActionListener, MouseListener, 
 			frame.remove(office_view.getPanel_navigation());
 			order_controller = new OrderManage_controller(frame);
 		}
+		if (e.getSource().equals(office_view.getPanel_btnDelivery())) {
+			frame.remove(inputPanel);
+			frame.remove(listPanel);
+			frame.remove(office_view.getPanel_navigation());
+			DeliveryManage_Controller deliveryManage_Controller = new DeliveryManage_Controller(frame);
+		}
 		
 		if (e.getSource().equals(office_view.getPanel_btnSetPrice())) {
 			frame.remove(inputPanel);

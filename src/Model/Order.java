@@ -3,14 +3,16 @@ package Model;
 import java.sql.Date;
 
 public class Order {
-	private String order_no;
-	private Destination destination;
-	private Customer customer;
-	private int transportationfees;
+	String order_no;
+	Destination destination;
+	Customer customer;
+	int transportationfees;
 	Date date;
+	boolean assign;
+	String status;
 
 	public Order() {
-
+	//	this.assign = false;
 	}
 
 	public Order(String order_no, Destination destination, Customer customer, int transfees) {
@@ -59,6 +61,22 @@ public class Order {
 
 	public Date getDate() {
 		return this.date;
+	}
+
+	public boolean getAssign() {
+		return this.assign;
+	}
+
+	public void setAssign(boolean assigning) {
+		this.assign = assigning;
+	}
+
+	public String getStatus() {
+		return this.status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 }

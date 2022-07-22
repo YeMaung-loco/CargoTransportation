@@ -49,12 +49,36 @@ public class Staff_Service {
 		return status;
 	}
 
+	public List<Staff> getActiveStaff(int role_Id, boolean active) {
+		List<Staff> deliList = new ArrayList<Staff>();
+		try {
+			PreparedStatement ps = connection.prepareStatement(
+					"SELECT * FROM cargotransportation.staff inner join role on role.role_id=staff.role_id inner join department "
+							+ "on staff.department_id=department.department_id where staff.role_id=" + role_Id
+							+ " AND staff.is_active=?;");
+			ps.setBoolean(1, active);
+			System.out.println(ps);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				Staff staff = new Staff();
+				staff = Staff_mapper.mapper(staff, rs);
+				deliList.add(staff);
+
+			}
+			ps.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return deliList;
+	}
+
 	public List<Staff> getAllstaff() {
 		List<Staff> staffList = new ArrayList<Staff>();
 		try {
-			PreparedStatement ps = connection
-					.prepareStatement("SELECT * FROM cargotransportation.staff inner join role on role.role_id=staff.role_id inner join department "+
-							"on staff.department_id=department.department_id;");
+			PreparedStatement ps = connection.prepareStatement(
+					"SELECT * FROM cargotransportation.staff inner join role on role.role_id=staff.role_id inner join department "
+							+ "on staff.department_id=department.department_id;");
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				Staff staff = new Staff();
@@ -94,10 +118,9 @@ public class Staff_Service {
 	public Staff getstaffById(int Id) {
 		Staff staff = new Staff();
 		try {
-			PreparedStatement ps = connection
-					.prepareStatement("SELECT * FROM cargotransportation.staff inner join role on role.role_id=staff.role_id inner join department "+
-							"on staff.department_id=department.department_id "+
-							"where staff.staff_id="+Id+";");
+			PreparedStatement ps = connection.prepareStatement(
+					"SELECT * FROM cargotransportation.staff inner join role on role.role_id=staff.role_id inner join department "
+							+ "on staff.department_id=department.department_id " + "where staff.staff_id=" + Id + ";");
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
 				staff = Staff_mapper.mapper(staff, rs);
@@ -114,9 +137,9 @@ public class Staff_Service {
 		Staff staff = new Staff();
 		try {
 			PreparedStatement ps = connection.prepareStatement(
-					"SELECT * FROM cargotransportation.staff inner join role on role.role_id=staff.role_id inner join department "+
-							"on staff.department_id=department.department_id "+
-							"where staff.staff_id=(SELECT MAX(staff.staff_id) FROM cargotransportation.staff);");
+					"SELECT * FROM cargotransportation.staff inner join role on role.role_id=staff.role_id inner join department "
+							+ "on staff.department_id=department.department_id "
+							+ "where staff.staff_id=(SELECT MAX(staff.staff_id) FROM cargotransportation.staff);");
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
 				staff = Staff_mapper.mapper(staff, rs);
@@ -138,6 +161,24 @@ public class Staff_Service {
 			ps.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}
+		return status;
+	}
+
+	public int assignDelivery(int id, boolean assign) {
+		int status = 0;
+		try {
+			PreparedStatement ps = this.dbConfig.getConnection()
+					.prepareStatement("UPDATE cargotransportation.staff SET is_active=? WHERE staff_id=" + id + ";");
+			ps.setBoolean(1, assign);
+			status = ps.executeUpdate();
+			ps.close();
+		} catch (SQLException e) {
+			if (e instanceof SQLIntegrityConstraintViolationException)
+				JOptionPane.showMessageDialog(null, "Already Exists");
+			else
+				e.printStackTrace();
+
 		}
 		return status;
 	}

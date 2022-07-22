@@ -1,11 +1,9 @@
 package TableModel;
 
-import java.util.EventObject;
 import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.text.View;
 
 import Model.Order;
 
@@ -33,16 +31,19 @@ public class TableModel_Order extends AbstractTableModel {
 
 	@Override
 	public int getColumnCount() {
-		return 8;
+		return headerList.length;
 	}
 
 	public String getColumnName(int col) {
 		return headerList[col];
 	}
 
-	/*
-	 * public boolean isCellEditable(EventObject e) { return true; }
-	 */
+	public boolean isCellEditable(int col) {
+
+		return col == 6;
+
+	}
+
 	public Class getColumnClass(int column) {
 		return getValueAt(0, column).getClass();
 	}
@@ -121,7 +122,7 @@ public class TableModel_Order extends AbstractTableModel {
 				order.setTransportationfees(e.getTransportationfees());
 				fireTableCellUpdated(rowIndex, i);
 				break;
-				
+
 			/*
 			 * case 7: this.btn_viewDetail;
 			 */

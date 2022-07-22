@@ -3,11 +3,11 @@ package Model;
 public class Package {
 private String package_id;
 private Order order;
-private Weight weight;
+private int weight;
 public Package() {
 
 }
-public Package(String package_id, Order order, Weight weight) {
+public Package(String package_id, Order order, int weight) {
 	
 	this.package_id = package_id;
 	this.order = order;
@@ -25,10 +25,10 @@ public Order getOrder() {
 public void setOrder(Order order) {
 	this.order = order;
 }
-public Weight getWeight() {
-	return weight;
+public int getWeight() {
+	return this.weight;
 }
-public void setWeight(Weight weight) {
+public void setWeight(int weight) {
 	this.weight = weight;
 }
 

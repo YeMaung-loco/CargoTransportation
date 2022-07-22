@@ -39,6 +39,7 @@ public class Office_view {
 	JPanel panel_btnLogout;
 	JLabel lblIcon, lbl_iconLogout, lblLogout;
 	private JPanel panel_btnSetPrice;
+	private JPanel panel_btn_approve;
 
 	public Office_view(JFrame cotainer) {
 		this.frame=cotainer;
@@ -114,7 +115,7 @@ public class Office_view {
 		iconSetPrice.setBounds(20, 14, 32, 32);
 		panel_btnSetPrice.add(iconSetPrice);
 		
-		JPanel panel_btn_approve = new JPanel();
+		panel_btn_approve = new JPanel();
 		panel_btn_approve.setLayout(null);
 		panel_btn_approve.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panel_btn_approve.setBackground(new Color(255, 215, 0));
@@ -260,5 +261,8 @@ public class Office_view {
 	}
 	public JPanel getPanel_btnSetPrice() {
 		return panel_btnSetPrice;
+	}
+	public JPanel getPanel_btn_approve() {
+		return panel_btn_approve;
 	}
 }
