@@ -28,25 +28,26 @@ import javax.swing.table.TableColumnModel;
 import Utility.RoundedBorder;
 
 public class Staff_Panel extends JFrame {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	JFrame frame;
 	JPanel panel_list, panel_inputForm;
 
 	JLabel lblName, lblAddress, lblPhone, lblNrc, lblDepartment, lblInputform, lblAccountType, lblFunction;
 	JTextField txtName, txtNRC, txtPhone, txtsearch;
 	JRadioButton rdbtnOffice, rdbtnDelivery;
-	JCheckBox chckbxupload, chckbxManage;
+	JCheckBox chckbxupload, chckbxManage, chckbxActive;
 	JTextArea txtareaAddress;
 	JButton btnSave, btnUpdate, btnDelete, btnMinimize, btnMaximize;
-
 	JTable tblStaff;
 	JScrollPane scrollPane;
 	DefaultTableModel dtm;
 	JButton btnClear;
 	JButton btnSearch;
 	ButtonGroup group;
-
 	JFrame containerFrame;
-	private JCheckBox chckbxActive;
 	private JComboBox<String> comboDepartment;
 
 	public Staff_Panel(JFrame frame) {
@@ -95,7 +96,7 @@ public class Staff_Panel extends JFrame {
 
 	private void initcomponent() {
 
-		//frame = new JFrame();
+		// frame = new JFrame();
 		panel_inputForm = new JPanel();
 		lblName = new JLabel();
 		txtName = new JTextField();
@@ -311,12 +312,12 @@ public class Staff_Panel extends JFrame {
 		panel_list.add(btnSearch);
 		panel_list.add(scrollPane);
 
-		
-		  if (containerFrame != null) {
-		  containerFrame.getContentPane().add(panel_inputForm);
-		  containerFrame.getContentPane().add(panel_list, BorderLayout.CENTER); }
-		 
-		//frame.getContentPane().add(panel_inputForm);
+		if (containerFrame != null) {
+			containerFrame.getContentPane().add(panel_inputForm);
+			containerFrame.getContentPane().add(panel_list, BorderLayout.CENTER);
+		}
+
+		// frame.getContentPane().add(panel_inputForm);
 
 	}
 

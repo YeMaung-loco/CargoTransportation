@@ -108,6 +108,27 @@ public int getdestinationPriceById(int Id) {
 	return price;
 }
 
+public Destination getDestinationByName(String destination) {
+	Destination dest = new Destination();
+	//int price=0;
+	try {
+		PreparedStatement ps = connection
+				.prepareStatement("select * from cargotransportation.destination_price where destination_name=?;");
+		ps.setString(1, destination);
+		ResultSet rs = ps.executeQuery();
+		if (rs.next()) {
+			//price=rs.getInt("destination_price");
+			dest = Destination_mapper.mapper(dest, rs);
+		}
+		ps.close();
+	} catch (SQLException e) {
+		e.printStackTrace();
+	}
+
+	return dest;
+}
+
+
 public Destination getDestinationById(int id) {
 	Destination dest = new Destination();
 	//int price=0;

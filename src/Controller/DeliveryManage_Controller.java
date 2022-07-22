@@ -1,6 +1,7 @@
 package Controller;
 
 import java.awt.Color;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -9,16 +10,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableCellRenderer;
 
+import Model.CurrentUserHolder;
 import Model.Order;
 import Service.Order_service;
 import TableModel.TableModel_OrderAssign;
@@ -30,12 +32,11 @@ public class DeliveryManage_Controller implements ActionListener, MouseListener,
 	Delivery_View deliveryManage_panel;
 	Office_view navigation_panel;
 
-	Order_service order_service;
-	TableModel_OrderAssign model_OrderAssign;
-	JTable tblorder;
+	static Order_service order_service;
+	static TableModel_OrderAssign model_OrderAssign;
+	static JTable tblorder;
 	JPanel panel_btnAccount, panel_btnOrderInput, panel_btnSetprice, panel_btnDelivery, panel_btnApprove;
 	JPanel panel_delivery;
-
 	// JLabel deselectLable;
 	JButton btnDeselect;
 	JPanel panel_deselect;
@@ -50,10 +51,10 @@ public class DeliveryManage_Controller implements ActionListener, MouseListener,
 		initForm();
 		initComponents();
 		initController();
-		showList();
+		showOrderList();
 	}
 
-	private void showList() {
+	public static void showOrderList() {
 		List<Order> orderList = new ArrayList<Order>();
 		orderList = order_service.getOrderbyAssign(false);
 		JButton btn_viewDetail = new JButton("View");
@@ -69,12 +70,17 @@ public class DeliveryManage_Controller implements ActionListener, MouseListener,
 	}
 
 	private void initController() {
+		
+		if (CurrentUserHolder.getCurrentUser().getRole().getRole_name().equals("Admin")) {
+			navigation_panel.getPanel_btnStaff().addMouseListener(this);
+			navigation_panel.getPanel_btnSetPrice().addMouseListener(this);
+		}
 
 		deliveryManage_panel.getBtnSelectdelivery().addActionListener(this);
 
-		panel_btnAccount.addMouseListener(this);
+		//panel_btnAccount.addMouseListener(this);
 		panel_btnOrderInput.addMouseListener(this);
-		panel_btnSetprice.addMouseListener(this);
+		//panel_btnSetprice.addMouseListener(this);
 		panel_btnApprove.addMouseListener(this);
 		panel_deselect.addMouseListener(this);
 		
@@ -106,6 +112,19 @@ public class DeliveryManage_Controller implements ActionListener, MouseListener,
 		deliveryManage_panel = new Delivery_View(frame);
 
 		navigation_panel.getPanel_btnDelivery().setBackground(new Color(218, 165, 32));
+		
+		if (CurrentUserHolder.getCurrentUser().getRole().getRole_name().equals("Office Staff")) {
+			// office_view.getPanel_btnSetPrice().setVisible(false);
+			ImageIcon disableIcon=new ImageIcon(
+					new ImageIcon("resource\\disable.png").getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH));
+			
+			JLabel iconManageStaff = navigation_panel.getIconManageStaff();
+			JLabel iconSetPrice=navigation_panel.getIconSetPrice();
+			
+			iconSetPrice.setIcon(disableIcon);
+			iconManageStaff.setIcon(disableIcon);
+
+		}
 
 	}
 
@@ -135,6 +154,8 @@ public class DeliveryManage_Controller implements ActionListener, MouseListener,
 			assignList.clear();
 			collectAssign();
 			AssignDeliveryMan_Controller assignController = new AssignDeliveryMan_Controller(assignList);
+			
+			
 		}
 		if(e.getSource().equals(btnDeselect)) {
 			deselectOrder();
@@ -229,20 +250,7 @@ public class DeliveryManage_Controller implements ActionListener, MouseListener,
 	public void valueChanged(ListSelectionEvent e) {
 		if (!tblorder.getSelectionModel().isSelectionEmpty()) {
 			order_no = model_OrderAssign.getOrder_no(tblorder.convertRowIndexToModel(tblorder.getSelectedRow()));
-			// customer_id =
-			// model_OrderAssign.getCustomer_Id(tblorder.convertRowIndexToModel(tblorder.getSelectedRow()));
-
-			if (tblorder.getSelectedColumn() == 8) {
-//				frame.remove(order_Panel.getPanelCustomer());
-//				frame.remove(order_Panel.getPanelOrder());
-//				containerFrame.remove(order_Panel.getPanelOrderList());
-//				containerFrame.remove(office_view.getPanel_navigation());
-				// Orderdetail_controller orderdetail_controller = new
-				// Orderdetail_controller(order_no, containerFrame);
-
-			}
-
-			// System.out.println("Order_No" + order_no);
+			
 		}
 
 	}

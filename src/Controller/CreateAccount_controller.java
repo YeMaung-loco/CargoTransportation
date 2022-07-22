@@ -1,6 +1,7 @@
 package Controller;
 
 import java.awt.Color;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -10,10 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -27,6 +30,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableRowSorter;
 
+import Model.CurrentUserHolder;
 import Model.Department;
 import Model.Role;
 import Model.Staff;
@@ -67,7 +71,6 @@ public class CreateAccount_controller implements ActionListener, MouseListener, 
 		initForm();
 		initComponents();
 		initController();
-
 		loadComboData();
 		showList();
 	}
@@ -116,11 +119,14 @@ public class CreateAccount_controller implements ActionListener, MouseListener, 
 	}
 
 	private void initController() {
+
 		office_view.getPanel_btnStaff().addMouseListener(this);
+		office_view.getPanel_btnSetPrice().addMouseListener(this);
+
 		office_view.getPanel_btnOrder().addMouseListener(this);
 		office_view.getPanel_btnDelivery().addMouseListener(this);
-		office_view.getPanel_btnSetPrice().addMouseListener(this);
 		office_view.getPanel_btn_approve().addMouseListener(this);
+		office_view.getPanel_btnLogout().addMouseListener(this);
 
 		btnMinimize.addActionListener(this);
 		btnMaximize.addActionListener(this);
@@ -139,6 +145,8 @@ public class CreateAccount_controller implements ActionListener, MouseListener, 
 	private void initForm() {
 		office_view = new View.Office_view(frame);
 		cePanel = new Staff_Panel(frame);
+
+		///
 		cePanel.getBtnMaximize().setVisible(false);
 		office_view.getPanel_btnStaff().setBackground(new Color(218, 165, 32));
 
@@ -239,6 +247,7 @@ public class CreateAccount_controller implements ActionListener, MouseListener, 
 	private void edit() {
 		Staff staff = new Staff();
 		staff = staff_Service.getstaffById(temp_id);
+		collapseInputForm(false);
 		dataToView(staff);
 	}
 
@@ -359,6 +368,7 @@ public class CreateAccount_controller implements ActionListener, MouseListener, 
 		if (e.getSource().equals(table)) {
 			if (e.getClickCount() == 2)
 				edit();
+			
 		}
 		if (e.getSource().equals(office_view.getPanel_btnOrder())) {
 			frame.remove(inputPanel);
@@ -372,19 +382,24 @@ public class CreateAccount_controller implements ActionListener, MouseListener, 
 			frame.remove(office_view.getPanel_navigation());
 			DeliveryManage_Controller deliveryManage_Controller = new DeliveryManage_Controller(frame);
 		}
-		
+
 		if (e.getSource().equals(office_view.getPanel_btnSetPrice())) {
 			frame.remove(inputPanel);
 			frame.remove(listPanel);
 			frame.remove(office_view.getPanel_navigation());
 			SetPrice_controller setPrice_controller = new SetPrice_controller(frame);
 		}
-		
+
 		if (e.getSource().equals(office_view.getPanel_btn_approve())) {
 			frame.remove(inputPanel);
 			frame.remove(listPanel);
 			frame.remove(office_view.getPanel_navigation());
-			Payment_controller payment_controlle=new Payment_controller(frame);
+			Payment_controller payment_controlle = new Payment_controller(frame);
+		}
+
+		if (e.getSource().equals(office_view.getPanel_btnLogout())) {
+			frame.dispose();
+			Login_controller nextController = new Login_controller();
 		}
 
 	}

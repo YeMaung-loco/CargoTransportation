@@ -12,6 +12,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import Utility.RoundedBorder;
+
 public class SetPrice_Panel {
 
 	private JFrame frame;
@@ -140,6 +142,8 @@ public class SetPrice_Panel {
 		scrollPane_destination = new JScrollPane();
 		scrollPane_destination.setBounds(0, 361, 572, 398);
 		scrollPane_destination.setViewportView(tbldestination);
+		//scrollPane_destination.setBorder(new RoundedBorder(20));
+		
 		weight_panel.setLayout(null);
 
 		lbl_weighterate.setText("Weight Price Rate");
@@ -172,6 +176,7 @@ public class SetPrice_Panel {
 		scrollPane_weight = new JScrollPane();
 		scrollPane_weight.setBounds(0, 361, 572, 398);
 		scrollPane_weight.setViewportView(tblweight);
+	//	scrollPane_weight.setBorder(new RoundedBorder(20));
 
 		lblNewLabel.setText("kg");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 19));

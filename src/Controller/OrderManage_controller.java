@@ -3,6 +3,7 @@ package Controller;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -18,6 +19,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -34,6 +36,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
+import Model.CurrentUserHolder;
 import Model.Customer;
 import Model.Destination;
 import Model.Order;
@@ -78,6 +81,7 @@ public class OrderManage_controller
 	JComboBox<String> comboDestination, searchComboDestination;
 	JButton btnAdd, btnDelete, btnDone;
 	JButton btn_viewDetail;
+	JLabel iconManageStaff, iconSetPrice;
 
 	boolean insertCO = false;
 	boolean addedDestinationFee = false;
@@ -160,11 +164,26 @@ public class OrderManage_controller
 		office_view = new Office_view(containerFrame);
 		order_Panel = new Order_Panel(containerFrame);
 		office_view.getPanel_btnOrder().setBackground(new Color(218, 165, 32));
+
+		///
+		if (CurrentUserHolder.getCurrentUser().getRole().getRole_name().equals("Office Staff")) {
+			// office_view.getPanel_btnSetPrice().setVisible(false);
+			ImageIcon disableIcon = new ImageIcon(
+					new ImageIcon("resource\\disable.png").getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH));
+
+			iconManageStaff = office_view.getIconManageStaff();
+			iconSetPrice = office_view.getIconSetPrice();
+
+			iconSetPrice.setIcon(disableIcon);
+			iconManageStaff.setIcon(disableIcon);
+
+		}
 	}
 
 	private void newOrderId() {
 		order_no = Prefix.getPrimaryKey("CO-", order_service.getLastOrderId() + 1);
 		lblOrderId.setText(order_no);
+		addedDestinationFee = false;
 		System.out.println("Order_Controller initform" + order_no);
 	}
 
@@ -189,11 +208,14 @@ public class OrderManage_controller
 	}
 
 	public void initController() {
+		if (CurrentUserHolder.getCurrentUser().getRole().getRole_name().equals("Admin")) {
+			office_view.getPanel_btnStaff().addMouseListener(this);
+			office_view.getPanel_btnSetPrice().addMouseListener(this);
+		}
 
-		office_view.getPanel_btnStaff().addMouseListener(this);
 		office_view.getPanel_btnOrder().addMouseListener(this);
 		office_view.getPanel_btnDelivery().addMouseListener(this);
-		office_view.getPanel_btnSetPrice().addMouseListener(this);
+
 		office_view.getPanel_btn_approve().addMouseListener(this);
 
 		btnAdd.addActionListener(this);
@@ -265,11 +287,12 @@ public class OrderManage_controller
 
 		if (0 != comboDestination.getSelectedIndex()) {
 			order = new Order();
-			Destination destination = new Destination();
 			long millis = System.currentTimeMillis();
-			destination.setId(comboDestination.getSelectedIndex());
-			destination.setDestinationName(comboDestination.getSelectedItem().toString());
+			Destination destination = destination_service
+					.getDestinationByName(comboDestination.getSelectedItem().toString());
 
+			// destination.setId(comboDestination.getSelectedIndex());
+			// destination.setDestinationName(comboDestination.getSelectedItem().toString());
 			System.out.println("destination id and name" + comboDestination.getSelectedIndex());
 			order.setOrder_no(order_no);
 			order.setCustomer(customer);
@@ -460,6 +483,15 @@ public class OrderManage_controller
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource().equals(tblorder)) {
+			if (tblorder.getSelectedColumn() == 7) {
+				containerFrame.remove(order_Panel.getPanelCustomer());
+				containerFrame.remove(order_Panel.getPanelOrder());
+				containerFrame.remove(order_Panel.getPanelOrderList());
+				containerFrame.remove(office_view.getPanel_navigation());
+				Orderdetail_controller orderdetail_controller = new Orderdetail_controller(null, this, null, order_no,
+						containerFrame);
+			}
+
 			if (e.getClickCount() == 2)
 				edit();
 		}
@@ -480,7 +512,7 @@ public class OrderManage_controller
 			containerFrame.remove(office_view.getPanel_navigation());
 			SetPrice_controller setPrice_controller = new SetPrice_controller(containerFrame);
 		}
-		
+
 		if (e.getSource().equals(office_view.getPanel_btnDelivery())) {
 			containerFrame.remove(order_Panel.getPanelCustomer());
 			containerFrame.remove(order_Panel.getPanelOrder());
@@ -488,13 +520,13 @@ public class OrderManage_controller
 			containerFrame.remove(office_view.getPanel_navigation());
 			DeliveryManage_Controller next_controller = new DeliveryManage_Controller(containerFrame);
 		}
-		
+
 		if (e.getSource().equals(office_view.getPanel_btn_approve())) {
 			containerFrame.remove(order_Panel.getPanelCustomer());
 			containerFrame.remove(order_Panel.getPanelOrder());
 			containerFrame.remove(order_Panel.getPanelOrderList());
 			containerFrame.remove(office_view.getPanel_navigation());
-			Payment_controller payment_controlle=new Payment_controller(containerFrame);
+			Payment_controller payment_controlle = new Payment_controller(containerFrame);
 		}
 	}
 
@@ -560,13 +592,6 @@ public class OrderManage_controller
 		if (!tblorder.getSelectionModel().isSelectionEmpty()) {
 			order_no = model_Order.getOrder_no(tblorder.convertRowIndexToModel(tblorder.getSelectedRow()));
 			customer_id = model_Order.getCustomer_Id(tblorder.convertRowIndexToModel(tblorder.getSelectedRow()));
-			if (tblorder.getSelectedColumn() == 7) {
-				containerFrame.remove(order_Panel.getPanelCustomer());
-				containerFrame.remove(order_Panel.getPanelOrder());
-				containerFrame.remove(order_Panel.getPanelOrderList());
-				containerFrame.remove(office_view.getPanel_navigation());
-				Orderdetail_controller orderdetail_controller = new Orderdetail_controller(null,this,null,order_no, containerFrame);
-			}
 
 			// System.out.println("Order_No" + order_no);
 		}
