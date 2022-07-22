@@ -81,6 +81,7 @@ public class SetPrice_controller implements MouseListener, ActionListener, ListS
 		navigationPanel.getPanel_btnOrder().addMouseListener(this);
 		navigationPanel.getPanel_btnDelivery().addMouseListener(this);
 		navigationPanel.getPanel_btnSetPrice().addMouseListener(this);
+		navigationPanel.getPanel_btn_approve().addMouseListener(this);
 
 		tbldestination.addMouseListener(this);
 		tbldestination.getSelectionModel().addListSelectionListener(this);

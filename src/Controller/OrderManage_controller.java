@@ -194,6 +194,7 @@ public class OrderManage_controller
 		office_view.getPanel_btnOrder().addMouseListener(this);
 		office_view.getPanel_btnDelivery().addMouseListener(this);
 		office_view.getPanel_btnSetPrice().addMouseListener(this);
+		office_view.getPanel_btn_approve().addMouseListener(this);
 
 		btnAdd.addActionListener(this);
 		btnDelete.addActionListener(this);
@@ -559,14 +560,12 @@ public class OrderManage_controller
 		if (!tblorder.getSelectionModel().isSelectionEmpty()) {
 			order_no = model_Order.getOrder_no(tblorder.convertRowIndexToModel(tblorder.getSelectedRow()));
 			customer_id = model_Order.getCustomer_Id(tblorder.convertRowIndexToModel(tblorder.getSelectedRow()));
-
 			if (tblorder.getSelectedColumn() == 7) {
 				containerFrame.remove(order_Panel.getPanelCustomer());
 				containerFrame.remove(order_Panel.getPanelOrder());
 				containerFrame.remove(order_Panel.getPanelOrderList());
 				containerFrame.remove(office_view.getPanel_navigation());
-				Orderdetail_controller orderdetail_controller = new Orderdetail_controller(null,this,order_no, containerFrame);
-
+				Orderdetail_controller orderdetail_controller = new Orderdetail_controller(null,this,null,order_no, containerFrame);
 			}
 
 			// System.out.println("Order_No" + order_no);

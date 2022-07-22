@@ -120,6 +120,7 @@ public class CreateAccount_controller implements ActionListener, MouseListener, 
 		office_view.getPanel_btnOrder().addMouseListener(this);
 		office_view.getPanel_btnDelivery().addMouseListener(this);
 		office_view.getPanel_btnSetPrice().addMouseListener(this);
+		office_view.getPanel_btn_approve().addMouseListener(this);
 
 		btnMinimize.addActionListener(this);
 		btnMaximize.addActionListener(this);

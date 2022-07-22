@@ -1,7 +1,5 @@
 package TableModel;
 
-
-
 import java.util.List;
 
 import javax.swing.JButton;
@@ -12,28 +10,28 @@ import Model.Order;
 public class TableModel_requestingOrder extends AbstractTableModel {
 	private static final long serialVersionUID = -4026402599426071004L;
 	List<Order> orderList;
-    JButton btn_viewdetail;
-    JButton btn_approve;
-	String headerList[] = new String[] { "No", "Order_Id", "Name", "Phone", "Destination", "Date", "Fee","Approve",
+	JButton btn_viewdetail;
+	JButton btn_approve;
+	String headerList[] = new String[] { "No", "Order_Id", "Name", "Phone", "Destination", "Date", "Fee", "Approve",
 			"View Detail" };
-	
 
-	
-	public TableModel_requestingOrder(List<Order>list,JButton btn_viewDetail,JButton btn_approve) {
-		orderList=list;
-		this.btn_viewdetail=btn_viewDetail;
-		this.btn_approve=btn_approve;
+	public TableModel_requestingOrder(List<Order> list, JButton btn_viewDetail, JButton btn_approve) {
+		orderList = list;
+		this.btn_viewdetail = btn_viewDetail;
+		this.btn_approve = btn_approve;
 	}
 
 	public TableModel_requestingOrder() {
 
 	}
-@Override
+
+	@Override
 
 	public int getRowCount() {
 		return orderList.size();
 	}
-@Override
+
+	@Override
 	public int getColumnCount() {
 		return headerList.length;
 	}
@@ -42,10 +40,10 @@ public class TableModel_requestingOrder extends AbstractTableModel {
 		return headerList[col];
 	}
 
-	/*
-	 * public boolean isCellEditable(EventObject e) { return true; }
-	 */
-	
+//	public boolean isCellEditable(int col) {
+//		return col==7;
+//	}
+
 	public Class getColumnClass(int column) {
 		return getValueAt(0, column).getClass();
 	}
@@ -59,8 +57,6 @@ public class TableModel_requestingOrder extends AbstractTableModel {
 		orderList.add(order);
 		fireTableRowsInserted(orderList.size() - 1, orderList.size() - 1);
 	}
-
-	
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
@@ -83,8 +79,13 @@ public class TableModel_requestingOrder extends AbstractTableModel {
 			return entity.getDate();
 		case 6:
 			return entity.getTransportationfees();
-		case 7: 
-			return btn_approve;
+		case 7:
+			if (entity.getStatus().equals("Delivering"))
+				return btn_approve;
+
+			else {
+				return entity.getStatus();
+			}
 		case 8:
 			return btn_viewdetail;
 		default:
@@ -101,41 +102,15 @@ public class TableModel_requestingOrder extends AbstractTableModel {
 		return orderList.get(i).getCustomer().getId();
 	}
 
-	public void setValueAt(Order e, int rowIndex) {
-		Order order = orderList.get(rowIndex);
-		for (int i = 1; headerList.length > i; i++)
-			switch (i) {
-			case 2:
-				order.getCustomer().setName(e.getCustomer().getName());
-				fireTableCellUpdated(rowIndex, i);
-				break;
+	public void setValueAt(int rowIndex, int colIndex) {
+		if (colIndex == 7) {
+			Order order = orderList.get(rowIndex);
+			// boolean assign = (boolean) getValueAt(rowIndex, 0);
+			order.setStatus("Completed");
+			fireTableCellUpdated(rowIndex, 0);
 
-			case 3:
-				order.getCustomer().setPhone(e.getCustomer().getPhone());
-				fireTableCellUpdated(rowIndex, i);
-				break;
-
-			case 4:
-				order.getDestination().setDestinationName(e.getDestination().getDestinationName());
-				fireTableCellUpdated(rowIndex, i);
-
-			case 5:
-				order.setDate(e.getDate());
-				fireTableCellUpdated(rowIndex, i);
-				break;
-
-			case 6:
-				order.setTransportationfees(e.getTransportationfees());
-				fireTableCellUpdated(rowIndex, i);
-				break;
-				
-			/*
-			 * case 7: this.btn_viewDetail;
-			 */
-			}
+		}
 
 	}
 
 }
-
-

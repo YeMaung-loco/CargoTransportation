@@ -55,7 +55,7 @@ public class DeliveryManage_Controller implements ActionListener, MouseListener,
 
 	private void showList() {
 		List<Order> orderList = new ArrayList<Order>();
-		orderList = order_service.getOrderbyAssign();
+		orderList = order_service.getOrderbyAssign(false);
 		JButton btn_viewDetail = new JButton("View");
 		// JCheckBox chkBox=new JCheckBox();
 		model_OrderAssign = new TableModel_OrderAssign(orderList, btn_viewDetail);
@@ -177,9 +177,9 @@ public class DeliveryManage_Controller implements ActionListener, MouseListener,
 			if (tblorder.getSelectedColumn() == 8) {
 				frame.remove(deliveryManage_panel.getPanel());
 				frame.remove(navigation_panel.getPanel_navigation());
-				OrderManage_controller orderManage_controller = null;
-				Orderdetail_controller orderdetail_controller = new Orderdetail_controller(this, orderManage_controller,
-						order_no, frame);
+				//OrderManage_controller orderManage_controller = null;
+				Orderdetail_controller orderdetail_controller = new Orderdetail_controller(this, null,
+						null,order_no, frame);
 
 			}
 

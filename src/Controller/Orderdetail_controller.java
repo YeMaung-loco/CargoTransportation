@@ -75,12 +75,15 @@ public class Orderdetail_controller implements ActionListener, MouseListener {
 	
 	DeliveryManage_Controller deliveryManage_Controller;
 	OrderManage_controller orderManage_controller;
+	Payment_controller payment_controller;
 
-	public Orderdetail_controller(DeliveryManage_Controller deliController,OrderManage_controller orderController, String order_no, JFrame frame) {
+	public Orderdetail_controller(DeliveryManage_Controller deliController,OrderManage_controller orderController, Payment_controller pay_controller,String order_no, JFrame frame) {
 		if(deliController!=null)
 			deliveryManage_Controller=deliController;
 		if(orderController!=null)
 			orderManage_controller=orderController;
+		if(pay_controller!=null)
+			this.payment_controller=pay_controller;
 		
 		this.frame = frame;
 		this.order_no = order_no;
@@ -319,11 +322,17 @@ public class Orderdetail_controller implements ActionListener, MouseListener {
 		if (e.getSource().equals(btnBack)) {
 			frame.remove(odetail.getPanel_orderdetails());
 			frame.remove(navigationPanel.getPanel_navigation());
+			
 			if(orderManage_controller!=null) {
 			OrderManage_controller order_controller = new OrderManage_controller(frame);
 			}
+			
 			if(deliveryManage_Controller!=null) {
 				DeliveryManage_Controller delivery_Controller=new DeliveryManage_Controller(frame);
+			}
+			
+			if(payment_controller!=null) {
+				Payment_controller nextController=new Payment_controller(frame);
 			}
 			
 		}

@@ -183,10 +183,11 @@ public class Order_service {
 		List<Order> orderList = new ArrayList<Order>();
 		try {
 			PreparedStatement ps = connection.prepareStatement("SELECT * FROM cargotransportation.order "
-					+ "INNER JOIN destination_price ON destination_price.destination_id = order.destination_id "
-					+ "inner join customer on customer.customer_id=order.customer_id " + "WHERE status = \"" + status
+					+ "INNER JOIN destination_price ON destination_price.destination_id = cargotransportation.order.destination_id "
+					+ "inner join customer on customer.customer_id=cargotransportation.order.customer_id " + "WHERE status = \"" + status
 					+ "\";");
 			ResultSet rs = ps.executeQuery();
+			System.out.println(ps);
 			while (rs.next()) {
 				Order order = new Order();
 				order = Order_mapper.mapper(order, rs);
@@ -200,13 +201,13 @@ public class Order_service {
 		return orderList;
 	}
 	
-	public List<Order> getOrderbyAssign() {
+	public List<Order> getOrderbyAssign(boolean assign) {
 		List<Order> orderList = new ArrayList<Order>();
 		try {
 			PreparedStatement ps = connection.prepareStatement("SELECT * FROM cargotransportation.order "
 					+ "INNER JOIN destination_price ON destination_price.destination_id = cargotransportation.order.destination_id "
 					+ "inner join customer on customer.customer_id=cargotransportation.order.customer_id " + "WHERE assign =?;");
-			ps.setBoolean(1,false);
+			ps.setBoolean(1,assign);
 			System.out.println(ps);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {

@@ -1,6 +1,7 @@
 package View;
 
 import javax.swing.JPanel;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextField;
@@ -17,6 +18,7 @@ public class Complete_panel extends JPanel {
 	private JScrollPane scrollPane;
 	private JLabel lblNewLabel;
 	private JLabel lbl_completeOrder;
+	JButton btnExport;
 
 	/**
 	 * Create the panel.
@@ -41,6 +43,11 @@ public class Complete_panel extends JPanel {
 	
 		public void initialize() {
 		setLayout(null);
+		
+		btnExport=new JButton("Export to Excel");
+		btnExport.setBounds(100, 73, 150, 35);
+		add(btnExport);
+		
 		
 		lbl_completeOrder = new JLabel("Completed Order");
 		lbl_completeOrder.setFont(new Font("Tahoma", Font.BOLD, 20));
@@ -79,5 +86,9 @@ public class Complete_panel extends JPanel {
 	}
 	public JLabel getLbl_completeOrder() {
 		return lbl_completeOrder;
+	}
+	
+	public JButton getbtnExport() {
+		return btnExport;
 	}
 }
