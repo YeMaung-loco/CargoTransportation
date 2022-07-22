@@ -487,6 +487,14 @@ public class OrderManage_controller
 			containerFrame.remove(office_view.getPanel_navigation());
 			DeliveryManage_Controller next_controller = new DeliveryManage_Controller(containerFrame);
 		}
+		
+		if (e.getSource().equals(office_view.getPanel_btn_approve())) {
+			containerFrame.remove(order_Panel.getPanelCustomer());
+			containerFrame.remove(order_Panel.getPanelOrder());
+			containerFrame.remove(order_Panel.getPanelOrderList());
+			containerFrame.remove(office_view.getPanel_navigation());
+			Payment_controller payment_controlle=new Payment_controller(containerFrame);
+		}
 	}
 
 	@Override

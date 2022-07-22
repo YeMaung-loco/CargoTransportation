@@ -168,7 +168,9 @@ public class DeliveryManage_Controller implements ActionListener, MouseListener,
 
 		}
 		if (e.getSource().equals(panel_btnApprove)) {
-
+			frame.remove(panel_delivery);
+			frame.remove(navigation_panel.getPanel_navigation());
+			Payment_controller payment_controlle=new Payment_controller(frame);
 		}
 
 		if (e.getSource().equals(tblorder)) {

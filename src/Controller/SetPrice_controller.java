@@ -195,6 +195,15 @@ public class SetPrice_controller implements MouseListener, ActionListener, ListS
 			frame.remove(navigationPanel.getPanel_navigation());
 			DeliveryManage_Controller next_controller = new DeliveryManage_Controller(frame);
 		}
+		
+		if (e.getSource().equals(navigationPanel.getPanel_btn_approve())) {
+			frame.remove(setPrice_Panel.getDestination_panel());
+			frame.remove(setPrice_Panel.getWeight_panel());
+			frame.remove(navigationPanel.getPanel_navigation());
+			Payment_controller payment_controlle=new Payment_controller(frame);
+		}
+		
+		
 
 	}
 
