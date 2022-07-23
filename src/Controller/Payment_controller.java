@@ -31,7 +31,10 @@ import javax.swing.table.TableRowSorter;
 
 import Model.CurrentUserHolder;
 import Model.Order;
+import Service.Customer_service;
 import Service.Order_service;
+import Service.Orderstaff_service;
+import Service.Package_service;
 import TableModel.TableModel_completeOrder;
 import TableModel.TableModel_failOrder;
 import TableModel.TableModel_pendingOrder;
@@ -51,8 +54,9 @@ public class Payment_controller
 //	private DestinationPrice_service destination_service;
 	private Order_service order_service;
 //	private WeightPrice_service weight_service;
-//	private Package_service package_service;
-//	private Customer_service customer_service;
+	private Package_service package_service;
+	Orderstaff_service orderstaff_service;
+	private Customer_service customer_service;
 	private TabbedPane_View tabPane;
 	private Pending_panel pendingPanel;
 	private Requesting_panel requestingPanel;
@@ -69,8 +73,9 @@ public class Payment_controller
 	private TableModel_failOrder model_failOrder;
 	private JFrame frame;
 	private TableRowSorter<TableModel_pendingOrder> sorter;
-	private JButton btn_viewdetail, btn_approve, btn_export;
+	private JButton btn_viewdetail, btn_approve, btn_complete_export;
 
+	List<Order> pendingList, requestingList, completeList, failList;
 	String order_no;
 
 	Office_view navigationPanel;
@@ -99,6 +104,9 @@ public class Payment_controller
 	public void dependencyInjection() {
 		try {
 			order_service = new Order_service();
+			package_service = new Package_service();
+			orderstaff_service = new Orderstaff_service();
+			customer_service = new Customer_service();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -152,13 +160,13 @@ public class Payment_controller
 		txt_failSearch = failPanel.getTxtSearch();
 		tblFail = failPanel.getTblfail();
 
-		btn_export = completePanel.getbtnExport();
+		btn_complete_export = completePanel.getbtnExport();
 
 	}
 
 	private void initController() {
 		tabbedPane.addChangeListener(this);
-		btn_export.addActionListener(this);
+		btn_complete_export.addActionListener(this);
 
 		if (CurrentUserHolder.getCurrentUser().getRole().getRole_name().equals("Admin")) {
 			navigationPanel.getPanel_btnSetPrice().addMouseListener(this);
@@ -182,10 +190,10 @@ public class Payment_controller
 	}
 
 	private void pendingShowList() {
-		List<Order> orderList = new ArrayList<Order>();
-		orderList = order_service.getOrderbyAssign(true);
+		pendingList = new ArrayList<Order>();
+		pendingList = order_service.getOrderbyAssign(true);
 		btn_viewdetail = new JButton("View");
-		model_pendingOrder = new TableModel_pendingOrder(orderList, btn_viewdetail);
+		model_pendingOrder = new TableModel_pendingOrder(pendingList, btn_viewdetail);
 
 		tblPending.setModel(model_pendingOrder);
 
@@ -196,11 +204,11 @@ public class Payment_controller
 	}
 
 	private void requestingShowList() {
-		List<Order> orderList = new ArrayList<Order>();
-		orderList = order_service.getOrderByStatus("Delivering");
+		requestingList = new ArrayList<Order>();
+		requestingList = order_service.getOrderByStatus("Delivering");
 		btn_viewdetail = new JButton("View");
 		btn_approve = new JButton("Approve");
-		model_requestingOrder = new TableModel_requestingOrder(orderList, btn_viewdetail, btn_approve);
+		model_requestingOrder = new TableModel_requestingOrder(requestingList, btn_viewdetail, btn_approve);
 
 		tblRequesting.setModel(model_requestingOrder);
 
@@ -209,10 +217,10 @@ public class Payment_controller
 	}
 
 	private void completeShowList() {
-		List<Order> orderList = new ArrayList<Order>();
-		orderList = order_service.getOrderByStatus("Completed");
+		completeList = new ArrayList<Order>();
+		completeList = order_service.getOrderByStatus("Completed");
 		btn_viewdetail = new JButton("View");
-		model_completeOrder = new TableModel_completeOrder(orderList, btn_viewdetail);
+		model_completeOrder = new TableModel_completeOrder(completeList, btn_viewdetail);
 
 		tblComplete.setModel(model_completeOrder);
 
@@ -221,10 +229,10 @@ public class Payment_controller
 	}
 
 	private void failShowList() {
-		List<Order> orderList = new ArrayList<Order>();
-		orderList = order_service.getAllOrderlist();
+		failList = new ArrayList<Order>();
+		failList = order_service.getAllOrderlist();
 		btn_viewdetail = new JButton("View");
-		model_failOrder = new TableModel_failOrder(orderList, btn_viewdetail);
+		model_failOrder = new TableModel_failOrder(failList, btn_viewdetail);
 
 		tblFail.setModel(model_failOrder);
 
@@ -232,20 +240,53 @@ public class Payment_controller
 		tblFail.setDefaultRenderer(JButton.class, new JTableButtonRenderer(tableRenderer));
 	}
 
+	private void exportExcel() {
+		try {
+			ExportDataToExcel.writeToExcell(tblComplete, "");
+			int packageDelete = 0;
+			int orderStaffDelete = 0;
+			int orderDelete = 0;
+			int customerDelete = 0;
+			for (Order completeOrder : completeList) {
+				String deleteOrderNo = completeOrder.getOrder_no();
+				int deleteCustomerId = completeOrder.getCustomer().getId();
+				System.out.println("Delete order_no" + deleteOrderNo);
+				System.out.println("Delete customer_id" + deleteCustomerId);
+
+				packageDelete = package_service.deletePackageByOrderNo(completeOrder.getOrder_no());
+				orderStaffDelete = orderstaff_service.deleteAssignByOrderNo(completeOrder.getOrder_no());
+				orderDelete = order_service.deleteOrder(completeOrder.getOrder_no());
+				customerDelete = customer_service.deleteCustomer(completeOrder.getCustomer().getId());
+
+				if (packageDelete > 0)
+					System.out.println("Package delete success");
+				if(orderStaffDelete>0)
+					System.out.println("OrderStaff delete success");
+				if (orderDelete > 0)
+					System.out.println("Order delete success");
+				if (customerDelete > 0)
+					System.out.println("customer delete success");
+				
+			}
+
+			if (packageDelete > 0 && orderDelete > 0 && customerDelete > 0 && orderStaffDelete > 0)
+				model_completeOrder.removeAllRow();
+
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource().equals(btn_export)) {
-			try {
-				ExportDataToExcel.writeToExcell(tblComplete, "");
-			} catch (FileNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		}
+		if (e.getSource().equals(btn_complete_export)) {
+			exportExcel();
 
+		}
 	}
 
 	@Override

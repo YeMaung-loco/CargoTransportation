@@ -50,6 +50,15 @@ public class TableModel_completeOrder extends AbstractTableModel{
 		orderList.remove(rowIndex);
 		fireTableRowsDeleted(rowIndex, rowIndex);
 	}
+	
+	public void removeAllRow() {
+//		for(int i=0; i<orderList.size(); i++) {
+//		orderList.remove(i);
+//		fireTableRowsDeleted(i, i);
+//		}
+		orderList.clear();
+		fireTableDataChanged();
+	}
 
 	public void insertRow(Order order) {
 		orderList.add(order);

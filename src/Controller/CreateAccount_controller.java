@@ -40,6 +40,7 @@ import Service.Auth_service;
 import Service.Department_service;
 import Service.Staff_Service;
 import TableModel.TableModel_Staff;
+import Utility.Checking;
 import View.Office_view;
 import View.Staff_Panel;
 
@@ -64,7 +65,7 @@ public class CreateAccount_controller implements ActionListener, MouseListener, 
 	JCheckBox chckbxupload, chckbxManage, chckActive;
 	JComboBox<String> comboDepartment;
 
-	JButton btnSave, btnUpdate, btnDelete, btnClear, btnMinimize, btnMaximize, btnSearch,btnCreate,btnEdit;
+	JButton btnSave, btnUpdate, btnDelete, btnClear, btnMinimize, btnMaximize, btnSearch, btnCreate, btnEdit;
 	Staff_Service staff_Service;
 	Auth_service auth_Service;
 	Department_service department_Service;
@@ -84,7 +85,7 @@ public class CreateAccount_controller implements ActionListener, MouseListener, 
 		try {
 			this.staff_Service = new Staff_Service();
 			this.department_Service = new Department_service();
-			this.auth_Service=new Auth_service();
+			this.auth_Service = new Auth_service();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -102,8 +103,8 @@ public class CreateAccount_controller implements ActionListener, MouseListener, 
 		btnSearch = cePanel.getBtnSearch();
 		btnMaximize = cePanel.getBtnMaximize();
 		btnMinimize = cePanel.getBtnMinimize();
-		btnCreate=cePanel.getBtnCreate();
-		btnEdit=cePanel.getBtnedit();
+		btnCreate = cePanel.getBtnCreate();
+		btnEdit = cePanel.getBtnedit();
 		btnCreate.setVisible(false);
 
 		txtName = cePanel.getTxtName();
@@ -172,43 +173,50 @@ public class CreateAccount_controller implements ActionListener, MouseListener, 
 		departmentList.forEach(d -> this.comboDepartment.addItem(d.getDepartmentName()));
 	}
 
-	private void setModel() {
+	private boolean setModel() {
+		// boolean setModel=false;
+		if (Checking.IsValidName(txtName.getText()) && Checking.IsAllDigit(txtPhone.getText())
+				&& comboDepartment.getSelectedIndex() != 0) {
 
-		long millis = System.currentTimeMillis();
-		int roleId = 0;
-		String roleName = "";
-		if (chckbxupload.isSelected()) {
-			roleId = 1;
-			roleName = "Normal Staff";
-		}
-		if (chckbxupload.isSelected() && chckbxManage.isSelected()) {
-			roleId = 2;
-			roleName = "Office Staff";
-		}
-		if (radioGroup.getSelection().getActionCommand().equals("Office") && !chckbxupload.isSelected()
-				&& !chckbxManage.isSelected()) {
-			roleId = 4;
-			roleName = "Staff";
-		}
-		if (radioGroup.getSelection().getActionCommand().equals("Delivery")) {
-			roleId = 5;
-			roleName = "Delivery";
-		}
+			long millis = System.currentTimeMillis();
+			int roleId = 0;
+			String roleName = "";
+			if (chckbxupload.isSelected()) {
+				roleId = 1;
+				roleName = "Normal Staff";
+			}
+			if (chckbxupload.isSelected() && chckbxManage.isSelected()) {
+				roleId = 2;
+				roleName = "Office Staff";
+			}
+			if (radioGroup.getSelection().getActionCommand().equals("Office") && !chckbxupload.isSelected()
+					&& !chckbxManage.isSelected()) {
+				roleId = 4;
+				roleName = "Staff";
+			}
+			if (radioGroup.getSelection().getActionCommand().equals("Delivery")) {
+				roleId = 5;
+				roleName = "Delivery";
+			}
 
-		staff = new Staff();
-		Role role = new Role();
-		Department department = new Department();
+			staff = new Staff();
+			Role role = new Role();
+			Department department = new Department();
+			staff.setName(txtName.getText());
+			staff.setPhone(txtPhone.getText());
+			staff.setAddress(txtareaAddress.getText());
+			staff.setNrc(txtNRC.getText());
+			staff.setRole(new Role(roleId, roleName));
+			staff.setDepartment(
+					new Department(comboDepartment.getSelectedIndex(), comboDepartment.getSelectedItem().toString()));
+			staff.setDate(new java.sql.Date(millis));
+			staff.setActive(chckActive.isSelected() ? true : false);
 
-		staff.setName(txtName.getText());
-		staff.setPhone(txtPhone.getText());
-		staff.setAddress(txtareaAddress.getText());
-		staff.setNrc(txtNRC.getText());
-		staff.setRole(new Role(roleId, roleName));
-		staff.setDepartment(
-				new Department(comboDepartment.getSelectedIndex(), comboDepartment.getSelectedItem().toString()));
-		staff.setDate(new java.sql.Date(millis));
-		staff.setActive(chckActive.isSelected() ? true : false);
-
+		} else {
+			alert("Input properly!!");
+			return false;
+		}
+		return true;
 	}
 
 	private void collapseInputForm(boolean collapse) {
@@ -229,22 +237,26 @@ public class CreateAccount_controller implements ActionListener, MouseListener, 
 	}
 
 	private void save() {
-		setModel();
-		int status = staff_Service.createStaff(staff);
+		if (setModel()) {
+			int status = staff_Service.createStaff(staff);
 
-		System.out.println(staff.getName());
-		if (status > 0) {
-			staff = staff_Service.laststaff();
-			if (model_Staff != null)
-				model_Staff.insertRow(staff);
+			System.out.println(staff.getName());
+			if (status > 0) {
+				staff = staff_Service.laststaff();
+				if (model_Staff != null)
+					model_Staff.insertRow(staff);
 
-			alert("Successfully Saved!");
+				alert("Successfully Saved!");
 
-		} else {
-			alert("Failed Save!");
+			} else {
+				alert("Failed Save!");
+			}
+//			staff = null;
+//			dataToView(staff);
 		}
 		staff = null;
 		dataToView(staff);
+
 	}
 
 	private void showList() {
@@ -256,16 +268,16 @@ public class CreateAccount_controller implements ActionListener, MouseListener, 
 	}
 
 	private void edit() {
-		auth=new Authenticate();
-		int status=auth_Service.checkStaffid(temp_id, auth);
+		auth = new Authenticate();
+		int status = auth_Service.checkStaffid(temp_id, auth);
 		System.out.println(status);
-		if(status>0) {
+		if (status > 0) {
 			btnCreate.setVisible(false);
-		btnEdit.setVisible(true);
-		}else {
+			btnEdit.setVisible(true);
+		} else {
 			btnEdit.setVisible(false);
 			btnCreate.setVisible(true);
-			
+
 		}
 		Staff staff = new Staff();
 		staff = staff_Service.getstaffById(temp_id);
@@ -295,6 +307,9 @@ public class CreateAccount_controller implements ActionListener, MouseListener, 
 			if (status > 0) {
 				model_Staff.removeRow(modelRowIndex);
 				alert("Successfully Deleted!");
+
+				staff = null;
+				dataToView(staff);
 			} else
 				alert("Delete Failed!");
 		} else {
@@ -390,7 +405,7 @@ public class CreateAccount_controller implements ActionListener, MouseListener, 
 		if (e.getSource().equals(table)) {
 			if (e.getClickCount() == 2)
 				edit();
-			
+
 		}
 		if (e.getSource().equals(office_view.getPanel_btnOrder())) {
 			frame.remove(inputPanel);
@@ -449,11 +464,11 @@ public class CreateAccount_controller implements ActionListener, MouseListener, 
 		if (e.getSource().equals(btnUpdate)) {
 			update();
 		}
-		if(e.getSource().equals(btnCreate)) {
+		if (e.getSource().equals(btnCreate)) {
 			new Create_controller(temp_id);
 		}
-		if(e.getSource().equals(btnEdit)) {
-			
+		if (e.getSource().equals(btnEdit)) {
+
 			new Create_controller(temp_id);
 		}
 	}
