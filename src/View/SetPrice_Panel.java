@@ -140,7 +140,7 @@ public class SetPrice_Panel {
 		btn_destinationUpdate.setVisible(false);
 
 		scrollPane_destination = new JScrollPane();
-		scrollPane_destination.setBounds(0, 361, 572, 398);
+		scrollPane_destination.setBounds(10, 361, 552, 388);
 		scrollPane_destination.setViewportView(tbldestination);
 		//scrollPane_destination.setBorder(new RoundedBorder(20));
 		
@@ -174,7 +174,7 @@ public class SetPrice_Panel {
 		btn_weightUpdate.setVisible(false);
 
 		scrollPane_weight = new JScrollPane();
-		scrollPane_weight.setBounds(0, 361, 572, 398);
+		scrollPane_weight.setBounds(10, 361, 540, 388);
 		scrollPane_weight.setViewportView(tblweight);
 	//	scrollPane_weight.setBorder(new RoundedBorder(20));
 

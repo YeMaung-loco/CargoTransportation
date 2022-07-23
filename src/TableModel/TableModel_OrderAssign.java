@@ -100,15 +100,28 @@ public class TableModel_OrderAssign extends AbstractTableModel {
 		return orderList.get(i).getCustomer().getId();
 	}
 
-	public void clearChecks() {
-		for (int i = 0; i < orderList.size(); i++) {
+	public void clearChecks(List<Integer> list) {
+		// System.out.println("Row Count-" + rowCount);
+		for (int index : list) {
 			for (int j = 0; j < headerList.length; j++) {
 				Order order = new Order();
-				order = orderList.get(i);
+				order = orderList.get(index);
 				order.setAssign(false);
-				fireTableRowsUpdated(i, j);
+				
+				System.out.println("i" + index + " j" + j);
+				fireTableRowsUpdated(index, j);
 			}
 		}
+
+//		for (int i = 0; i < rowCount; i++) {
+//			for (int j = 0; j < 2; j++) {
+//				Order order = new Order();
+//				order = orderList.get(i);
+//				order.setAssign(false);
+//				System.out.println("i" + i + " j" + j);
+//				fireTableRowsUpdated(i, j);
+//			}
+//		}
 
 	}
 
