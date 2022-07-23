@@ -1,10 +1,13 @@
 package Controller;
 
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
@@ -24,11 +27,14 @@ public class Login_controller implements ActionListener {
 	JTextField txtc_username, txt_password;
 	Login_view vlogin;
 	String currentRole;
+	JLabel cargo_Icon,username_Icon,password_Icon;
 
 	public Login_controller() {
 
 		dependencyInjection();
+		
 		vlogin = new Login_view();
+		initForm();
 		initComponent();
 		initController();
 
@@ -49,11 +55,31 @@ public class Login_controller implements ActionListener {
 		txtc_username = vlogin.getTxtUsername();
 		txt_password = vlogin.getPasswordField();
 		btnlogin = vlogin.getBtnLogin();
+		cargo_Icon=vlogin.getIcon1JLabel();
+		username_Icon=vlogin.getIconUsername();
+		password_Icon=vlogin.getIconPassword();
 	}
 
 	private void initController() {
 
 		btnlogin.addActionListener(this);
+		
+	}
+	public void initForm() {
+		
+	    JLabel cargo_Icon=vlogin.getIcon1JLabel();
+	    JLabel username_Icon=vlogin.getIconUsername();
+	    JLabel password_Icon=vlogin.getIconPassword();
+		ImageIcon brandIcon = new ImageIcon(new ImageIcon("resource\\cargo.png").getImage()
+				.getScaledInstance(287, 126, Image.SCALE_SMOOTH));
+		ImageIcon userIcon = new ImageIcon(new ImageIcon("resource\\user.png").getImage()
+				.getScaledInstance(100, 50, Image.SCALE_SMOOTH));
+		ImageIcon passIcon = new ImageIcon(new ImageIcon("resource\\.png").getImage()
+				.getScaledInstance(100, 50, Image.SCALE_SMOOTH));
+		cargo_Icon.setIcon(brandIcon);
+		username_Icon.setIcon(userIcon);
+		password_Icon.setIcon(passIcon);
+		
 	}
 
 	private void login() {

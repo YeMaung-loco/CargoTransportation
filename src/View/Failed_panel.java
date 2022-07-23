@@ -1,6 +1,7 @@
 package View;
 
 import javax.swing.JPanel;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextField;
@@ -17,6 +18,7 @@ public class Failed_panel extends JPanel {
 	private JScrollPane scrollPane;
 	private JLabel lblNewLabel_1;
 	private JLabel lblNewLabel;
+	private JButton btnExport;
 
 	/**
 	 * Create the panel.
@@ -42,6 +44,10 @@ public class Failed_panel extends JPanel {
 	
 		public void initialize() {
 		setLayout(null);
+		
+		btnExport=new JButton("Export to Excel");
+		btnExport.setBounds(20, 73, 150, 35);
+		add(btnExport);
 		
 		lblNewLabel = new JLabel("Failed Order");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 20));
@@ -80,5 +86,8 @@ public class Failed_panel extends JPanel {
 	}
 	public JLabel getLblNewLabel() {
 		return lblNewLabel;
+	}
+	public JButton getbtnExport() {
+		return btnExport;
 	}
 }

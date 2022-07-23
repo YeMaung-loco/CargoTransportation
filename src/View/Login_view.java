@@ -17,14 +17,14 @@ public class Login_view {
 
 	private JFrame frame;
 	private JTextField txtUsername;
-	private JLabel lblUsername;
+	private JLabel Icon_lblUsername;
 	private TextPrompt placeholder;
 	private TextPrompt placeholder1;
-	private JLabel lblPassword;
+	private JLabel Icon_lblPassword;
 	private JButton btnLogin;
-	private JLabel lblcargo;
 	private JPanel panel;
 	private JPasswordField passwordField;
+	private JLabel Icon1JLabel;
 
 	public Login_view() {
 		System.out.println("this is logintest ");
@@ -36,19 +36,18 @@ public class Login_view {
 	private void initialize() {
 		frame = new JFrame();
 		panel = new JPanel();
-		lblUsername = new JLabel();
-		lblUsername.setBounds(43, 119, 160, 48);
+		panel.setBackground(new Color(204, 204, 204));
+		Icon_lblUsername = new JLabel();
+		Icon_lblUsername.setBounds(63, 179, 160, 75);
 		txtUsername = new JTextField();
 	    txtUsername.setFont(new Font("Tahoma", Font.PLAIN, 17));
-		txtUsername.setBounds(233, 206, 217, 54);
-		lblPassword = new JLabel();
-		lblPassword.setBounds(43, 226, 138, 48);
+		txtUsername.setBounds(233, 194, 217, 66);
+		Icon_lblPassword = new JLabel();
+		Icon_lblPassword.setBounds(63, 295, 138, 75);
 		btnLogin = new JButton();
 		btnLogin.setBounds(274, 423, 138, 48);
-		lblcargo = new JLabel();
-		lblcargo.setBounds(59, 27, 353, 35);
 		passwordField = new JPasswordField();
-		passwordField.setBounds(233, 304, 217, 54);
+		passwordField.setBounds(233, 304, 217, 66);
 		passwordField.setFont(new Font("Tahoma", Font.PLAIN, 17));
 
 	}
@@ -58,12 +57,13 @@ public class Login_view {
 		frame.setTitle("Cargo Transportation System");
 		frame.setBounds(100, 100, 578, 558);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		frame.setVisible(true);
 
 		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		frame.getContentPane().add(panel, BorderLayout.CENTER);
 		panel.setLayout(null);
-		lblUsername.setFont(new Font("Tahoma", Font.BOLD, 18));
+		Icon_lblUsername.setFont(new Font("Tahoma", Font.BOLD, 18));
 
 		txtUsername.setColumns(10);
 		placeholder = new TextPrompt("Username", txtUsername);
@@ -75,33 +75,32 @@ public class Login_view {
 		placeholder1.setForeground(UIManager.getColor("Button.darkShadow"));
 		placeholder1.setFont(new Font("Tahoma", Font.BOLD, 17));
 
-		lblPassword.setFont(new Font("Tahoma", Font.BOLD, 18));
+		Icon_lblPassword.setFont(new Font("Tahoma", Font.BOLD, 18));
 
 		btnLogin.setText("Login");
 		btnLogin.setFont(new Font("Tahoma", Font.BOLD, 18));
-
-		lblcargo.setText("Cargo Transportation System");
-		lblcargo.setForeground(Color.BLUE);
-		lblcargo.setFont(new Font("Tahoma", Font.BOLD, 24));
 
 	}
 
 	private void addComponents() {
 		frame.getContentPane().add(panel);
-		panel.add(lblcargo);
 		panel.add(btnLogin);
-		panel.add(lblPassword);
-		panel.add(lblUsername);
+		panel.add(Icon_lblPassword);
+		panel.add(Icon_lblUsername);
 		panel.add(txtUsername);
 		panel.add(passwordField);
+		
+		Icon1JLabel = new JLabel("");
+		Icon1JLabel.setBounds(163, 43, 287, 126);
+		panel.add(Icon1JLabel);
 	}
 
-	public JLabel getLblUsername() {
-		return lblUsername;
+	public JLabel getIconUsername() {
+		return Icon_lblUsername;
 	}
 
-	public JLabel getLblPassword() {
-		return lblPassword;
+	public JLabel getIconPassword() {
+		return Icon_lblPassword;
 	}
 
 	public JTextField getTxtUsername() {
@@ -118,6 +117,9 @@ public class Login_view {
 
 	public JPasswordField getPasswordField() {
 		return passwordField;
+	}
+	public JLabel getIcon1JLabel() {
+		return Icon1JLabel;
 	}
 }
 //tested 
