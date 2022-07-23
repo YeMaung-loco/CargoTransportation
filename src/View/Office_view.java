@@ -40,6 +40,10 @@ public class Office_view {
 	JLabel lblIcon, lbl_iconLogout, lblLogout;
 	private JPanel panel_btnSetPrice;
 	private JPanel panel_btn_approve;
+	private JLabel iconJLabel;
+	private JLabel iconSetPrice;
+	private JLabel iconJLabel_1_1;
+	private JLabel iconSetPrice_1;
 
 	public Office_view(JFrame cotainer) {
 		this.frame=cotainer;
@@ -59,10 +63,10 @@ public class Office_view {
 		//menuBar.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		mnFile = new JMenu("File Menu");
 		mnFile.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		menu_export = new JMenuItem("Export Excel");
+		menu_export = new JMenuItem("How to use");
 		menu_export.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		menu_import = new JMenuItem("Import Excel");
-		menu_import.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		//menu_import = new JMenuItem("Import Excel");
+		//menu_import.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
 		lblIcon = new JLabel();
 		lbl_iconLogout = new JLabel();
@@ -86,7 +90,7 @@ public class Office_view {
 
 		menuBar.add(mnFile);
 		mnFile.add(menu_export);
-		mnFile.add(menu_import);
+		//mnFile.add(menu_import);
 
 		panel_navigation.add(lblIcon);
 		panel_navigation.add(panel_btnStaff);
@@ -102,7 +106,7 @@ public class Office_view {
 		panel_btnSetPrice.setLayout(null);
 		panel_btnSetPrice.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panel_btnSetPrice.setBackground(new Color(255, 215, 0));
-		panel_btnSetPrice.setBounds(0, 374, 200, 70);
+		panel_btnSetPrice.setBounds(0, 235, 200, 70);
 		panel_navigation.add(panel_btnSetPrice);
 		
 		JLabel lblSet = new JLabel("Set Price");
@@ -110,7 +114,7 @@ public class Office_view {
 		lblSet.setBounds(62, 10, 128, 39);
 		panel_btnSetPrice.add(lblSet);
 		
-		JLabel iconSetPrice = new JLabel();
+		iconSetPrice = new JLabel();
 		iconSetPrice.setVerticalAlignment(SwingConstants.TOP);
 		iconSetPrice.setBounds(20, 14, 32, 32);
 		panel_btnSetPrice.add(iconSetPrice);
@@ -127,7 +131,7 @@ public class Office_view {
 		lblPaymentApprove.setBounds(62, 10, 128, 39);
 		panel_btn_approve.add(lblPaymentApprove);
 		
-		JLabel iconSetPrice_1 = new JLabel();
+		iconSetPrice_1 = new JLabel();
 		iconSetPrice_1.setVerticalAlignment(SwingConstants.TOP);
 		iconSetPrice_1.setBounds(20, 14, 32, 32);
 		panel_btn_approve.add(iconSetPrice_1);
@@ -164,8 +168,8 @@ public class Office_view {
 		//ImageIcon iconLogout = setIconScale("C:\\Users\\User\\Downloads\\options-lines.png");
 		lbl_iconLogout.setIcon(new ImageIcon("resource\\logout.png"));
 
-		ImageIcon account_icon = new ImageIcon("resource\\\\admin.png");
-		JLabel iconJLabel = new JLabel(account_icon);
+		ImageIcon account_icon = new ImageIcon("resource\\admin.png");
+		iconJLabel = new JLabel(account_icon);
 		panel_btnStaff.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panel_btnStaff.setBackground(new Color(255, 215, 0));
 		panel_btnStaff.setBounds(0, 165, 200, 70);
@@ -181,7 +185,7 @@ public class Office_view {
 		panel_btnOrder.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panel_btnOrder.setBackground(new Color(255, 215, 0));
 		panel_btnOrder.setLayout(null);
-		panel_btnOrder.setBounds(0, 235, 200, 70);
+		panel_btnOrder.setBounds(0, 304, 200, 70);
 
 		lblNewLabel = new JLabel("Manage Order");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -196,7 +200,7 @@ public class Office_view {
 		panel_btnDelivery.setLayout(null);
 		panel_btnDelivery.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panel_btnDelivery.setBackground(new Color(255, 215, 0));
-		panel_btnDelivery.setBounds(0, 305, 200, 70);
+		panel_btnDelivery.setBounds(0, 373, 200, 70);
 		panel_navigation.add(panel_btnDelivery);
 
 		JLabel lblCategory = new JLabel("Manage Delivery");
@@ -206,7 +210,7 @@ public class Office_view {
 
 		ImageIcon imageIcon = new ImageIcon(new ImageIcon("C:\\Users\\User\\Downloads\\options-lines.png").getImage()
 				.getScaledInstance(32, 32, Image.SCALE_DEFAULT));
-		JLabel iconJLabel_1_1 = new JLabel();
+		iconJLabel_1_1 = new JLabel();
 		iconJLabel_1_1.setIcon(imageIcon);
 		iconJLabel_1_1.setVerticalAlignment(SwingConstants.TOP);
 		iconJLabel_1_1.setBounds(20, 14, 32, 32);
@@ -264,5 +268,20 @@ public class Office_view {
 	}
 	public JPanel getPanel_btn_approve() {
 		return panel_btn_approve;
+	}
+	public JLabel getIconManageStaff() {
+		return iconJLabel;
+	}
+	public JLabel getIconSetPrice() {
+		return iconSetPrice;
+	}
+	public JLabel getIconManageOrder() {
+		return iconJLabel_1;
+	}
+	public JLabel getIconManageDeli() {
+		return iconJLabel_1_1;
+	}
+	public JLabel getIconApprove() {
+		return iconSetPrice_1;
 	}
 }

@@ -23,6 +23,7 @@ public class Login_controller implements ActionListener {
 	JButton btnlogin;
 	JTextField txtc_username, txt_password;
 	Login_view vlogin;
+	String currentRole;
 
 	public Login_controller() {
 
@@ -41,7 +42,7 @@ public class Login_controller implements ActionListener {
 			e.printStackTrace();
 		}
 		System.out.println("aaaaaaa");
-	//	vlogin = new Login_view();
+		// vlogin = new Login_view();
 	}
 
 	public void initComponent() {
@@ -65,10 +66,10 @@ public class Login_controller implements ActionListener {
 
 				JOptionPane.showMessageDialog(null, "Successfully Login");
 				CurrentUserHolder.setLoggedInUser(staff);
-				if (CurrentUserHolder.getCurrentUser() != null) {
-					System.out
-							.println("currenholder is " + CurrentUserHolder.getCurrentUser().getRole().getRole_name());
+				currentRole = CurrentUserHolder.getCurrentUser().getRole().getRole_name();
+				System.out.println("currentholder is " + CurrentUserHolder.getCurrentUser().getRole().getRole_name());
 
+				if (CurrentUserHolder.getCurrentUser() != null && currentRole.equals("Admin")) {
 					vlogin.getFrame().dispose();
 					Main_View main_View = new Main_View();
 					main_View.getFrame().addComponentListener(new FrameMoveDetect());
@@ -77,16 +78,12 @@ public class Login_controller implements ActionListener {
 
 				}
 
-				if (CurrentUserHolder.getCurrentUser().getRole().equals("Office")) {
+				if (currentRole.equals("Office Staff")) {
 					System.out.println("Go to Office View");
-					CargoTransportationSystem cargo = new CargoTransportationSystem();
-				}
-				if (CurrentUserHolder.getCurrentUser().getRole().equals("Admin")) {
-					System.out.println("Go to Admin View");
+					vlogin.getFrame().dispose();
 					Main_View main_View = new Main_View();
-					main_View.getFrame().addComponentListener(new FrameMoveDetect());
-					CreateAccount_controller createAccountController = new CreateAccount_controller(
-							main_View.getFrame());
+					OrderManage_controller nextController = new OrderManage_controller(main_View.getFrame());
+					// CargoTransportationSystem cargo = new CargoTransportationSystem();
 				}
 
 			}

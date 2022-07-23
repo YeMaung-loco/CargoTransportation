@@ -72,19 +72,20 @@ public class Orderdetail_controller implements ActionListener, MouseListener {
 	String order_no;
 	String temp_no;
 	TableRowSorter<TableModel_Package> sorter;
-	
+
 	DeliveryManage_Controller deliveryManage_Controller;
 	OrderManage_controller orderManage_controller;
 	Payment_controller payment_controller;
 
-	public Orderdetail_controller(DeliveryManage_Controller deliController,OrderManage_controller orderController, Payment_controller pay_controller,String order_no, JFrame frame) {
-		if(deliController!=null)
-			deliveryManage_Controller=deliController;
-		if(orderController!=null)
-			orderManage_controller=orderController;
-		if(pay_controller!=null)
-			this.payment_controller=pay_controller;
-		
+	public Orderdetail_controller(DeliveryManage_Controller deliController, OrderManage_controller orderController,
+			Payment_controller pay_controller, String order_no, JFrame frame) {
+		if (deliController != null)
+			deliveryManage_Controller = deliController;
+		if (orderController != null)
+			orderManage_controller = orderController;
+		if (pay_controller != null)
+			this.payment_controller = pay_controller;
+
 		this.frame = frame;
 		this.order_no = order_no;
 		dependencyInjection();
@@ -115,7 +116,18 @@ public class Orderdetail_controller implements ActionListener, MouseListener {
 	private void initForm() {
 		odetail = new Orderdetail_view(frame);
 		navigationPanel = new Office_view(frame);
-		navigationPanel.getPanel_btnOrder().setBackground(new Color(218, 165, 32));
+
+		if (deliveryManage_Controller != null) {
+			navigationPanel.getPanel_btnDelivery().setBackground(new Color(218, 165, 32));
+		}
+		if (orderManage_controller != null) {
+			navigationPanel.getPanel_btnOrder().setBackground(new Color(218, 165, 32));
+
+		}
+		if (payment_controller != null) {
+			navigationPanel.getPanel_btn_approve().setBackground(new Color(218, 165, 32));
+		}
+
 	}
 
 	private void initComponents() {
@@ -226,8 +238,8 @@ public class Orderdetail_controller implements ActionListener, MouseListener {
 	}
 
 	private void datatoText(Order order) {
-		//System.out.println("Customer Name-" + order.getCustomer().getName());
-		
+		// System.out.println("Customer Name-" + order.getCustomer().getName());
+
 		txtname.setText(order == null ? "" : order.getCustomer().getName());
 		txtphone.setText(order == null ? "" : order.getCustomer().getPhone());
 		txtaddress.setText(order == null ? "" : order.getCustomer().getAddress());
@@ -322,19 +334,19 @@ public class Orderdetail_controller implements ActionListener, MouseListener {
 		if (e.getSource().equals(btnBack)) {
 			frame.remove(odetail.getPanel_orderdetails());
 			frame.remove(navigationPanel.getPanel_navigation());
-			
-			if(orderManage_controller!=null) {
-			OrderManage_controller order_controller = new OrderManage_controller(frame);
+
+			if (orderManage_controller != null) {
+				OrderManage_controller order_controller = new OrderManage_controller(frame);
 			}
-			
-			if(deliveryManage_Controller!=null) {
-				DeliveryManage_Controller delivery_Controller=new DeliveryManage_Controller(frame);
+
+			if (deliveryManage_Controller != null) {
+				DeliveryManage_Controller delivery_Controller = new DeliveryManage_Controller(frame);
 			}
-			
-			if(payment_controller!=null) {
-				Payment_controller nextController=new Payment_controller(frame);
+
+			if (payment_controller != null) {
+				Payment_controller nextController = new Payment_controller(frame);
 			}
-			
+
 		}
 	}
 

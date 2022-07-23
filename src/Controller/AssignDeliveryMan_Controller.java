@@ -20,6 +20,7 @@ import Service.Orderstaff_service;
 import Service.Staff_Service;
 import TableModel.TableModel_Delivery;
 import View.Deliveryman_View;
+import share.Temp;
 
 public class AssignDeliveryMan_Controller implements ActionListener, ListSelectionListener, MouseListener {
 	Deliveryman_View deliManView;
@@ -44,7 +45,6 @@ public class AssignDeliveryMan_Controller implements ActionListener, ListSelecti
 	}
 
 	private void showList() {
-
 		List<Staff> deliList = new ArrayList<Staff>();
 		deliList = staff_Service.getActiveStaff(5, true);
 		model_Delivery = new TableModel_Delivery(deliList);
@@ -99,15 +99,21 @@ public class AssignDeliveryMan_Controller implements ActionListener, ListSelecti
 			for (String order_no : assignList) {
 				order_service.assignOrder(order_no, status, "Delivering");
 			}
+
 			staff_Service.assignDelivery(temp_id, false);
+			Temp.setAssign(true);
+
 			alert("Order is assigned Successfully");
 			deliManView.getFrame().dispose();
-			
+			DeliveryManage_Controller.showOrderList();
+
 		} else {
+
+			Temp.setAssign(false);
 			System.out.println("Assign failed");
 		}
 	}
-	
+
 	private void alert(String msg) {
 		JOptionPane.showMessageDialog(deliManView.getFrame(), msg);
 	}

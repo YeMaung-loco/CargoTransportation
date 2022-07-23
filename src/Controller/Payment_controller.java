@@ -1,10 +1,9 @@
 package Controller;
 
 import java.awt.Color;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.FileNotFoundException;
@@ -13,6 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -29,12 +29,9 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
+import Model.CurrentUserHolder;
 import Model.Order;
-import Service.Customer_service;
-import Service.DestinationPrice_service;
 import Service.Order_service;
-import Service.Package_service;
-import Service.WeightPrice_service;
 import TableModel.TableModel_completeOrder;
 import TableModel.TableModel_failOrder;
 import TableModel.TableModel_pendingOrder;
@@ -101,11 +98,8 @@ public class Payment_controller
 
 	public void dependencyInjection() {
 		try {
-			// destination_service = new DestinationPrice_service();
 			order_service = new Order_service();
-			// weight_service = new WeightPrice_service();
-			// package_service = new Package_service();
-			// customer_service = new Customer_service();
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -127,7 +121,19 @@ public class Payment_controller
 		tabPane.getTabbedPane().addTab("Fail Order", failPanel);
 
 		navigationPanel.getPanel_btn_approve().setBackground(new Color(218, 165, 32));
-		// tabPane.addTab("Pending Order",pendingPanel);
+
+		if (CurrentUserHolder.getCurrentUser().getRole().getRole_name().equals("Office Staff")) {
+			// office_view.getPanel_btnSetPrice().setVisible(false);
+			ImageIcon disableIcon = new ImageIcon(
+					new ImageIcon("resource\\disable.png").getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH));
+
+			JLabel iconManageStaff = navigationPanel.getIconManageStaff();
+			JLabel iconSetPrice = navigationPanel.getIconSetPrice();
+
+			iconSetPrice.setIcon(disableIcon);
+			iconManageStaff.setIcon(disableIcon);
+
+		}
 
 	}
 
@@ -145,20 +151,23 @@ public class Payment_controller
 
 		txt_failSearch = failPanel.getTxtSearch();
 		tblFail = failPanel.getTblfail();
-		
-		btn_export=completePanel.getbtnExport();
+
+		btn_export = completePanel.getbtnExport();
 
 	}
 
 	private void initController() {
 		tabbedPane.addChangeListener(this);
-		
 		btn_export.addActionListener(this);
+
+		if (CurrentUserHolder.getCurrentUser().getRole().getRole_name().equals("Admin")) {
+			navigationPanel.getPanel_btnSetPrice().addMouseListener(this);
+			navigationPanel.getPanel_btnStaff().addMouseListener(this);
+		}
 
 		navigationPanel.getPanel_btnDelivery().addMouseListener(this);
 		navigationPanel.getPanel_btnOrder().addMouseListener(this);
-		navigationPanel.getPanel_btnSetPrice().addMouseListener(this);
-		navigationPanel.getPanel_btnStaff().addMouseListener(this);
+		navigationPanel.getPanel_btnLogout().addMouseListener(this);
 
 		tblPending.addMouseListener(this);
 		tblPending.getSelectionModel().addListSelectionListener(this);
@@ -225,7 +234,7 @@ public class Payment_controller
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource().equals(btn_export)) {
+		if (e.getSource().equals(btn_export)) {
 			try {
 				ExportDataToExcel.writeToExcell(tblComplete, "");
 			} catch (FileNotFoundException e1) {
@@ -263,6 +272,38 @@ public class Payment_controller
 			SetPrice_controller nexController = new SetPrice_controller(frame);
 		}
 
+		if (e.getSource().equals(navigationPanel.getPanel_btnLogout())) {
+			frame.dispose();
+			Login_controller nextController = new Login_controller();
+		}
+
+		if (e.getSource().equals(tblRequesting)) {
+			if (tblRequesting.getSelectedColumn() == 8) {
+				frame.remove(navigationPanel.getPanel_navigation());
+				frame.remove(tabbedPane);
+				Orderdetail_controller orderdetail_controller = new Orderdetail_controller(null, null, this, order_no,
+						frame);
+
+			}
+			if (tblRequesting.getSelectedColumn() == 7) {
+
+				System.out.println("Approve button");
+				int status = order_service.assignOrder(order_no, true, "Completed");
+				if (status > 0)
+					model_requestingOrder.removeRow(tblRequesting.getSelectedRow());
+			}
+		}
+
+		if (e.getSource().equals(tblPending)) {
+			if (tblPending.getSelectedColumn() == 7) {
+
+				frame.remove(navigationPanel.getPanel_navigation());
+				frame.remove(tabbedPane);
+				Orderdetail_controller nextController = new Orderdetail_controller(null, null, this, order_no, frame);
+
+			}
+		}
+
 	}
 
 	@Override
@@ -296,33 +337,12 @@ public class Payment_controller
 			order_no = model_requestingOrder
 					.getOrder_no(tblRequesting.convertRowIndexToModel(tblRequesting.getSelectedRow()));
 			System.out.println("Request Table -" + order_no);
-			if (tblRequesting.getSelectedColumn() == 7) {
-
-				System.out.println("Approve button");
-				int status = order_service.assignOrder(order_no, true, "Completed");
-				if (status > 0)
-					model_requestingOrder.removeRow(tblRequesting.getSelectedRow());
-			}
-
-			if (tblRequesting.getSelectedColumn() == 8) {
-				frame.remove(navigationPanel.getPanel_navigation());
-				frame.remove(tabbedPane);
-				Orderdetail_controller nextController = new Orderdetail_controller(null, null, this, order_no, frame);
-			}
 
 		}
 
 		if (!tblPending.getSelectionModel().isSelectionEmpty()) {
 			order_no = model_pendingOrder.getOrder_no(tblPending.convertRowIndexToModel(tblPending.getSelectedRow()));
 			System.out.println("Request Table -" + order_no);
-
-			if (tblPending.getSelectedColumn() == 7) {
-
-				frame.remove(navigationPanel.getPanel_navigation());
-				frame.remove(tabbedPane);
-				Orderdetail_controller nextController = new Orderdetail_controller(null, null, this, order_no, frame);
-
-			}
 
 		}
 

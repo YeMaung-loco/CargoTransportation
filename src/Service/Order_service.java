@@ -211,7 +211,7 @@ public class Order_service {
 			System.out.println(ps);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				System.out.println("OrderId"+rs.getString("order_no"));
+				//System.out.println("OrderId"+rs.getString("order_no"));
 				Order order = new Order();
 				order = Order_mapper.mapper(order, rs);
 				orderList.add(order);
