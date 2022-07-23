@@ -72,7 +72,11 @@ public class Payment_controller
 	private TableModel_completeOrder model_completeOrder;
 	private TableModel_failOrder model_failOrder;
 	private JFrame frame;
-	private TableRowSorter<TableModel_pendingOrder> sorter;
+	private TableRowSorter<TableModel_pendingOrder> pendingSorter;
+	private TableRowSorter<TableModel_requestingOrder> requestingSorter;
+	private TableRowSorter<TableModel_completeOrder> completeSorter;
+	private TableRowSorter<TableModel_failOrder> failSorter;
+	
 	private JButton btn_viewdetail, btn_approve, btn_complete_export;
 
 	List<Order> pendingList, requestingList, completeList, failList;
@@ -200,7 +204,7 @@ public class Payment_controller
 		TableCellRenderer tableRenderer = tblPending.getDefaultRenderer(JButton.class);
 		tblPending.setDefaultRenderer(JButton.class, new JTableButtonRenderer(tableRenderer));
 
-		sorter = new TableRowSorter<TableModel_pendingOrder>(model_pendingOrder);
+		pendingSorter = new TableRowSorter<TableModel_pendingOrder>(model_pendingOrder);
 	}
 
 	private void requestingShowList() {
@@ -214,6 +218,8 @@ public class Payment_controller
 
 		TableCellRenderer tableRenderer = tblRequesting.getDefaultRenderer(JButton.class);
 		tblRequesting.setDefaultRenderer(JButton.class, new JTableButtonRenderer(tableRenderer));
+		requestingSorter = new TableRowSorter<TableModel_requestingOrder>(model_requestingOrder);
+		
 	}
 
 	private void completeShowList() {
@@ -226,6 +232,7 @@ public class Payment_controller
 
 		TableCellRenderer tableRenderer = tblComplete.getDefaultRenderer(JButton.class);
 		tblComplete.setDefaultRenderer(JButton.class, new JTableButtonRenderer(tableRenderer));
+		completeSorter = new TableRowSorter<TableModel_completeOrder>(model_completeOrder);
 	}
 
 	private void failShowList() {
@@ -238,6 +245,7 @@ public class Payment_controller
 
 		TableCellRenderer tableRenderer = tblFail.getDefaultRenderer(JButton.class);
 		tblFail.setDefaultRenderer(JButton.class, new JTableButtonRenderer(tableRenderer));
+		failSorter = new TableRowSorter<TableModel_failOrder>(model_failOrder);
 	}
 
 	private void exportExcel() {
@@ -397,8 +405,8 @@ public class Payment_controller
 				java.util.List<RowFilter<Object, Object>> filters = new ArrayList<RowFilter<Object, Object>>(1);
 				filters.add(RowFilter.regexFilter("(?i)" + txt_pendingSearch.getText(), 1));
 				RowFilter<Object, Object> serviceFilter = RowFilter.andFilter(filters);
-				sorter.setRowFilter(serviceFilter);
-				tblPending.setRowSorter(sorter);
+				pendingSorter.setRowFilter(serviceFilter);
+				tblPending.setRowSorter(pendingSorter);
 			} catch (Exception exception) {
 				System.out.println(exception.getMessage());
 			}
@@ -409,8 +417,8 @@ public class Payment_controller
 				java.util.List<RowFilter<Object, Object>> filters = new ArrayList<RowFilter<Object, Object>>(1);
 				filters.add(RowFilter.regexFilter("(?i)" + txt_requestingSearch.getText(), 1));
 				RowFilter<Object, Object> serviceFilter = RowFilter.andFilter(filters);
-				sorter.setRowFilter(serviceFilter);
-				tblRequesting.setRowSorter(sorter);
+				requestingSorter.setRowFilter(serviceFilter);
+				tblRequesting.setRowSorter(requestingSorter);
 			} catch (Exception exception) {
 				System.out.println(exception.getMessage());
 			}
@@ -421,8 +429,8 @@ public class Payment_controller
 				java.util.List<RowFilter<Object, Object>> filters = new ArrayList<RowFilter<Object, Object>>(1);
 				filters.add(RowFilter.regexFilter("(?i)" + txt_completeSearch.getText(), 1));
 				RowFilter<Object, Object> serviceFilter = RowFilter.andFilter(filters);
-				sorter.setRowFilter(serviceFilter);
-				tblComplete.setRowSorter(sorter);
+				completeSorter.setRowFilter(serviceFilter);
+				tblComplete.setRowSorter(completeSorter);
 			} catch (Exception exception) {
 				System.out.println(exception.getMessage());
 			}
@@ -433,8 +441,8 @@ public class Payment_controller
 				java.util.List<RowFilter<Object, Object>> filters = new ArrayList<RowFilter<Object, Object>>(1);
 				filters.add(RowFilter.regexFilter("(?i)" + txt_failSearch.getText(), 1));
 				RowFilter<Object, Object> serviceFilter = RowFilter.andFilter(filters);
-				sorter.setRowFilter(serviceFilter);
-				tblFail.setRowSorter(sorter);
+				failSorter.setRowFilter(serviceFilter);
+				tblFail.setRowSorter(failSorter);
 			} catch (Exception exception) {
 				System.out.println(exception.getMessage());
 			}
