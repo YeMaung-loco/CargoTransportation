@@ -128,9 +128,9 @@ public class Delivery_View {
 		panel_deselect.setLayout(null);
 		panel_deselect.setBounds(22, 79, 33, 33);
 		
-		btnDeselect.setText("Deselect");
-		btnDeselect.setBounds(22, 79, 100, 32);
-		panel.add(btnDeselect);
+	//	btnDeselect.setText("Deselect");
+	//	btnDeselect.setBounds(22, 79, 100, 32);
+	//	panel.add(btnDeselect);
 	//	panel_deselect.add(deselectLable);
 
 	//	panel.add(panel_deselect);

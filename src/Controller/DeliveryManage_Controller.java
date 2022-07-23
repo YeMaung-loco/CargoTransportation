@@ -56,6 +56,7 @@ public class DeliveryManage_Controller
 	JTextField txt_search;
 	String order_no;
 	List<String> assignList = new ArrayList<>();
+	List<Integer> assignModelList = new ArrayList<>();
 	JComboBox<String> combodestination;
 
 	public DeliveryManage_Controller(JFrame frame) {
@@ -179,8 +180,9 @@ public class DeliveryManage_Controller
 		for (int i = 0; i < tblorder.getModel().getRowCount(); i++) {
 			if ((Boolean) tblorder.getModel().getValueAt(i, 0)) {
 				assignList.add((String) tblorder.getModel().getValueAt(i, 2));
-				System.out.println(">\t" + tblorder.getModel().getValueAt(i, 2));
-
+			//	System.out.println(">\t" + tblorder.getModel().getValueAt(i, 2));
+				///for deselect///
+				assignModelList.add((Integer) tblorder.getValueAt(i, 1)-1);
 			}
 		}
 	}
@@ -247,7 +249,8 @@ public class DeliveryManage_Controller
 
 			if (e.getClickCount() == 2) {
 				if (tblorder.getSelectedColumn() == 0) {
-					model_OrderAssign.setValueAt(tblorder.getSelectedRow(), tblorder.getSelectedColumn());
+					model_OrderAssign.setValueAt(tblorder.convertRowIndexToModel(tblorder.getSelectedRow()),
+							tblorder.getSelectedColumn());
 
 				}
 
@@ -257,9 +260,10 @@ public class DeliveryManage_Controller
 	}
 
 	private void deselectOrder() {
+		collectAssign();
 		System.out.println("Deselect click");
 		TableModel_OrderAssign model = (TableModel_OrderAssign) tblorder.getModel();
-		model.clearChecks();
+		model.clearChecks(assignModelList);
 
 	}
 
