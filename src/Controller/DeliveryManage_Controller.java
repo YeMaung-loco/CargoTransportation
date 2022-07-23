@@ -70,19 +70,21 @@ public class DeliveryManage_Controller implements ActionListener, MouseListener,
 	}
 
 	private void initController() {
-		
+
 		if (CurrentUserHolder.getCurrentUser().getRole().getRole_name().equals("Admin")) {
-			navigation_panel.getPanel_btnStaff().addMouseListener(this);
-			navigation_panel.getPanel_btnSetPrice().addMouseListener(this);
+			// navigation_panel.getPanel_btnStaff().addMouseListener(this);
+			// navigation_panel.getPanel_btnSetPrice().addMouseListener(this);
+			panel_btnAccount.addMouseListener(this);
+			panel_btnSetprice.addMouseListener(this);
 		}
 
 		deliveryManage_panel.getBtnSelectdelivery().addActionListener(this);
 
-		//panel_btnAccount.addMouseListener(this);
+		navigation_panel.getPanel_btnLogout().addMouseListener(this);
 		panel_btnOrderInput.addMouseListener(this);
-		//panel_btnSetprice.addMouseListener(this);
 		panel_btnApprove.addMouseListener(this);
 		panel_deselect.addMouseListener(this);
+
 		
 		btnDeselect.addActionListener(this);
 
@@ -100,8 +102,8 @@ public class DeliveryManage_Controller implements ActionListener, MouseListener,
 		panel_btnApprove = navigation_panel.getPanel_btn_approve();
 
 		panel_deselect = deliveryManage_panel.getPanel_Deselect();
-		
-		btnDeselect=deliveryManage_panel.getBtnDeselect();
+
+		btnDeselect = deliveryManage_panel.getBtnDeselect();
 
 		tblorder = deliveryManage_panel.getTblorder();
 
@@ -112,15 +114,15 @@ public class DeliveryManage_Controller implements ActionListener, MouseListener,
 		deliveryManage_panel = new Delivery_View(frame);
 
 		navigation_panel.getPanel_btnDelivery().setBackground(new Color(218, 165, 32));
-		
+
 		if (CurrentUserHolder.getCurrentUser().getRole().getRole_name().equals("Office Staff")) {
 			// office_view.getPanel_btnSetPrice().setVisible(false);
-			ImageIcon disableIcon=new ImageIcon(
+			ImageIcon disableIcon = new ImageIcon(
 					new ImageIcon("resource\\disable.png").getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH));
-			
+
 			JLabel iconManageStaff = navigation_panel.getIconManageStaff();
-			JLabel iconSetPrice=navigation_panel.getIconSetPrice();
-			
+			JLabel iconSetPrice = navigation_panel.getIconSetPrice();
+
 			iconSetPrice.setIcon(disableIcon);
 			iconManageStaff.setIcon(disableIcon);
 
@@ -154,10 +156,9 @@ public class DeliveryManage_Controller implements ActionListener, MouseListener,
 			assignList.clear();
 			collectAssign();
 			AssignDeliveryMan_Controller assignController = new AssignDeliveryMan_Controller(assignList);
-			
-			
+
 		}
-		if(e.getSource().equals(btnDeselect)) {
+		if (e.getSource().equals(btnDeselect)) {
 			deselectOrder();
 		}
 
@@ -191,16 +192,21 @@ public class DeliveryManage_Controller implements ActionListener, MouseListener,
 		if (e.getSource().equals(panel_btnApprove)) {
 			frame.remove(panel_delivery);
 			frame.remove(navigation_panel.getPanel_navigation());
-			Payment_controller payment_controlle=new Payment_controller(frame);
+			Payment_controller payment_controlle = new Payment_controller(frame);
+		}
+
+		if (e.getSource().equals(navigation_panel.getPanel_btnLogout())) {
+			frame.dispose();
+			Login_controller nextController = new Login_controller();
 		}
 
 		if (e.getSource().equals(tblorder)) {
 			if (tblorder.getSelectedColumn() == 8) {
 				frame.remove(deliveryManage_panel.getPanel());
 				frame.remove(navigation_panel.getPanel_navigation());
-				//OrderManage_controller orderManage_controller = null;
-				Orderdetail_controller orderdetail_controller = new Orderdetail_controller(this, null,
-						null,order_no, frame);
+				// OrderManage_controller orderManage_controller = null;
+				Orderdetail_controller orderdetail_controller = new Orderdetail_controller(this, null, null, order_no,
+						frame);
 
 			}
 
@@ -250,12 +256,9 @@ public class DeliveryManage_Controller implements ActionListener, MouseListener,
 	public void valueChanged(ListSelectionEvent e) {
 		if (!tblorder.getSelectionModel().isSelectionEmpty()) {
 			order_no = model_OrderAssign.getOrder_no(tblorder.convertRowIndexToModel(tblorder.getSelectedRow()));
-			
+
 		}
 
 	}
-	
-	
-	
 
 }

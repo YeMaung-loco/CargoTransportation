@@ -215,8 +215,8 @@ public class OrderManage_controller
 
 		office_view.getPanel_btnOrder().addMouseListener(this);
 		office_view.getPanel_btnDelivery().addMouseListener(this);
-
 		office_view.getPanel_btn_approve().addMouseListener(this);
+		office_view.getPanel_btnLogout().addMouseListener(this);
 
 		btnAdd.addActionListener(this);
 		btnDelete.addActionListener(this);
@@ -248,7 +248,8 @@ public class OrderManage_controller
 		txtc_name.setText(order == null ? "" : order.getCustomer().getName());
 		txtc_phone.setText(order == null ? "" : order.getCustomer().getPhone());
 		txtc_address.setText(order == null ? "" : order.getCustomer().getAddress());
-		comboDestination.setSelectedIndex(order == null ? 0 : order.getDestination().getId());
+		comboDestination.setSelectedItem(order == null ? 0 : order.getDestination().getDestinationName());
+
 		lblOrderId.setText(order == null ? "" : order.getOrder_no());
 		lblFee.setText(order == null ? "" : String.valueOf(order.getTransportationfees()));
 		if (order != null) {
@@ -527,6 +528,11 @@ public class OrderManage_controller
 			containerFrame.remove(order_Panel.getPanelOrderList());
 			containerFrame.remove(office_view.getPanel_navigation());
 			Payment_controller payment_controlle = new Payment_controller(containerFrame);
+		}
+
+		if (e.getSource().equals(office_view.getPanel_btnLogout())) {
+			containerFrame.dispose();
+			Login_controller nextController = new Login_controller();
 		}
 	}
 

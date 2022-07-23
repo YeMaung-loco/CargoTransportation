@@ -158,7 +158,6 @@ public class Payment_controller
 
 	private void initController() {
 		tabbedPane.addChangeListener(this);
-
 		btn_export.addActionListener(this);
 
 		if (CurrentUserHolder.getCurrentUser().getRole().getRole_name().equals("Admin")) {
@@ -168,6 +167,7 @@ public class Payment_controller
 
 		navigationPanel.getPanel_btnDelivery().addMouseListener(this);
 		navigationPanel.getPanel_btnOrder().addMouseListener(this);
+		navigationPanel.getPanel_btnLogout().addMouseListener(this);
 
 		tblPending.addMouseListener(this);
 		tblPending.getSelectionModel().addListSelectionListener(this);
@@ -267,6 +267,11 @@ public class Payment_controller
 			frame.remove(navigationPanel.getPanel_navigation());
 			frame.remove(tabbedPane);
 			SetPrice_controller nexController = new SetPrice_controller(frame);
+		}
+
+		if (e.getSource().equals(navigationPanel.getPanel_btnLogout())) {
+			frame.dispose();
+			Login_controller nextController = new Login_controller();
 		}
 
 		if (e.getSource().equals(tblRequesting)) {
