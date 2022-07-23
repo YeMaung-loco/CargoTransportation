@@ -167,6 +167,9 @@ public class Payment_controller
 		tblRequesting.addMouseListener(this);
 
 		txt_pendingSearch.addCaretListener(this);
+		txt_failSearch.addCaretListener(this);
+		txt_completeSearch.addCaretListener(this);
+		txt_requestingSearch.addCaretListener(this);
 	}
 
 	private void pendingShowList() {
@@ -340,6 +343,42 @@ public class Payment_controller
 			}
 
 		}
+		if (e.getSource().equals(txt_requestingSearch)) {
+			try {
+				java.util.List<RowFilter<Object, Object>> filters = new ArrayList<RowFilter<Object, Object>>(1);
+				filters.add(RowFilter.regexFilter("(?i)" + txt_requestingSearch.getText(), 1));
+				RowFilter<Object, Object> serviceFilter = RowFilter.andFilter(filters);
+				sorter.setRowFilter(serviceFilter);
+				tblRequesting.setRowSorter(sorter);
+			} catch (Exception exception) {
+				System.out.println(exception.getMessage());
+			}
+
+		}
+		if (e.getSource().equals(txt_completeSearch)) {
+			try {
+				java.util.List<RowFilter<Object, Object>> filters = new ArrayList<RowFilter<Object, Object>>(1);
+				filters.add(RowFilter.regexFilter("(?i)" + txt_completeSearch.getText(), 1));
+				RowFilter<Object, Object> serviceFilter = RowFilter.andFilter(filters);
+				sorter.setRowFilter(serviceFilter);
+				tblComplete.setRowSorter(sorter);
+			} catch (Exception exception) {
+				System.out.println(exception.getMessage());
+			}
+
+		}
+		if (e.getSource().equals(txt_failSearch)) {
+			try {
+				java.util.List<RowFilter<Object, Object>> filters = new ArrayList<RowFilter<Object, Object>>(1);
+				filters.add(RowFilter.regexFilter("(?i)" + txt_failSearch.getText(), 1));
+				RowFilter<Object, Object> serviceFilter = RowFilter.andFilter(filters);
+				sorter.setRowFilter(serviceFilter);
+				tblFail.setRowSorter(sorter);
+			} catch (Exception exception) {
+				System.out.println(exception.getMessage());
+			}
+
+		}
 
 	}
 
@@ -368,5 +407,20 @@ public class Payment_controller
 			}
 		}
 	}
+	/*
+	 * @Override public void caretUpdate(CaretEvent e) { if
+	 * (e.getSource().equals(txt_pendingsearch)) { try {
+	 * java.util.List<RowFilter<Object, Object>> filters = new
+	 * ArrayList<RowFilter<Object, Object>>(1);
+	 * filters.add(RowFilter.regexFilter("(?i)" + txt_search.getText(), 1));
+	 * System.out.println(searchComboDestination.getSelectedItem().toString());
+	 * RowFilter<Object, Object> serviceFilter = RowFilter.andFilter(filters);
+	 * sorter.setRowFilter(serviceFilter); tblorder.setRowSorter(sorter); } catch
+	 * (Exception exception) { System.out.println(exception.getMessage()); }
+	 * 
+	 * }
+	 * 
+	 * }
+	 */
 
 }

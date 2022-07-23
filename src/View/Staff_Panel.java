@@ -36,7 +36,7 @@ public class Staff_Panel extends JFrame {
 	JRadioButton rdbtnOffice, rdbtnDelivery;
 	JCheckBox chckbxupload, chckbxManage;
 	JTextArea txtareaAddress;
-	JButton btnSave, btnUpdate, btnDelete, btnMinimize, btnMaximize;
+	JButton btnSave, btnUpdate, btnDelete, btnMinimize, btnMaximize,btnCreate,btnEdit;
 
 	JTable tblStaff;
 	JScrollPane scrollPane;
@@ -129,6 +129,9 @@ public class Staff_Panel extends JFrame {
 		btnUpdate = new JButton();
 		btnDelete = new JButton();
 		btnClear = new JButton();
+		btnCreate=new JButton();
+		btnUpdate=new JButton();
+		btnEdit=new JButton();
 
 		panel_list = new JPanel();
 		txtsearch = new JTextField();
@@ -243,6 +246,7 @@ public class Staff_Panel extends JFrame {
 		btnMinimize.setText("Minimize");
 		btnMinimize.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnMinimize.setBounds(987, 10, 129, 32);
+		
 
 		btnSave.setText("Save");
 		btnSave.setFont(new Font("Tahoma", Font.BOLD, 16));
@@ -252,6 +256,16 @@ public class Staff_Panel extends JFrame {
 		btnUpdate.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnUpdate.setBounds(238, 259, 130, 32);
 
+		btnCreate.setText("Create Account");
+		btnCreate.setFont(new Font("Tahoma", Font.BOLD,16));
+		btnCreate.setBounds(801,259,170,32);
+		
+		btnEdit.setText("Update Account");
+		btnEdit.setFont(new Font("Tahoma", Font.BOLD,16));
+		btnEdit.setBounds(801,259,170,32);
+		btnEdit.setVisible(false);
+		
+		
 		btnDelete.setText("Delete");
 		btnDelete.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnDelete.setBounds(420, 259, 130, 32);
@@ -304,6 +318,9 @@ public class Staff_Panel extends JFrame {
 		panel_inputForm.add(btnUpdate);
 		panel_inputForm.add(btnSave);
 		panel_inputForm.add(btnClear);
+		panel_inputForm.add(btnCreate);
+		panel_inputForm.add(btnEdit);
+		
 
 		panel_inputForm.add(comboDepartment);
 
@@ -390,6 +407,12 @@ public class Staff_Panel extends JFrame {
 
 	public JPanel getPanel_create() {
 		return panel_inputForm;
+	}
+	public JButton getBtnCreate() {
+		return btnCreate;
+	}
+	public JButton getBtnedit() {
+		return btnEdit;
 	}
 
 	public JPanel getPanel_list() {

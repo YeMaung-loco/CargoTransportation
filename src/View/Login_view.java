@@ -39,6 +39,7 @@ public class Login_view {
 		lblUsername = new JLabel();
 		lblUsername.setBounds(43, 119, 160, 48);
 		txtUsername = new JTextField();
+	    txtUsername.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		txtUsername.setBounds(233, 206, 217, 54);
 		lblPassword = new JLabel();
 		lblPassword.setBounds(43, 226, 138, 48);
@@ -48,6 +49,7 @@ public class Login_view {
 		lblcargo.setBounds(59, 27, 353, 35);
 		passwordField = new JPasswordField();
 		passwordField.setBounds(233, 304, 217, 54);
+		passwordField.setFont(new Font("Tahoma", Font.PLAIN, 17));
 
 	}
 

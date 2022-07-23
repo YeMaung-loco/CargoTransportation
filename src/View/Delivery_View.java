@@ -4,6 +4,7 @@ import java.awt.Font;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -21,7 +22,7 @@ public class Delivery_View {
 	private JLabel lbltitle, lblfilter, lblsearchOrderid, lblsearchDestination;
 	JLabel deselectLable;
 	private JTextField txtOrderid, txtDestination;
-
+    private JComboBox combodestination;
 	private JPanel panel;
 	JPanel panel_deselect;
 	private JButton btnSelectdelivery ,btnDeselect;
@@ -59,7 +60,7 @@ public class Delivery_View {
 		lblsearchOrderid = new JLabel();
 		lblsearchDestination = new JLabel();
 		txtOrderid = new JTextField();
-		txtDestination = new JTextField();
+		combodestination=new JComboBox();
 		btnSelectdelivery = new JButton();
 		scrollPane = new JScrollPane();
 		tblorder = new JTable();
@@ -105,10 +106,14 @@ public class Delivery_View {
 		btnSelectdelivery.setBounds(920, 684, 146, 33);
 		panel.add(btnSelectdelivery);
 
-		txtDestination = new JTextField();
-		txtDestination.setColumns(10);
-		txtDestination.setBounds(524, 79, 200, 35);
-		panel.add(txtDestination);
+//		txtDestination = new JTextField();
+//		txtDestination.setColumns(10);
+//		txtDestination.setBounds(524, 79, 200, 35);
+//		panel.add(txtDestination);
+		combodestination.setFont(new Font("Tahoma",Font.PLAIN,17));
+		combodestination.setBounds(524,79,200,35);
+		panel.add(combodestination);
+		
 
 		lblsearchDestination = new JLabel("Destination");
 		lblsearchDestination.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -134,9 +139,7 @@ public class Delivery_View {
 			frame.getContentPane().add(panel);
 	}
 
-	public JTextField getTxtDestination() {
-		return txtDestination;
-	}
+	
 
 	public JTextField getTxtOrderid() {
 		return txtOrderid;
@@ -164,6 +167,9 @@ public class Delivery_View {
 	
 	public JButton getBtnDeselect() {
 		return btnDeselect;
+	}
+	public JComboBox getCombo() {
+		return combodestination;
 	}
 
 }

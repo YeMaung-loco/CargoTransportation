@@ -538,11 +538,15 @@ public class OrderManage_controller
 	@Override
 	public void itemStateChanged(ItemEvent e) {
 		if (e.getSource().equals(searchComboDestination)) {
+			
 			if (0 != searchComboDestination.getSelectedIndex())
 				try {
+					
 					java.util.List<RowFilter<Object, Object>> filters = new ArrayList<RowFilter<Object, Object>>(1);
 					filters.add(RowFilter.regexFilter(searchComboDestination.getSelectedItem().toString(), 4));
+					System.out.println();
 					RowFilter<Object, Object> serviceFilter = RowFilter.andFilter(filters);
+					System.out.println(serviceFilter);
 					sorter.setRowFilter(serviceFilter);
 					tblorder.setRowSorter(sorter);
 				} catch (Exception exception) {
@@ -555,7 +559,7 @@ public class OrderManage_controller
 
 	}
 
-	@Override
+	@Override 
 	public void valueChanged(ListSelectionEvent e) {
 		if (!tblorder.getSelectionModel().isSelectionEmpty()) {
 			order_no = model_Order.getOrder_no(tblorder.convertRowIndexToModel(tblorder.getSelectedRow()));

@@ -45,7 +45,7 @@ public class Complete_panel extends JPanel {
 		setLayout(null);
 		
 		btnExport=new JButton("Export to Excel");
-		btnExport.setBounds(100, 73, 150, 35);
+		btnExport.setBounds(20, 73, 150, 35);
 		add(btnExport);
 		
 		

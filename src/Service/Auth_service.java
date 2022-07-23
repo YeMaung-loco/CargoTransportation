@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 import Mapper.Staff_mapper;
+import Model.Authenticate;
 import Model.Staff;
 import config.DBConfig;
 
@@ -29,7 +30,7 @@ public class Auth_service {
                     PreparedStatement ps=connection.prepareStatement(" select * from cargotransportation.staff inner join department on department.department_id=staff.department_id "
                     +"inner join role on role.role_id=staff.role_id "
                    +" where staff.staff_id= (select staff_id from cargotransportation.authenticate where username=\""+username+"\" and password=\""+password+"\");");
-                    System.out.println(ps);
+                    
 //	            ps.setString(1,username);
 //	            ps.setString(2, password);
 	            ResultSet rs= ps.executeQuery();
@@ -66,5 +67,50 @@ public class Auth_service {
 
 			return staff;
 		}
+	    public int checkStaffid(int staff_id,Authenticate auth) {
+	    	int status=0; 
+	    	try {
+	    		PreparedStatement ps=connection.prepareStatement("select * from cargotransportation.authenticate where staff_id=" +staff_id+ ";");
+	    		ResultSet rs=ps.executeQuery();
+	    		if(rs.next()) {
+	    			status=rs.getInt("staff_id");
+	    		}
+	    	
+	    }catch(SQLException e) {
+	    	e.printStackTrace();
+	    }
+	    	return status;
+	    }
+	   
+	    public int createAccount(int staff_id,Authenticate auth) {
+	    	
+	    	int status=0;
+	    	try {
+	    		PreparedStatement ps=connection.prepareStatement("insert into cargotransportation.authenticate(staff_id,username,password)values(?,?,?)");
+	    		//ps.setInt(1, 2);
+	    		ps.setInt(1, staff_id);
+	    		ps.setString(2, auth.getUsername());
+	    		ps.setString(3, auth.getPassword());
+	    		status=ps.executeUpdate();
+	    		ps.close();
+	    		
+	    	}catch(SQLException e) {
+	    		e.printStackTrace();
+	    	}
+	    	return status;
+	    	
+	    }
+	    public int updateAccount(int id,Authenticate auth) {
+	    	int status=0;
+	    	try {
+	    		PreparedStatement ps=connection.prepareStatement("update cargotransportation.authenticate set username=?,password=? where staff_id=" +id+ ";");
+	    		ps.setString(1, auth.getUsername());
+	    		ps.setString(2, auth.getPassword());
+	    		status=ps.executeUpdate();
+	    		ps.close();
+	    	}catch(SQLException e) {
+	    		e.printStackTrace();
+	    	}return status;
+	    }
 	    
 }

@@ -27,9 +27,11 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableRowSorter;
 
+import Model.Authenticate;
 import Model.Department;
 import Model.Role;
 import Model.Staff;
+import Service.Auth_service;
 import Service.Department_service;
 import Service.Staff_Service;
 import TableModel.TableModel_Staff;
@@ -42,6 +44,7 @@ public class CreateAccount_controller implements ActionListener, MouseListener, 
 	Office_view office_view;
 	Staff_Panel cePanel;
 	Staff staff;
+	Authenticate auth;
 	TableModel_Staff model_Staff;
 	JTable table;
 
@@ -56,8 +59,9 @@ public class CreateAccount_controller implements ActionListener, MouseListener, 
 	JCheckBox chckbxupload, chckbxManage, chckActive;
 	JComboBox<String> comboDepartment;
 
-	JButton btnSave, btnUpdate, btnDelete, btnClear, btnMinimize, btnMaximize, btnSearch;
+	JButton btnSave, btnUpdate, btnDelete, btnClear, btnMinimize, btnMaximize, btnSearch,btnCreate,btnEdit;
 	Staff_Service staff_Service;
+	Auth_service auth_Service;
 	Department_service department_Service;
 	int temp_id;
 
@@ -76,6 +80,7 @@ public class CreateAccount_controller implements ActionListener, MouseListener, 
 		try {
 			this.staff_Service = new Staff_Service();
 			this.department_Service = new Department_service();
+			this.auth_Service=new Auth_service();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -93,6 +98,9 @@ public class CreateAccount_controller implements ActionListener, MouseListener, 
 		btnSearch = cePanel.getBtnSearch();
 		btnMaximize = cePanel.getBtnMaximize();
 		btnMinimize = cePanel.getBtnMinimize();
+		btnCreate=cePanel.getBtnCreate();
+		btnEdit=cePanel.getBtnedit();
+		btnCreate.setVisible(false);
 
 		txtName = cePanel.getTxtName();
 		txtPhone = cePanel.getTxtPhone();
@@ -128,6 +136,8 @@ public class CreateAccount_controller implements ActionListener, MouseListener, 
 		btnClear.addActionListener(this);
 		btnDelete.addActionListener(this);
 		btnUpdate.addActionListener(this);
+		btnCreate.addActionListener(this);
+		btnEdit.addActionListener(this);
 
 		table.addMouseListener(this);
 		table.getSelectionModel().addListSelectionListener(this);
@@ -237,6 +247,17 @@ public class CreateAccount_controller implements ActionListener, MouseListener, 
 	}
 
 	private void edit() {
+		auth=new Authenticate();
+		int status=auth_Service.checkStaffid(temp_id, auth);
+		System.out.println(status);
+		if(status>0) {
+			btnCreate.setVisible(false);
+		btnEdit.setVisible(true);
+		}else {
+			btnEdit.setVisible(false);
+			btnCreate.setVisible(true);
+			
+		}
 		Staff staff = new Staff();
 		staff = staff_Service.getstaffById(temp_id);
 		dataToView(staff);
@@ -411,6 +432,13 @@ public class CreateAccount_controller implements ActionListener, MouseListener, 
 		}
 		if (e.getSource().equals(btnUpdate)) {
 			update();
+		}
+		if(e.getSource().equals(btnCreate)) {
+			new Create_controller(temp_id);
+		}
+		if(e.getSource().equals(btnEdit)) {
+			
+			new Create_controller(temp_id);
 		}
 	}
 

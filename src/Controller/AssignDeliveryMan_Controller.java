@@ -57,13 +57,14 @@ public class AssignDeliveryMan_Controller implements ActionListener, ListSelecti
 		btn_Confirm.addActionListener(this);
 		tblDelivery.addMouseListener(this);
 		tblDelivery.getSelectionModel().addListSelectionListener(this);
-		;
+		
 
 	}
 
 	private void initComponents() {
 		tblDelivery = deliManView.gettblDelivery();
 		btn_Confirm = deliManView.getbtnconfirm();
+		
 
 	}
 
