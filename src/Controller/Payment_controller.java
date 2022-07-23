@@ -186,6 +186,12 @@ public class Payment_controller
 
 		tblRequesting.getSelectionModel().addListSelectionListener(this);
 		tblRequesting.addMouseListener(this);
+		
+		tblComplete.getSelectionModel().addListSelectionListener(this);
+		tblComplete.addMouseListener(this);
+		
+		tblFail.getSelectionModel().addListSelectionListener(this);
+		tblFail.addMouseListener(this);
 
 		txt_pendingSearch.addCaretListener(this);
 		txt_failSearch.addCaretListener(this);
@@ -352,6 +358,20 @@ public class Payment_controller
 
 			}
 		}
+		if(e.getSource().equals(tblComplete)) {
+			if(tblComplete.getSelectedColumn()==7) {
+				frame.remove(navigationPanel.getPanel_navigation());
+				frame.remove(tabbedPane);
+				Orderdetail_controller nextController=new Orderdetail_controller(null,null,this,order_no,frame);
+			}
+		}
+		if(e.getSource().equals(tblFail)) {
+			if(tblFail.getSelectedColumn()==7) {
+				frame.remove(navigationPanel.getPanel_navigation());
+				frame.remove(tabbedPane);
+				Orderdetail_controller nextController=new Orderdetail_controller(null,null,this,order_no,frame);
+			}
+		}
 
 	}
 
@@ -394,6 +414,16 @@ public class Payment_controller
 			System.out.println("Request Table -" + order_no);
 
 		}
+		if(!tblComplete.getSelectionModel().isSelectionEmpty()) {
+			order_no=model_completeOrder.getOrder_no(tblComplete.convertRowIndexToModel(tblComplete.getSelectedRow()));
+			
+		}
+		if(!tblFail.getSelectionModel().isSelectionEmpty()) {
+			order_no=model_failOrder.getOrder_no(tblFail.convertRowIndexToModel(tblFail.getSelectedRow()));
+				order_no=model_failOrder.getOrder_no(tblFail.convertRowIndexToModel(tblFail.getSelectedRow()));
+			}
+			
+		
 
 	}
 
