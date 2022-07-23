@@ -25,6 +25,7 @@ import Service.DestinationPrice_service;
 import Service.WeightPrice_service;
 import TableModel.TableModel_Destination;
 import TableModel.TableModel_Weight;
+import Utility.Checking;
 import View.Office_view;
 import View.SetPrice_Panel;
 
@@ -130,23 +131,49 @@ public class SetPrice_controller implements MouseListener, ActionListener, ListS
 
 	}
 
-	void setDestinationModel() {
-		destination = new Destination();
-		String destinationName = txt_destinationName.getText();
-		int price = Integer.parseInt(txt_destinationprice.getText());
-		destination.setDestinationName(destinationName);
-		destination.setPrice(price);
-		// return false;
+	boolean setDestinationModel() {
+		boolean setmodel = false;
+
+		if (!txt_destinationName.getText().equals("") && !txt_destinationprice.getText().equals("")) {
+			if (Checking.IsAllDigit(txt_destinationprice.getText())) {
+				destination = new Destination();
+				String destinationName = txt_destinationName.getText();
+				int price = Integer.parseInt(txt_destinationprice.getText());
+				destination.setDestinationName(destinationName);
+				destination.setPrice(price);
+
+				setmodel = true;
+			} else {
+				alert("Input properly!");
+			}
+		} else {
+			alert("Input properly!");
+		}
+		return setmodel;
 
 	}
 
-	void setWeightModel() {
-		weight = new Weight();
-		int price = Integer.parseInt(txt_weightprice.getText());
-		int kg = Integer.parseInt(txt_startweight_1.getText());
-		weight.setId(weight_service.getLastWeightId() + 1);
-		weight.setWeightprice(price);
-		weight.setWeight_kg(kg);
+	boolean setWeightModel() {
+		boolean setmodel = false;
+		if (!txt_destinationName.getText().equals("") && !txt_destinationprice.getText().equals("")) {
+			if (Checking.IsAllDigit(txt_destinationprice.getText())) {
+				weight = new Weight();
+				int price = Integer.parseInt(txt_weightprice.getText());
+				int kg = Integer.parseInt(txt_startweight_1.getText());
+				weight.setId(weight_service.getLastWeightId() + 1);
+				weight.setWeightprice(price);
+				weight.setWeight_kg(kg);
+
+				setmodel = true;
+			} else {
+				alert("Input properly!");
+			}
+
+		} else {
+			alert("Input properly!");
+		}
+		return setmodel;
+
 	}
 
 	private void dependencyInjection() {
@@ -339,18 +366,20 @@ public class SetPrice_controller implements MouseListener, ActionListener, ListS
 	}
 
 	private void saveWeight() {
-		setWeightModel();
-		int status = weight_service.createweightPrice(weight);
 
-		System.out.println(weight.getWeight_kg());
-		if (status > 0) {
-			if (model_Weight != null)
-				model_Weight.insertRow(weight);
+		if (setWeightModel()) {
+			int status = weight_service.createweightPrice(weight);
 
-			alert("Successfully Saved!");
+			System.out.println(weight.getWeight_kg());
+			if (status > 0) {
+				if (model_Weight != null)
+					model_Weight.insertRow(weight);
 
-		} else {
-			alert("Failed Save!");
+				alert("Successfully Saved!");
+
+			} else {
+				alert("Failed Save!");
+			}
 		}
 		weight = null;
 		weightdataToView(weight);
@@ -383,16 +412,18 @@ public class SetPrice_controller implements MouseListener, ActionListener, ListS
 	}
 
 	private void saveDestination() {
-		setDestinationModel();
-		int status = destination_service.createdestinationPrice(destination);
-		if (status > 0) {
-			if (model_Destination != null)
-				model_Destination.insertRow(destination);
+		if (setDestinationModel()) {
+			int status = destination_service.createdestinationPrice(destination);
+			if (status > 0) {
+				if (model_Destination != null)
+					model_Destination.insertRow(destination);
 
-			alert("Successfully Saved!");
+				alert("Successfully Saved!");
 
-		} else {
-			alert("Failed Save!");
+			} else {
+				alert("Failed Save!");
+			}
+
 		}
 		destination = null;
 		destinationdataToView(destination);

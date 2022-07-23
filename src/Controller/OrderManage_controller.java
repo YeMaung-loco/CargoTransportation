@@ -48,6 +48,7 @@ import Service.Order_service;
 import Service.Package_service;
 import Service.WeightPrice_service;
 import TableModel.TableModel_Order;
+import Utility.Checking;
 import Utility.ExportDataToExcel;
 import Utility.Prefix;
 import View.Office_view;
@@ -278,29 +279,31 @@ public class OrderManage_controller
 	boolean setModel() {
 		boolean flag = false;
 		if (!txtc_name.getText().equals("") && !txtc_phone.getText().equals("") && !txtc_address.getText().equals("")) {
-			customer = new Customer();
-			customer.setId(customer_service.getLastCustomerId() + 1);
-			customer.setName(txtc_name.getText());
-			customer.setPhone(txtc_phone.getText());
-			customer.setAddress(txtc_address.getText());
+			if (Checking.IsValidName(txtc_name.getText()) && Checking.IsAllDigit(txtc_phone.getText())) {
+				customer = new Customer();
+				customer.setId(customer_service.getLastCustomerId() + 1);
+				customer.setName(txtc_name.getText());
+				customer.setPhone(txtc_phone.getText());
+				customer.setAddress(txtc_address.getText());
+
+				if (0 != comboDestination.getSelectedIndex()) {
+					order = new Order();
+					long millis = System.currentTimeMillis();
+					Destination destination = destination_service
+							.getDestinationByName(comboDestination.getSelectedItem().toString());
+
+					System.out.println("destination id and name" + comboDestination.getSelectedIndex());
+
+					order.setOrder_no(order_no);
+					order.setCustomer(customer);
+					order.setDestination(destination);
+					order.setDate(new java.sql.Date(millis));
+					flag = true;
+				}
+			}
 
 		}
 
-		if (0 != comboDestination.getSelectedIndex()) {
-			order = new Order();
-			long millis = System.currentTimeMillis();
-			Destination destination = destination_service
-					.getDestinationByName(comboDestination.getSelectedItem().toString());
-
-			// destination.setId(comboDestination.getSelectedIndex());
-			// destination.setDestinationName(comboDestination.getSelectedItem().toString());
-			System.out.println("destination id and name" + comboDestination.getSelectedIndex());
-			order.setOrder_no(order_no);
-			order.setCustomer(customer);
-			order.setDestination(destination);
-			order.setDate(new java.sql.Date(millis));
-			flag = true;
-		}
 		return flag;
 	}
 
@@ -328,7 +331,7 @@ public class OrderManage_controller
 			String weight = JOptionPane.showInputDialog(containerFrame, packageId, "Input weight in kg",
 					JOptionPane.INFORMATION_MESSAGE);
 
-			if (weight != null && !weight.equals("")) {
+			if (weight != null && !weight.equals("") && Checking.IsAllDigit(weight)) {
 				if (!addedDestinationFee) {
 					addedDestinationFee = true;
 					int destinationPrice = destination_service.getdestinationPriceById(order.getDestination().getId());
@@ -352,6 +355,8 @@ public class OrderManage_controller
 					order_Panel.getPanel_Package().repaint();
 					// i++;
 				}
+			} else {
+				alert("Input properly!!");
 			}
 
 		}
@@ -576,10 +581,10 @@ public class OrderManage_controller
 	@Override
 	public void itemStateChanged(ItemEvent e) {
 		if (e.getSource().equals(searchComboDestination)) {
-			
+
 			if (0 != searchComboDestination.getSelectedIndex())
 				try {
-					
+
 					java.util.List<RowFilter<Object, Object>> filters = new ArrayList<RowFilter<Object, Object>>(1);
 					filters.add(RowFilter.regexFilter(searchComboDestination.getSelectedItem().toString(), 4));
 					System.out.println();
@@ -597,7 +602,7 @@ public class OrderManage_controller
 
 	}
 
-	@Override 
+	@Override
 	public void valueChanged(ListSelectionEvent e) {
 		if (!tblorder.getSelectionModel().isSelectionEmpty()) {
 			order_no = model_Order.getOrder_no(tblorder.convertRowIndexToModel(tblorder.getSelectedRow()));

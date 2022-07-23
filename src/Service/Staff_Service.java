@@ -160,6 +160,9 @@ public class Staff_Service {
 			status = ps.executeUpdate();
 			ps.close();
 		} catch (SQLException e) {
+			if (e instanceof SQLIntegrityConstraintViolationException)
+				JOptionPane.showMessageDialog(null, "Cant deleted. Staff is in service");
+			else
 			e.printStackTrace();
 		}
 		return status;

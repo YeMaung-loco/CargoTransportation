@@ -2,7 +2,9 @@ package Service;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import config.DBConfig;
@@ -12,15 +14,12 @@ public class Orderstaff_service {
 	private Connection connection;
 
 	public Orderstaff_service() {
-
 		try {
 			this.dbConfig = new DBConfig();
 			this.connection = dbConfig.getConnection();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
 
 	public boolean createOrder_staff(List<String> orderList, int staffId) {
@@ -40,5 +39,19 @@ public class Orderstaff_service {
 			e.printStackTrace();
 		}
 		return status == orderList.size();
+	}
+
+	public int deleteAssignByOrderNo(String order_no) {
+		int status = 0;
+		try {
+			PreparedStatement ps = connection.prepareStatement(
+					"delete from cargotransportation.order_staff where order_no=\"" + order_no + "\";");
+			status = ps.executeUpdate();
+			ps.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return status;
 	}
 }
