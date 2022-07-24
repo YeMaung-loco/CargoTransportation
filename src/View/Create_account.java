@@ -1,12 +1,10 @@
 package View;
 
-import java.awt.EventQueue;
-
+import java.awt.Font;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-import java.awt.Font;
-import javax.swing.JButton;
 
 public class Create_account {
 
@@ -15,37 +13,16 @@ public class Create_account {
 	private JTextField txt_password;
 	private JButton bntCreate,bntUpdate;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Create_account window = new Create_account();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
-	/**
-	 * Create the application.
-	 */
 	public Create_account() {
 		initialize();
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 507, 396);
 		frame.getContentPane().setLayout(null);
-		
+		frame.setVisible(true);		
 		
 		JLabel lblNewLabel = new JLabel("Username");
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 18));
@@ -76,9 +53,9 @@ public class Create_account {
 //		bntUpdate.setFont(new Font("Tahoma", Font.BOLD, 17));
 //		bntUpdate.setBounds(237, 279, 167, 36);
 //		bntUpdate.setVisible(false);
-		frame.getContentPane().add(bntUpdate);
-		frame.getContentPane().add(bntCreate);
-		frame.setVisible(true);
+		//frame.add(bntUpdate);
+		frame.add(bntCreate);
+		
 	}
 	public JTextField getTxt_username() {
 		return txt_username;

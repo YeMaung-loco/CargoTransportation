@@ -101,10 +101,10 @@ public class Auth_service {
 	    	return status;
 	    	
 	    }
-	    public Authenticate getDatabyId(int id) {
+	    public Authenticate getDatabyId(int temp_id) {
 	    	Authenticate auth=new Authenticate();
 	    	try {
-	    		PreparedStatement ps=connection.prepareStatement("select * from cargotransportation.authenticate where staff_id=" +id+ ";");
+	    		PreparedStatement ps=connection.prepareStatement("select * from cargotransportation.authenticate where staff_id=" +temp_id+ ";");
 	    		ResultSet rs=ps.executeQuery();
 	    		if(rs.next()) {
 	    			

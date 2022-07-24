@@ -59,11 +59,15 @@ public class Orderstaff_service {
 		return staffid;
 	}
 
-	public int deleteAssignByOrderNo(String order_no) {
+//	public int deleteAssignByOrderNo(String order_no) {
+//		
+//	}
+
+	public int deleteAssignByOrderNo(String deleteOrderNo) {
 		int status = 0;
 		try {
 			PreparedStatement ps = connection.prepareStatement(
-					"delete from cargotransportation.order_staff where order_no=\"" + order_no + "\";");
+					"delete from cargotransportation.order_staff where order_no=\"" + deleteOrderNo + "\";");
 			status = ps.executeUpdate();
 			ps.close();
 
