@@ -17,6 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -27,6 +28,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
+
+import org.apache.tools.ant.types.selectors.modifiedselector.Algorithm;
 
 import Model.CurrentUserHolder;
 import Model.Destination;
@@ -180,11 +183,12 @@ public class DeliveryManage_Controller
 		for (int i = 0; i < tblorder.getModel().getRowCount(); i++) {
 			if ((Boolean) tblorder.getModel().getValueAt(i, 0)) {
 				assignList.add((String) tblorder.getModel().getValueAt(i, 2));
-			//	System.out.println(">\t" + tblorder.getModel().getValueAt(i, 2));
-				///for deselect///
 				assignModelList.add((Integer) tblorder.getValueAt(i, 1)-1);
 			}
 		}
+	}
+	private void alert(String msg) {
+		JOptionPane.showMessageDialog(navigation_panel.getFrame(), msg);
 	}
 
 	@Override
@@ -192,8 +196,13 @@ public class DeliveryManage_Controller
 		if (e.getSource().equals(deliveryManage_panel.getBtnSelectdelivery())) {
 			assignList.clear();
 			collectAssign();
+			if(assignList.size()>0) {
 			AssignDeliveryMan_Controller assignController = new AssignDeliveryMan_Controller(assignList);
 
+			}
+			else {
+				alert("Select order to assign!!");
+			}
 		}
 		if (e.getSource().equals(btnDeselect)) {
 			deselectOrder();

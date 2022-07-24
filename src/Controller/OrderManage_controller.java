@@ -10,9 +10,6 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.beans.DesignMode;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,8 +34,6 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
-import com.mysql.cj.x.protobuf.MysqlxCrud.Update;
-
 import Model.CurrentUserHolder;
 import Model.Customer;
 import Model.Destination;
@@ -52,7 +47,6 @@ import Service.Package_service;
 import Service.WeightPrice_service;
 import TableModel.TableModel_Order;
 import Utility.Checking;
-import Utility.ExportDataToExcel;
 import Utility.Prefix;
 import View.Office_view;
 import View.Order_Panel;
@@ -90,6 +84,7 @@ public class OrderManage_controller
 
 	boolean insertCO = false;
 	boolean addedDestinationFee = false;
+	boolean updateState = false;
 	// JCheckBox[] checkBoxList = new JCheckBox[50];
 	HashMap<String, Integer> temp_packageList = new HashMap<String, Integer>();
 
@@ -188,6 +183,8 @@ public class OrderManage_controller
 		order_no = Prefix.getPrimaryKey("CO-", order_service.getLastOrderId() + 1);
 		lblOrderId.setText(order_no);
 		addedDestinationFee = false;
+		insertCO=false;
+		updateState = false;
 		System.out.println("Order_Controller initform" + order_no);
 	}
 
@@ -206,7 +203,7 @@ public class OrderManage_controller
 		btnUpdate = order_Panel.getBtnUpdate();
 		btnRemove = order_Panel.getBtnRemove();
 		btnClear = order_Panel.getBtnClear();
-		
+
 		comboDestination = order_Panel.getJcombo_destination();
 		searchComboDestination = order_Panel.getJcombo_destination_1();
 
@@ -243,6 +240,11 @@ public class OrderManage_controller
 
 	private void edit() {
 		insertCO = true;
+		updateState = true;
+
+		btnUpdate.setVisible(true);
+		btnDone.setVisible(false);
+
 		order = new Order();
 		order = order_service.getOrderById(order_no);
 		dataToView(order);
@@ -262,15 +264,13 @@ public class OrderManage_controller
 		comboDestination.setSelectedItem(order == null ? "-Select-" : order.getDestination().getDestinationName());
 
 		lblOrderId.setText(order == null ? "" : order.getOrder_no());
-		lblFee.setText(order == null ? "" : String.valueOf(order.getTransportationfees()) + " Ks");
+		lblFee.setText(order == null ? "" : String.valueOf(order.getTransportationfees()));
 		if (order != null) {
 			fee = order.getTransportationfees();
 			List<Package> packList = package_service.getPackageModelByOrderNo(order_no);
 			for (Package pack : packList) {
 				checkBoxList.add(new JCheckBox(pack.getPackage_id()));
-
 				int price = weightPrice.get(calculateWeight(0, weightkg.size() - 1, pack.getWeight()));
-
 				temp_packageList.put(pack.getPackage_id(), price);
 			}
 			for (JCheckBox checkBox : checkBoxList) {
@@ -283,33 +283,44 @@ public class OrderManage_controller
 
 			}
 		}
-
 	}
 
 	boolean setModel() {
 		boolean flag = false;
-		if (!txtc_name.getText().equals("") && !txtc_phone.getText().equals("") && !txtc_address.getText().equals("")) {
+		if (!txtc_name.getText().equals("") && !txtc_phone.getText().equals("") && !txtc_address.getText().equals("")
+				&& 0 != comboDestination.getSelectedIndex()) {
 			if (Checking.IsValidName(txtc_name.getText()) && Checking.IsAllDigit(txtc_phone.getText())) {
-				customer = new Customer();
-				customer.setId(customer_service.getLastCustomerId() + 1);
+				// order = new Order();
+				// customer = new Customer();
+				if (!updateState) {
+					order = new Order();
+					customer = new Customer();
+
+					customer.setId(customer_service.getLastCustomerId() + 1);
+				} else {
+
+					customer = new Customer();
+					customer.setId(order.getCustomer().getId());
+					order.setTransportationfees(Integer.parseInt(lblFee.getText()));
+				}
+
 				customer.setName(txtc_name.getText());
 				customer.setPhone(txtc_phone.getText());
 				customer.setAddress(txtc_address.getText());
 
-				if (0 != comboDestination.getSelectedIndex()) {
-					order = new Order();
-					long millis = System.currentTimeMillis();
-					Destination destination = destination_service
-							.getDestinationByName(comboDestination.getSelectedItem().toString());
+				long millis = System.currentTimeMillis();
+				Destination destination = destination_service
+						.getDestinationByName(comboDestination.getSelectedItem().toString());
 
-					System.out.println("destination id and name" + comboDestination.getSelectedIndex());
+				System.out.println("destination id and name" + comboDestination.getSelectedIndex());
 
-					order.setOrder_no(order_no);
-					order.setCustomer(customer);
-					order.setDestination(destination);
-					order.setDate(new java.sql.Date(millis));
-					flag = true;
-				}
+				order.setOrder_no(order_no);
+				order.setCustomer(customer);
+				order.setDestination(destination);
+
+				order.setDate(new java.sql.Date(millis));
+				flag = true;
+
 			}
 
 		}
@@ -344,7 +355,8 @@ public class OrderManage_controller
 			if (weight != null && !weight.equals("") && Checking.IsAllDigit(weight)) {
 				if (!addedDestinationFee) {
 					addedDestinationFee = true;
-					int destinationPrice = destination_service.getdestinationPriceById(order.getDestination().getId());
+					Destination destination= destination_service.getDestinationByName(comboDestination.getSelectedItem().toString());
+					int destinationPrice = destination.getPrice();
 					System.out.println("Destination Price-" + destinationPrice);
 					fee += destinationPrice;
 				}
@@ -360,7 +372,7 @@ public class OrderManage_controller
 					order_Panel.getPanel_Package().add(checkbox);
 					checkBoxList.add(checkbox);
 					temp_packageList.put(packageId, price);
-					lblFee.setText(String.valueOf(fee) + " Ks");
+					lblFee.setText(String.valueOf(fee));
 					order_Panel.getPanel_Package().revalidate();
 					order_Panel.getPanel_Package().repaint();
 					// i++;
@@ -388,7 +400,7 @@ public class OrderManage_controller
 					}
 
 					order.setTransportationfees(fee);
-					lblFee.setText(String.valueOf(fee) + " Ks");
+					lblFee.setText(String.valueOf(fee));
 
 					order_Panel.getPanel_Package().revalidate();
 					order_Panel.getPanel_Package().repaint();
@@ -421,6 +433,7 @@ public class OrderManage_controller
 
 				order = null;
 				dataToView(order);
+				newOrderId();
 
 			} else
 				alert("Delete Failed!");
@@ -462,6 +475,36 @@ public class OrderManage_controller
 		return index;
 	}
 
+	private void update() {
+		if (setModel()) {
+			if (fee != 0) {
+				int updateCustomer = customer_service.updateCustomer(order.getCustomer().getId(), customer);
+				int updateOrder = order_service.updateOrder(order.getOrder_no(), order);
+				if (updateCustomer > 0)
+					System.out.println("Success customer update");
+				if (updateOrder > 0)
+					System.out.println("Success order update");
+
+				if (updateCustomer > 0 && updateOrder > 0) {
+					updateState = true;
+					int modelRowIndex = tblorder.convertRowIndexToModel(tblorder.getSelectedRow());
+					model_Order.setValueAt(order, modelRowIndex);
+					alert("Update Successfully");
+				} else {
+					alert("Input Properly!!!");
+				}
+
+			} else {
+				done();
+			}
+		} else {
+			alert("Input required fields!!!");
+		}
+
+		btnUpdate.setVisible(false);
+		btnDone.setVisible(true);
+	}
+
 	private void done() {
 		if (fee != 0) {
 			order.setTransportationfees(fee);
@@ -486,6 +529,8 @@ public class OrderManage_controller
 			if (orderDeleteStatus > 0 && customerDeleteStatus > 0) {
 				model_Order.removeRow(modelRowIndex);
 			}
+
+			alert(order_no + " is deleted because there is no package");
 		}
 		order = null;
 		customer = null;
@@ -540,7 +585,6 @@ public class OrderManage_controller
 
 		if (e.getSource().equals(office_view.getPanel_btnStaff())) {
 			System.out.println("order manage btnstaff");
-
 			containerFrame.remove(order_Panel.getPanelCustomer());
 			containerFrame.remove(order_Panel.getPanelOrder());
 			containerFrame.remove(order_Panel.getPanelOrderList());
@@ -587,32 +631,25 @@ public class OrderManage_controller
 
 		if (e.getSource().equals(btnDelete))
 			removePackage();
-		// delete();
-
+		
 		if (e.getSource().equals(btn_viewDetail)) {
 			alert("View Detail");
 			System.out.println("View detail");
 		}
 
 		if (e.getSource().equals(btnUpdate)) {
-			Update();
+			update();
 		}
 		if (e.getSource().equals(btnRemove)) {
 			delete();
 
 		}
-		if(e.getSource().equals(btnClear)) {
-			order=null;
+		if (e.getSource().equals(btnClear)) {
+			order = null;
+			btnUpdate.setVisible(false);
+			btnDone.setVisible(true);
 			dataToView(order);
-		}
-
-	}
-
-	private void Update() {
-		if (setModel()) {
-			int updateCustomer = customer_service.updateCustomer(customer_id, customer);
-			int updateOrder = order_service.updateOrder(order_no, order);
-
+			newOrderId();
 		}
 
 	}

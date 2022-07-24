@@ -60,6 +60,25 @@ public class Order_service {
 		return status;
 
 	}
+	
+	public int updateOrderByNo(String order_no, Order order) {
+		int status = 0;
+		try {
+			PreparedStatement ps = connection.prepareStatement("Update cargotransportation.order set "
+					+ "transportation_fees=? ,destination_id=? where order_no=\"" + order_no + "\";");
+			// ps.setInt(1, order.getCustomer().getId());
+			// ps.setInt(2, order.getDestination().getId());
+			ps.setInt(1, order.getTransportationfees());
+			ps.setInt(2, order.getDestination().getId());
+			System.out.println("Fee-" + order.getTransportationfees());
+			status = ps.executeUpdate();
+			ps.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return status;
+
+	}
 
 	public int assignOrder(String order_no, boolean assign, String status) {
 		int query = 0;

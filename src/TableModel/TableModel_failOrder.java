@@ -50,6 +50,10 @@ public class TableModel_failOrder extends AbstractTableModel{
 		orderList.remove(rowIndex);
 		fireTableRowsDeleted(rowIndex, rowIndex);
 	}
+	public void removeAllRow() {
+		orderList.clear();
+		fireTableDataChanged();
+	}
 
 	public void insertRow(Order order) {
 		orderList.add(order);

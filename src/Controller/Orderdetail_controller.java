@@ -1,6 +1,7 @@
 package Controller;
 
 import java.awt.Color;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -9,6 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -19,6 +21,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.TableRowSorter;
 
+import Model.CurrentUserHolder;
 import Model.Customer;
 import Model.Destination;
 import Model.Order;
@@ -34,7 +37,6 @@ import Service.Staff_Service;
 import TableModel.TableModel_Package;
 import View.Office_view;
 import View.Orderdetail_view;
-import View.SetPrice_Panel;
 
 public class Orderdetail_controller implements ActionListener, MouseListener {
 
@@ -46,7 +48,7 @@ public class Orderdetail_controller implements ActionListener, MouseListener {
 	Package_service packageservice;
 	Department_service department_Service;
 	DestinationPrice_service destination_Service;
-    Staff_Service staffservice;
+	Staff_Service staffservice;
 	TableModel_Package model_package;
 
 	Customer customer;
@@ -58,9 +60,10 @@ public class Orderdetail_controller implements ActionListener, MouseListener {
 
 	JFrame frame;
 	// JPanel viewdetail;
-	JPanel panel_btn_Account, panel_btn_SetPrice, panel_btn_OrderMange;
+	JPanel panel_btn_Account, panel_btn_SetPrice, panel_btn_OrderMange, panel_btn_Approve, panel_btn_DeliManage;
 	JButton btnDelete, btnEdit, btnUpdate, btnBack;
-	JLabel lblorderid, lblprice, lblway, lblpayment, lblname, lblphone, lbladdress, lbldate,lblstatus,lbl_setstatus,lbldelivery,lbl_setdelivery;
+	JLabel lblorderid, lblprice, lblway, lblpayment, lblname, lblphone, lbladdress, lbldate, lblstatus, lbl_setstatus,
+			lbldelivery, lbl_setdelivery;
 	JTextField txtprice, txtpayment, txtname, txtphone, txtaddress, txtdate;
 	JComboBox<String> comboWay;
 	// Office_view office_view;
@@ -73,7 +76,7 @@ public class Orderdetail_controller implements ActionListener, MouseListener {
 	String order_no;
 	String temp_no;
 	TableRowSorter<TableModel_Package> sorter;
-    Orderstaff_service orderStaffservice;
+	Orderstaff_service orderStaffservice;
 	DeliveryManage_Controller deliveryManage_Controller;
 	OrderManage_controller orderManage_controller;
 	Payment_controller payment_controller;
@@ -84,10 +87,8 @@ public class Orderdetail_controller implements ActionListener, MouseListener {
 			deliveryManage_Controller = deliController;
 		if (orderController != null)
 			orderManage_controller = orderController;
-		if (pay_controller != null) 
+		if (pay_controller != null)
 			this.payment_controller = pay_controller;
-		
-	
 
 		this.frame = frame;
 		this.order_no = order_no;
@@ -110,8 +111,8 @@ public class Orderdetail_controller implements ActionListener, MouseListener {
 			this.destination_Service = new DestinationPrice_service();
 			this.customerservice = new Customer_service();
 			this.orderservice = new Order_service();
-			this.staffservice=new Staff_Service();
-			this.orderStaffservice=new Orderstaff_service();
+			this.staffservice = new Staff_Service();
+			this.orderStaffservice = new Orderstaff_service();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -133,15 +134,29 @@ public class Orderdetail_controller implements ActionListener, MouseListener {
 			navigationPanel.getPanel_btn_approve().setBackground(new Color(218, 165, 32));
 		}
 
+		if (CurrentUserHolder.getCurrentUser().getRole().getRole_name().equals("Office Staff")) {
+			ImageIcon disableIcon = new ImageIcon(
+					new ImageIcon("resource\\disable.png").getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH));
+
+			JLabel iconManageStaff = navigationPanel.getIconManageStaff();
+			JLabel iconSetPrice = navigationPanel.getIconSetPrice();
+
+			iconSetPrice.setIcon(disableIcon);
+			iconManageStaff.setIcon(disableIcon);
+
+		}
+
 	}
 
 	private void initComponents() {
 		/// viewdetail = odetail.getPanel_orderdetails();
-		lbldelivery=new JLabel();
-		lbl_setdelivery=new JLabel();
+		lbldelivery = new JLabel();
+		lbl_setdelivery = new JLabel();
 		panel_btn_Account = navigationPanel.getPanel_btnStaff();
 		panel_btn_OrderMange = navigationPanel.getPanel_btnOrder();
 		panel_btn_SetPrice = navigationPanel.getPanel_btnSetPrice();
+		panel_btn_DeliManage = navigationPanel.getPanel_btnDelivery();
+		panel_btn_Approve = navigationPanel.getPanel_btn_approve();
 
 		btnDelete = odetail.getBtndelete();
 		btnBack = odetail.getBtnback();
@@ -156,10 +171,10 @@ public class Orderdetail_controller implements ActionListener, MouseListener {
 		lblphone = odetail.getLbl_setphone();
 		lbladdress = odetail.getLbl_setaddress();
 		lbldate = odetail.getLbl_setdate();
-		lblstatus=odetail.getLblstatus();
-		lbl_setstatus=odetail.getLbl_setstatus();
-		lbldelivery=odetail.getLbldelivery();
-		lbl_setdelivery=odetail.getLblsetdelivery();
+		lblstatus = odetail.getLblstatus();
+		lbl_setstatus = odetail.getLbl_setstatus();
+		lbldelivery = odetail.getLbldelivery();
+		lbl_setdelivery = odetail.getLblsetdelivery();
 
 		txtprice = odetail.getTxt_orderprice();
 		txtpayment = odetail.getTxt_payment();
@@ -172,9 +187,15 @@ public class Orderdetail_controller implements ActionListener, MouseListener {
 	}
 
 	private void initController() {
-		panel_btn_Account.addMouseListener(this);
+
+		if (CurrentUserHolder.getCurrentUser().getRole().getRole_name().equals("Admin")) {
+			panel_btn_Account.addMouseListener(this);
+			panel_btn_SetPrice.addMouseListener(this);
+		}
+
+		panel_btn_DeliManage.addMouseListener(this);
 		panel_btn_OrderMange.addMouseListener(this);
-		panel_btn_SetPrice.addMouseListener(this);
+		panel_btn_Approve.addMouseListener(this);
 
 		btnDelete.addActionListener(this);
 		btnBack.addActionListener(this);
@@ -246,28 +267,25 @@ public class Orderdetail_controller implements ActionListener, MouseListener {
 		lblprice.setText(order == null ? "" : String.valueOf(order.getTransportationfees()));
 		lblway.setText(order == null ? "" : order.getDestination().getDestinationName());
 		lbldate.setText(order == null ? "" : String.valueOf(order.getDate()));
-		lbl_setstatus.setText(order==null? "":String.valueOf(order.getStatus()));
-	String status=order.getStatus();
+		lbl_setstatus.setText(order == null ? "" : String.valueOf(order.getStatus()));
+		String status = order.getStatus();
 
 		System.out.println(order_no);
-		if(status!="" & status!=null ) {
+		if (status != "" & status != null) {
 			if (!status.contains("T")) {
-			
-			int staff_id=orderStaffservice.getdeli(order_no);
-			String deli=staffservice.getdeliname(staff_id);
-			lbldelivery.setVisible(true);
-			lbl_setdelivery.setVisible(true);
-			lbl_setdelivery.setText(deli==null?"": deli);
+
+				int staff_id = orderStaffservice.getdeli(order_no);
+				String deli = staffservice.getdeliname(staff_id);
+				lbldelivery.setVisible(true);
+				lbl_setdelivery.setVisible(true);
+				lbl_setdelivery.setText(deli == null ? "" : deli);
 			}
-			
-		}
-		else {
+
+		} else {
 			System.out.println("delivering is not");
 		}
-			
-		}
-	
-	
+
+	}
 
 	private void datatoText(Order order) {
 		// System.out.println("Customer Name-" + order.getCustomer().getName());
@@ -400,6 +418,20 @@ public class Orderdetail_controller implements ActionListener, MouseListener {
 			frame.remove(odetail.getPanel_orderdetails());
 			frame.remove(navigationPanel.getPanel_navigation());
 			SetPrice_controller price_controller = new SetPrice_controller(frame);
+
+		}
+
+		if (e.getSource().equals(panel_btn_Approve)) {
+			frame.remove(odetail.getPanel_orderdetails());
+			frame.remove(navigationPanel.getPanel_navigation());
+			Payment_controller nextController = new Payment_controller(frame);
+
+		}
+
+		if (e.getSource().equals(panel_btn_DeliManage)) {
+			frame.remove(odetail.getPanel_orderdetails());
+			frame.remove(navigationPanel.getPanel_navigation());
+			DeliveryManage_Controller nextController = new DeliveryManage_Controller(frame);
 
 		}
 
