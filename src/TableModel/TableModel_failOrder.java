@@ -6,30 +6,29 @@ import javax.swing.JButton;
 import javax.swing.table.AbstractTableModel;
 import Model.Order;
 
-
-public class TableModel_failOrder extends AbstractTableModel{
+public class TableModel_failOrder extends AbstractTableModel {
 	private static final long serialVersionUID = -4026402599426071004L;
 	List<Order> orderList;
-    JButton btn_viewdetail;
+	JButton btn_viewdetail;
 	String headerList[] = new String[] { "No", "Order_Id", "Name", "Phone", "Destination", "Date", "Fee",
 			"View Detail" };
-	
 
-	
-	public TableModel_failOrder(List<Order>list,JButton btn_viewDetail) {
-		orderList=list;
-		this.btn_viewdetail=btn_viewDetail;
+	public TableModel_failOrder(List<Order> list, JButton btn_viewDetail) {
+		orderList = list;
+		this.btn_viewdetail = btn_viewDetail;
 	}
 
 	public TableModel_failOrder() {
 
 	}
-@Override
+
+	@Override
 
 	public int getRowCount() {
 		return orderList.size();
 	}
-@Override
+
+	@Override
 	public int getColumnCount() {
 		return headerList.length;
 	}
@@ -41,7 +40,7 @@ public class TableModel_failOrder extends AbstractTableModel{
 	/*
 	 * public boolean isCellEditable(EventObject e) { return true; }
 	 */
-	
+
 	public Class getColumnClass(int column) {
 		return getValueAt(0, column).getClass();
 	}
@@ -50,17 +49,11 @@ public class TableModel_failOrder extends AbstractTableModel{
 		orderList.remove(rowIndex);
 		fireTableRowsDeleted(rowIndex, rowIndex);
 	}
-	public void removeAllRow() {
-		orderList.clear();
-		fireTableDataChanged();
-	}
 
 	public void insertRow(Order order) {
 		orderList.add(order);
 		fireTableRowsInserted(orderList.size() - 1, orderList.size() - 1);
 	}
-
-	
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
@@ -83,7 +76,7 @@ public class TableModel_failOrder extends AbstractTableModel{
 			return entity.getDate();
 		case 6:
 			return entity.getTransportationfees();
-		case 7: 
+		case 7:
 			return btn_viewdetail;
 		default:
 			return "";
@@ -98,6 +91,7 @@ public class TableModel_failOrder extends AbstractTableModel{
 	public int getCustomer_Id(int i) {
 		return orderList.get(i).getCustomer().getId();
 	}
+
 	public void setValueAt(Order e, int rowIndex) {
 		Order order = orderList.get(rowIndex);
 		for (int i = 1; headerList.length > i; i++)
@@ -125,7 +119,7 @@ public class TableModel_failOrder extends AbstractTableModel{
 				order.setTransportationfees(e.getTransportationfees());
 				fireTableCellUpdated(rowIndex, i);
 				break;
-				
+
 			/*
 			 * case 7: this.btn_viewDetail;
 			 */
@@ -133,5 +127,10 @@ public class TableModel_failOrder extends AbstractTableModel{
 
 	}
 
-}
+	public void removeAllRow() {
+		orderList.clear();
+		fireTableDataChanged();
 
+	}
+
+}

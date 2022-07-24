@@ -85,17 +85,17 @@ public class Delivery_View {
 		lblfilter.setText("Filer by:");
 		lblfilter.setBounds(319, 79, 86, 27);
 		lblfilter.setFont(new Font("Tahoma", Font.BOLD, 18));
-		panel.add(lblfilter);
+		//panel.add(lblfilter);
 
 		lblsearchOrderid.setText("OrderId");
 		lblsearchOrderid.setBounds(850, 82, 66, 23);
 		lblsearchOrderid.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		panel.add(lblsearchOrderid);
+		////panel.add(lblsearchOrderid);
 
 		txtOrderid = new JTextField();
 		txtOrderid.setBounds(920, 79, 180, 35);
 		txtOrderid.setColumns(10);
-		panel.add(txtOrderid);
+	//	panel.add(txtOrderid);
 		
 		tblorder.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		tblorder.getTableHeader().setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -115,13 +115,13 @@ public class Delivery_View {
 //		panel.add(txtDestination);
 		combodestination.setFont(new Font("Tahoma",Font.PLAIN,17));
 		combodestination.setBounds(524,79,200,35);
-		panel.add(combodestination);
+		//panel.add(combodestination);
 		
 
 		lblsearchDestination = new JLabel("Destination");
 		lblsearchDestination.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblsearchDestination.setBounds(428, 82, 86, 23);
-		panel.add(lblsearchDestination);
+		//panel.add(lblsearchDestination);
 
 		ImageIcon account_icon = new ImageIcon("resource\\unselect.png");
 		deselectLable = new JLabel(account_icon);

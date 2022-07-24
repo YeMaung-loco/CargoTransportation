@@ -352,7 +352,7 @@ public class OrderManage_controller
 			String weight = JOptionPane.showInputDialog(containerFrame, packageId, "Input weight in kg",
 					JOptionPane.INFORMATION_MESSAGE);
 
-			if (weight != null && !weight.equals("") && Checking.IsAllDigit(weight)) {
+			if (weight != null && !weight.equals("") && Checking.IsAllDigit(weight) && Checking.checkWeight(weight)) {
 				if (!addedDestinationFee) {
 					addedDestinationFee = true;
 					Destination destination= destination_service.getDestinationByName(comboDestination.getSelectedItem().toString());
@@ -412,9 +412,7 @@ public class OrderManage_controller
 	}
 
 	private void delete() {
-		// int modelRowIndex =
-		// tblorder.convertRowIndexToModel(tblorder.getSelectedRow());
-		System.out.println("delete " + modelRowIndex);
+			System.out.println("delete " + modelRowIndex);
 		if (modelRowIndex != -1) {
 			int packageDelete = package_service.deletePackageByOrderNo(order_no);
 			int orderDelete = order_service.deleteOrder(order_no);
@@ -431,6 +429,8 @@ public class OrderManage_controller
 				model_Order.removeRow(modelRowIndex);
 				alert("Successfully Deleted!");
 
+				btnUpdate.setVisible(false);
+				btnDone.setVisible(true);
 				order = null;
 				dataToView(order);
 				newOrderId();
@@ -641,6 +641,7 @@ public class OrderManage_controller
 			update();
 		}
 		if (e.getSource().equals(btnRemove)) {
+			
 			delete();
 
 		}

@@ -166,8 +166,9 @@ public class Order_service {
 		try {
 			PreparedStatement ps = connection.prepareStatement("Select * from cargotransportation.order "
 					+ "inner join destination_price on destination_price.destination_id=order.destination_id "
-					+ "inner join customer on customer.customer_id=order.customer_id" + "where order.destination_id= "
+					+ "inner join customer on customer.customer_id=order.customer_id" + " where order.destination_id= "
 					+ destination_id + ";");
+			System.out.println(ps);
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
 				Order order = new Order();
