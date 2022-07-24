@@ -304,7 +304,7 @@ public class Staff_Panel extends JFrame {
 		panel_inputForm.add(lblAccountType);
 		panel_inputForm.add(lblAddress);
 		panel_inputForm.add(lblDepartment);
-		panel_inputForm.add(lblFunction);
+		//panel_inputForm.add(lblFunction);
 		panel_inputForm.add(lblInputform);
 		panel_inputForm.add(lblName);
 		panel_inputForm.add(lblNrc);
@@ -319,8 +319,8 @@ public class Staff_Panel extends JFrame {
 		group.add(rdbtnOffice);
 		group.add(rdbtnDelivery);
 
-		panel_inputForm.add(chckbxManage);
-		panel_inputForm.add(chckbxupload);
+		//panel_inputForm.add(chckbxManage);
+		//panel_inputForm.add(chckbxupload);
 		panel_inputForm.add(chckbxActive);
 
 		panel_inputForm.add(btnMaximize);

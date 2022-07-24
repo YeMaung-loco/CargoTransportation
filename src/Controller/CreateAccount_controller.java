@@ -181,18 +181,17 @@ public class CreateAccount_controller implements ActionListener, MouseListener, 
 			long millis = System.currentTimeMillis();
 			int roleId = 0;
 			String roleName = "";
-			if (chckbxupload.isSelected()) {
-				roleId = 1;
-				roleName = "Normal Staff";
-			}
-			if (chckbxupload.isSelected() && chckbxManage.isSelected()) {
+//			if (chckbxupload.isSelected()) {
+//				roleId = 1;
+//				roleName = "Normal Staff";
+//			}
+//			if (chckbxupload.isSelected() && chckbxManage.isSelected()) {
+//				roleId = 2;
+//				roleName = "Office Staff";
+//			}
+			if (radioGroup.getSelection().getActionCommand().equals("Office")) {
 				roleId = 2;
 				roleName = "Office Staff";
-			}
-			if (radioGroup.getSelection().getActionCommand().equals("Office") && !chckbxupload.isSelected()
-					&& !chckbxManage.isSelected()) {
-				roleId = 4;
-				roleName = "Staff";
 			}
 			if (radioGroup.getSelection().getActionCommand().equals("Delivery")) {
 				roleId = 5;
