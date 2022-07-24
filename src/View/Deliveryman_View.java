@@ -59,6 +59,8 @@ public class Deliveryman_View {
 		panel.setLayout(null);
 		
 		tbldelivery=new JTable();
+		tbldelivery.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		tbldelivery.getTableHeader().setFont(new Font("Tahoma", Font.BOLD, 15));
 		
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(20, 129, 516, 502);

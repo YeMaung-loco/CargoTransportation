@@ -35,7 +35,7 @@ public class Staff_Panel extends JFrame {
 	JFrame frame;
 	JPanel panel_list, panel_inputForm;
 
-	JLabel lblName, lblAddress, lblPhone, lblNrc, lblDepartment, lblInputform, lblAccountType, lblFunction;
+	JLabel lblName, lblAddress, lblPhone, lblNrc, lblDepartment, lblInputform, lblAccountType, lblFunction,lblOrderid;
 	JTextField txtName, txtNRC, txtPhone, txtsearch;
 	JRadioButton rdbtnOffice, rdbtnDelivery;
 	JCheckBox chckbxupload, chckbxManage, chckbxActive;
@@ -107,6 +107,7 @@ public class Staff_Panel extends JFrame {
 
 		lblAccountType = new JLabel();
 		lblNrc = new JLabel();
+		lblOrderid=new JLabel();
 		txtNRC = new JTextField();
 		txtNRC.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblPhone = new JLabel();
@@ -209,11 +210,11 @@ public class Staff_Panel extends JFrame {
 		
 		btnMaximize.setText("Maximize");
 		btnMaximize.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnMaximize.setBounds(150, 10, 130, 32);
+		btnMaximize.setBounds(985, 10, 130, 32);
 
 		btnMinimize.setText("Minimize");
 		btnMinimize.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnMinimize.setBounds(150, 10, 129, 32);
+		btnMinimize.setBounds(985, 10, 129, 32);
 
 		lblDepartment.setText("Department");
 		lblDepartment.setFont(new Font("Tahoma", Font.BOLD, 18));
@@ -281,9 +282,15 @@ public class Staff_Panel extends JFrame {
 		btnSearch.setText("Search");
 		btnSearch.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnSearch.setBounds(987, 7, 130, 33);
+		btnSearch.setVisible(false);
+		
+		lblOrderid.setText("Filter by:   OrderId");
+		lblOrderid.setFont(new Font("Tahoma", Font.BOLD,15));
+		lblOrderid.setBounds(788, 8, 150, 32);
+		
 
-		txtsearch.setBounds(788, 8, 200, 32);
-		txtsearch.setFont(new Font("Tahoma", Font.BOLD, 15));
+		txtsearch.setBounds(955,7,150,33);
+		txtsearch.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		txtsearch.setColumns(10);
 
 		scrollPane.setBounds(10, 46, 1110, 370);
@@ -330,6 +337,7 @@ public class Staff_Panel extends JFrame {
 
 		panel_list.add(txtsearch);
 		panel_list.add(btnSearch);
+	    panel_list.add(lblOrderid);
 		panel_list.add(scrollPane);
 
 		if (containerFrame != null) {

@@ -108,8 +108,8 @@ public class Order_Panel {
 		lblorder_id.setBounds(477, 10, 86, 33);
 
 		lbldestination.setText("Destination -");
-		lbldestination.setFont(new Font("Tahoma", Font.BOLD, 17));
-		lbldestination.setBounds(477, 70, 125, 40);
+		lbldestination.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		lbldestination.setBounds(520, 70, 120, 40);
 
 		lblTransportationFees.setText("Fee -");
 		lblTransportationFees.setFont(new Font("Tahoma", Font.BOLD, 17));
@@ -117,7 +117,7 @@ public class Order_Panel {
 
 		// String city[] = new String[] { "KyalGaung", "Musal", "Mandalay", "Yangon" };
 		Jcombo_destination.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		Jcombo_destination.setBounds(650, 71, 272, 40);
+		Jcombo_destination.setBounds(650, 71, 220, 40);
 
 		lbl_transporation.setBackground(new Color(0, 0, 0));
 		lbl_transporation.setForeground(new Color(0, 0, 0));
@@ -134,7 +134,7 @@ public class Order_Panel {
 		lbl_searchorder.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lbl_searchorder.setBounds(849, 13, 72, 40);
 
-		txt_searchorder.setBounds(941, 10, 203, 40);
+		txt_searchorder.setBounds(941, 10, 175, 40);
 
 		tblorder.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		tblorder.getTableHeader().setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -230,17 +230,17 @@ public class Order_Panel {
 		panel_orderlist.add(lbl_searchorder);
 		panel_orderlist.add(txt_searchorder);
 
-		txt_searchorder.setColumns(10);
+		txt_searchorder.setColumns(8);
 
 		Jcombo_destination_1 = new JComboBox<String>();
 		Jcombo_destination_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		Jcombo_destination_1.setBounds(491, 13, 203, 40);
+		Jcombo_destination_1.setBounds(480, 13, 203, 40);
 		panel_orderlist.add(Jcombo_destination_1);
 
 		lbldestination_1 = new JLabel();
 		lbldestination_1.setText("Destination -");
 		lbldestination_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lbldestination_1.setBounds(360, 14, 121, 38);
+		lbldestination_1.setBounds(360, 14, 130, 38);
 		panel_orderlist.add(lbldestination_1);
 
 		lblNewLabel_1 = new JLabel("Filter by:");

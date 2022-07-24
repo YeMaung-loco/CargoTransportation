@@ -168,7 +168,7 @@ public class Office_view {
 		//ImageIcon iconLogout = setIconScale("C:\\Users\\User\\Downloads\\options-lines.png");
 		lbl_iconLogout.setIcon(new ImageIcon("resource\\logout.png"));
 
-		ImageIcon account_icon = new ImageIcon("resource\\admin.png");
+		ImageIcon account_icon = new ImageIcon("resource\\");
 		iconJLabel = new JLabel(account_icon);
 		panel_btnStaff.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panel_btnStaff.setBackground(new Color(255, 215, 0));

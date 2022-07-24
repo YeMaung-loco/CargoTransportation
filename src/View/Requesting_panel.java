@@ -48,9 +48,9 @@ public class Requesting_panel extends JPanel {
 		lblNewLabel.setBounds(480, 10, 183, 35);
 		add(lblNewLabel);
 		
-		lblNewLabel_1 = new JLabel("Search");
+		lblNewLabel_1 = new JLabel("Filter by OrderId");
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblNewLabel_1.setBounds(846, 73, 70, 25);
+		lblNewLabel_1.setBounds(780, 73, 150, 25);
 		add(lblNewLabel_1);
 		tblrequesting=new JTable();
 		
@@ -59,6 +59,8 @@ public class Requesting_panel extends JPanel {
 		add(textField);
 		textField.setColumns(10);
 		
+		tblrequesting.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		tblrequesting.getTableHeader().setFont(new Font("Tahoma", Font.BOLD, 15));
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(21, 128, 1093, 571);
 		scrollPane.setViewportView(tblrequesting);

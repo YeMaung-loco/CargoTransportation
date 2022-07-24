@@ -118,8 +118,8 @@ public class Orderdetail_view {
 //		frame.validate();
 //		frame.repaint();
 		panel_orderdetails.setBorder(null);
-		panel_orderdetails.setBackground(new Color(0, 139, 139));
-		panel_orderdetails.setBounds(200, 10, 1076, 735);
+		panel_orderdetails.setBackground(new Color(255, 255, 153));
+		panel_orderdetails.setBounds(250, 10, 1076, 735);
 		panel_orderdetails.setLayout(null);
 
 		lblorder.setText("Order Details");

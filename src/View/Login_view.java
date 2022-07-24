@@ -26,6 +26,7 @@ public class Login_view {
 	private JPanel panel;
 	private JPasswordField passwordField;
 	private JLabel Icon1JLabel;
+	private JLabel lblNewLabel;
 
 	public Login_view() {
 		System.out.println("this is logintest ");
@@ -37,15 +38,24 @@ public class Login_view {
 	private void initialize() {
 		frame = new JFrame();
 		panel = new JPanel();
-		panel.setBackground(new Color(255, 204, 102));
+		panel.setBackground(new Color(255, 204, 51));
+		
+		lblNewLabel = new JLabel("Y & T Express");
+		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblNewLabel.setBounds(189, 10, 126, 35);
+		
+		Icon1JLabel = new JLabel("");
+		Icon1JLabel.setIcon(new ImageIcon("resource\\login.png"));
+		Icon1JLabel.setBounds(189, 55, 138, 126);
+		
 		Icon_lblUsername = new JLabel();
-		Icon_lblUsername.setIcon(new ImageIcon("D:\\CargoTransportation\\CargoTransportation\\resource\\useer.png"));
+		Icon_lblUsername.setIcon(new ImageIcon("resource\\useer.png"));
 		Icon_lblUsername.setBounds(92, 191, 64, 75);
 		txtUsername = new JTextField();
 	    txtUsername.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		txtUsername.setBounds(200, 201, 217, 53);
 		Icon_lblPassword = new JLabel();
-		Icon_lblPassword.setIcon(new ImageIcon("D:\\CargoTransportation\\CargoTransportation\\resource\\pass.png"));
+		Icon_lblPassword.setIcon(new ImageIcon("resource\\pass.png"));
 		Icon_lblPassword.setBounds(89, 293, 82, 75);
 		btnLogin = new JButton();
 		btnLogin.setBounds(200, 414, 217, 48);
@@ -93,15 +103,11 @@ public class Login_view {
 		panel.add(txtUsername);
 		panel.add(passwordField);
 		
-		Icon1JLabel = new JLabel("");
-		Icon1JLabel.setIcon(new ImageIcon("D:\\CargoTransportation\\CargoTransportation\\resource\\login.png"));
-		Icon1JLabel.setBounds(189, 55, 138, 126);
+		
 		panel.add(Icon1JLabel);
 		
-		JLabel Cargo = new JLabel("Y & T Express");
-		Cargo.setFont(new Font("Tahoma", Font.BOLD, 18));
-		Cargo.setBounds(195, 10, 126, 27);
-		panel.add(Cargo);
+		
+		panel.add(lblNewLabel);
 	}
 
 	public JLabel getIconUsername() {
@@ -129,6 +135,9 @@ public class Login_view {
 	}
 	public JLabel getIcon1JLabel() {
 		return Icon1JLabel;
+	}
+	public JLabel getLblNewLabel() {
+		return lblNewLabel;
 	}
 }
 //tested 

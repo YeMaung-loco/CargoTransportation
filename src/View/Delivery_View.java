@@ -96,6 +96,9 @@ public class Delivery_View {
 		txtOrderid.setBounds(866, 79, 200, 35);
 		txtOrderid.setColumns(10);
 		panel.add(txtOrderid);
+		
+		tblorder.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		tblorder.getTableHeader().setFont(new Font("Tahoma", Font.BOLD, 15));
 
 		scrollPane.setBounds(10, 143, 1056, 531);
 		panel.add(scrollPane);

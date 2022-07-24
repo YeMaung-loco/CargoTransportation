@@ -113,11 +113,11 @@ public class SetPrice_Panel {
 
 		destination_panel.setLayout(null);
 
-		lbldestinationinput.setText("Destination Rate Input");
+		lbldestinationinput.setText("Destination price Input");
 		lbldestinationinput.setFont(new Font("Tahoma", Font.BOLD, 19));
 		lbldestinationinput.setBounds(167, 23, 238, 37);
 
-		lbl_destinationto.setText("Destination to");
+		lbl_destinationto.setText("Destination");
 		lbl_destinationto.setFont(new Font("Tahoma", Font.BOLD, 18));
 		lbl_destinationto.setBounds(83, 98, 133, 27);
 
@@ -126,6 +126,11 @@ public class SetPrice_Panel {
 		lbl_price.setText("Price");
 		lbl_price.setFont(new Font("Tahoma", Font.BOLD, 18));
 		lbl_price.setBounds(83, 172, 56, 27);
+		tbldestination.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		tbldestination.getTableHeader().setFont(new Font("Tahoma", Font.BOLD, 15));
+		
+		tblweight.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		tblweight.getTableHeader().setFont(new Font("Tahoma", Font.BOLD, 15));
 
 		txt_destinationprice.setBounds(276, 170, 179, 37);
 		txt_destinationprice.setColumns(10);
