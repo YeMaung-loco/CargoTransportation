@@ -3,6 +3,7 @@ package View;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Image;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -40,13 +41,17 @@ public class Login_view {
 		panel = new JPanel();
 		panel.setBackground(new Color(255, 204, 51));
 		
-		lblNewLabel = new JLabel("Y & T Express");
+		lblNewLabel = new JLabel("Y n T Express");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 18));
 		lblNewLabel.setBounds(189, 10, 126, 35);
 		
-		Icon1JLabel = new JLabel("");
-		Icon1JLabel.setIcon(new ImageIcon("resource\\login.png"));
+		Icon1JLabel = new JLabel();
+		
 		Icon1JLabel.setBounds(189, 55, 138, 126);
+		ImageIcon logo = new ImageIcon(new ImageIcon("resource\\login_logo.png").getImage()
+				.getScaledInstance(Icon1JLabel.getWidth(), Icon1JLabel.getHeight(), Image.SCALE_SMOOTH));
+		Icon1JLabel.setIcon(logo);
+		
 		
 		Icon_lblUsername = new JLabel();
 		Icon_lblUsername.setIcon(new ImageIcon("resource\\useer.png"));
