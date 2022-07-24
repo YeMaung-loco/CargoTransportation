@@ -210,11 +210,11 @@ public class Staff_Panel extends JFrame {
 		
 		btnMaximize.setText("Maximize");
 		btnMaximize.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnMaximize.setBounds(985, 10, 130, 32);
+		btnMaximize.setBounds(953, 10, 165, 32);
 
 		btnMinimize.setText("Minimize");
 		btnMinimize.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnMinimize.setBounds(985, 10, 129, 32);
+		btnMinimize.setBounds(953, 10, 165, 32);
 
 		lblDepartment.setText("Department");
 		lblDepartment.setFont(new Font("Tahoma", Font.BOLD, 18));
@@ -284,12 +284,12 @@ public class Staff_Panel extends JFrame {
 		btnSearch.setBounds(987, 7, 130, 33);
 		btnSearch.setVisible(false);
 		
-		lblOrderid.setText("Filter by:   OrderId");
+		lblOrderid.setText("Filter by:        Name");
 		lblOrderid.setFont(new Font("Tahoma", Font.BOLD,15));
-		lblOrderid.setBounds(788, 8, 150, 32);
+		lblOrderid.setBounds(780, 8, 170, 32);
 		
 
-		txtsearch.setBounds(955,7,150,33);
+		txtsearch.setBounds(955,7,165,33);
 		txtsearch.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		txtsearch.setColumns(10);
 

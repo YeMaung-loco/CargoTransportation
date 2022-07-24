@@ -88,25 +88,25 @@ public class Delivery_View {
 		panel.add(lblfilter);
 
 		lblsearchOrderid.setText("OrderId");
-		lblsearchOrderid.setBounds(785, 82, 66, 23);
+		lblsearchOrderid.setBounds(850, 82, 66, 23);
 		lblsearchOrderid.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		panel.add(lblsearchOrderid);
 
 		txtOrderid = new JTextField();
-		txtOrderid.setBounds(866, 79, 200, 35);
+		txtOrderid.setBounds(920, 79, 180, 35);
 		txtOrderid.setColumns(10);
 		panel.add(txtOrderid);
 		
 		tblorder.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		tblorder.getTableHeader().setFont(new Font("Tahoma", Font.BOLD, 15));
 
-		scrollPane.setBounds(10, 143, 1056, 531);
+		scrollPane.setBounds(30, 143, 1070, 531);
 		panel.add(scrollPane);
 		scrollPane.setViewportView(tblorder);
 
 		btnSelectdelivery.setText("Assign");
 		btnSelectdelivery.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnSelectdelivery.setBounds(920, 684, 146, 33);
+		btnSelectdelivery.setBounds(950, 684, 151, 33);
 		panel.add(btnSelectdelivery);
 
 //		txtDestination = new JTextField();

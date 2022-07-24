@@ -123,7 +123,7 @@ public class Orderdetail_view {
 		panel_orderdetails.setLayout(null);
 
 		lblorder.setText("Order Details");
-		lblorder.setBounds(451, 20, 140, 43);
+		lblorder.setBounds(451, 10, 140, 43);
 		lblorder.setFont(new Font("Tahoma", Font.BOLD, 20));
 
 		lblorderid.setText("Order id");
@@ -252,17 +252,17 @@ public class Orderdetail_view {
 
 		scrollPane.setViewportView(tbl_orderdetail);
 
-		btnupdate.setText("Update");
-		btnupdate.setBounds(648, 678, 100, 32);
-		btnupdate.setFont(new Font("Tahoma", Font.BOLD, 16));
-
-		btndelete.setText("Delete");
-		btndelete.setBounds(785, 678, 100, 32);
-		btndelete.setFont(new Font("Tahoma", Font.BOLD, 16));
-
-		btnedit.setText("Edit");
-		btnedit.setBounds(507, 678, 100, 32);
-		btnedit.setFont(new Font("Tahoma", Font.BOLD, 16));
+//		btnupdate.setText("Update");
+//		btnupdate.setBounds(648, 678, 100, 32);
+//		btnupdate.setFont(new Font("Tahoma", Font.BOLD, 16));
+//
+//		btndelete.setText("Delete");
+//		btndelete.setBounds(785, 678, 100, 32);
+//		btndelete.setFont(new Font("Tahoma", Font.BOLD, 16));
+//
+//		btnedit.setText("Edit");
+//		btnedit.setBounds(507, 678, 100, 32);
+//		btnedit.setFont(new Font("Tahoma", Font.BOLD, 16));
 
 		btnback.setText("Back");
 		btnback.setBounds(924, 678, 100, 32);
