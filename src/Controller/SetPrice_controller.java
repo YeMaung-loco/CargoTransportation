@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -19,7 +18,6 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import Model.Destination;
-import Model.Staff;
 import Model.Weight;
 import Service.DestinationPrice_service;
 import Service.WeightPrice_service;
@@ -269,7 +267,7 @@ public class SetPrice_controller implements MouseListener, ActionListener, ListS
 			saveDestination();
 		}
 		if (e.getSource().equals(btn_destinationedit)) {
-			editDestination();
+			clearDestination();
 		}
 		if (e.getSource().equals(btn_destinationdelete)) {
 			deleteDestination();
@@ -283,7 +281,7 @@ public class SetPrice_controller implements MouseListener, ActionListener, ListS
 			saveWeight();
 		}
 		if (e.getSource().equals(btn_weightedit)) {
-			editWeight();
+			clearWeight();
 		}
 		if (e.getSource().equals(btn_weightdelete)) {
 			deleteWeight();
@@ -351,6 +349,20 @@ public class SetPrice_controller implements MouseListener, ActionListener, ListS
 		Weight weight = new Weight();
 		weight = weight_service.getweightPriceById(temp_weight_id);
 		weightdataToView(weight);
+	}
+	
+	private void clearWeight() {
+		weight=null;
+		weightdataToView(weight);
+		btn_weightUpdate.setVisible(false);
+		btn_weightpricesave.setVisible(true);
+		
+	}
+	private void clearDestination() {
+		destination=null;
+		destinationdataToView(destination);
+		btn_destinationUpdate.setVisible(false);
+		btn_destinationsave.setVisible(true);
 	}
 
 	private void weightdataToView(Weight weight) {

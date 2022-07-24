@@ -191,7 +191,7 @@ public class SetPrice_Panel {
 		btn_destinationdelete.setFont(new Font("Tahoma", Font.BOLD, 20));
 		btn_destinationdelete.setBounds(228, 303, 116, 48);
 
-		btn_destinationedit.setText("Edit");
+		btn_destinationedit.setText("Clear");
 		btn_destinationedit.setFont(new Font("Tahoma", Font.BOLD, 20));
 		btn_destinationedit.setBounds(22, 303, 116, 48);
 
@@ -199,7 +199,7 @@ public class SetPrice_Panel {
 		btn_weightdelete.setFont(new Font("Tahoma", Font.BOLD, 20));
 		btn_weightdelete.setBounds(224, 299, 116, 48);
 
-		btn_weightedit.setText("Edit");
+		btn_weightedit.setText("Clear");
 		btn_weightedit.setFont(new Font("Tahoma", Font.BOLD, 20));
 		btn_weightedit.setBounds(25, 299, 116, 48);
 
