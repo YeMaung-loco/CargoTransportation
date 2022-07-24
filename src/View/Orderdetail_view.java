@@ -27,12 +27,13 @@ public class Orderdetail_view {
 	private JPanel panel_orderdetails;
 	private JTextField txt_orderid, txt_orderprice, txt_name, txt_phone, txt_address, txt_payment, txt_date;
 
-	private JLabel lblorder, lblorderid, lblprice, lblway, lblpayment, lblname, lblphone, lbladdress, lbldate;
+	private JLabel lblorder, lblorderid, lblprice, lblway, lblpayment, lblname, lblphone, lbladdress, lbldate,lblstatus;
 	private JLabel lbl_setorderid, lbl_setprice, lbl_setway, lbl_setpayment, lbl_setname, lbl_setphone, lbl_setaddress,
-			lbl_setdate;
+			lbl_setdate,lbl_setstatus,lblDelivery,lbl_setdelivery;
 	private DefaultTableModel dtm = new DefaultTableModel();
 	private JTable tbl_orderdetail;
 	private JButton btnupdate, btndelete, btnedit, btnback;
+	
 
 	private JComboBox comboWay;
 	private JScrollPane scrollPane;
@@ -83,6 +84,9 @@ public class Orderdetail_view {
 		lblpayment = new JLabel();
 		lbldate = new JLabel();
 		lblway = new JLabel();
+		lblstatus=new JLabel();
+		lblDelivery=new JLabel();
+		lbl_setdelivery=new JLabel();
 
 		lbl_setorderid = new JLabel();
 		lbl_setprice = new JLabel();
@@ -92,6 +96,7 @@ public class Orderdetail_view {
 		lbl_setdate = new JLabel();
 		lbl_setway = new JLabel();
 		lbl_setphone = new JLabel();
+		lbl_setstatus=new JLabel();
 		comboWay = new JComboBox();
 		comboWay.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		tbl_orderdetail = new JTable();
@@ -212,6 +217,16 @@ public class Orderdetail_view {
 		lbldate.setText("Date");
 		lbldate.setBounds(630, 345, 124, 32);
 		lbldate.setFont(new Font("Tahoma", Font.BOLD, 17));
+		
+		lblstatus.setText("Status");
+		lblstatus.setBounds(630,420,124,32);
+		lblstatus.setFont(new Font("Tahoma",Font.BOLD,17));
+		lblstatus.setVisible(true);
+		
+		lblDelivery.setText("Delivery Man");
+		lblDelivery.setBounds(630,500,124,32);
+		lblDelivery.setFont(new Font("Tahoma", Font.BOLD,17));
+		lblDelivery.setVisible(false);
 
 		txt_date.setBounds(829, 345, 202, 36);
 		txt_date.setColumns(10);
@@ -219,6 +234,16 @@ public class Orderdetail_view {
 		lbl_setdate.setText("");
 		lbl_setdate.setBounds(829, 349, 202, 36);
 		lbl_setdate.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		
+		lbl_setstatus.setText("");
+		lbl_setstatus.setBounds(829,420,124,32);
+		lbl_setstatus.setFont(new Font("Tahoma",Font.PLAIN,17));
+		lbl_setstatus.setVisible(true);
+		
+		lbl_setdelivery.setText("");
+		lbl_setdelivery.setBounds(829,500,124,32);
+		lbl_setdelivery.setFont(new Font("Tahoma",Font.PLAIN,17));
+		lbl_setdelivery.setVisible(false);
 
 		scrollPane.setBounds(30, 408, 431, 302);
 
@@ -278,6 +303,10 @@ public class Orderdetail_view {
 		panel_orderdetails.add(btnedit);
 		panel_orderdetails.add(btnback);
 		panel_orderdetails.add(comboWay);
+		panel_orderdetails.add(lblstatus);
+		panel_orderdetails.add(lbl_setstatus);
+		panel_orderdetails.add(lblDelivery);
+		panel_orderdetails.add(lbl_setdelivery);
 
 		if (frame != null)
 			frame.add(panel_orderdetails);
@@ -329,6 +358,18 @@ public class Orderdetail_view {
 
 	public JLabel getLbl_setway() {
 		return lbl_setway;
+	}
+	public JLabel getLblstatus() {
+		return lblstatus;
+	}
+	public JLabel getLbl_setstatus() {
+		return lbl_setstatus;
+	}
+	public JLabel getLbldelivery() {
+		return lblDelivery;
+	}
+	public JLabel getLblsetdelivery() {
+		return lbl_setdelivery;
 	}
 
 	public JLabel getLbl_setname() {

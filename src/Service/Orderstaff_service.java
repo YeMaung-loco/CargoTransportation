@@ -40,6 +40,24 @@ public class Orderstaff_service {
 		}
 		return status == orderList.size();
 	}
+	public int getdeli(String order_no) {
+		int staffid=0;
+		try {
+			PreparedStatement ps=connection.prepareStatement("select staff_id from cargotransportation.order_staff"
+					+ " inner join cargotransportation.order as o "
+					+ "on o.order_no=order_staff.order_no where order_staff.order_no=\"" +order_no+ "\";");
+			ResultSet rs=ps.executeQuery();
+			System.out.println(rs.toString());
+			if(rs.next()) {
+				staffid=rs.getInt("staff_id");
+				
+						
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return staffid;
+	}
 
 	public int deleteAssignByOrderNo(String order_no) {
 		int status = 0;

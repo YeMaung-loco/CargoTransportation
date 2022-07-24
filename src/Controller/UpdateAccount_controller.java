@@ -11,15 +11,16 @@ import javax.swing.JTextField;
 import Service.Auth_service;
 import View.Create_account;
 import Model.Authenticate;
+import View.Update_account;
 
-public class Create_controller implements ActionListener {
+public class UpdateAccount_controller implements ActionListener {
 
 private Auth_service auth_service;
-private Create_account create;
-private JButton btncreate,btnupdate;
+private JButton btnupdate;
 private JTextField txt_username,txt_password;
 private Authenticate auth;
 int temp_id;
+Update_account update;
 
 	
 	
@@ -28,11 +29,13 @@ int temp_id;
 	/**
 	 * @wbp.parser.entryPoint
 	 */
-	public Create_controller(int temp){
+	public UpdateAccount_controller(int temp){
 		dependencyInjection();
 		this.temp_id=temp;
-		create=new Create_account();
+		update=new Update_account();
 		initComponents();
+		loadData(temp);
+		
 		initController();
 		
 	}
@@ -48,31 +51,39 @@ int temp_id;
 	}
 		private void initComponents() {
 		
-		btncreate=create.getBntCreate();
-		txt_username=create.getTxt_username();
-		txt_password=create.getTxt_password();
+		btnupdate=update.getBntUpdate();
+       txt_username=update.getTxt_username();
+		txt_password=update.getTxt_password();
 		
 	}
 	private void initController() {
-		btncreate.addActionListener(this);
-
+	
+		btnupdate.addActionListener(this);
+	}
+	private void loadData(int temp_id) {
+		auth=auth_service.getDatabyId(temp_id);
+		txt_username.setText(auth==null? " ": auth.getUsername());
+		txt_password.setText(auth==null? ""  :  auth.getPassword());
 	}
 	
 	
-	private void create(int temp_id) {
-		
+	private void Update_account(int temp_id) {
+	
 		auth=new Authenticate();
 		auth.setUsername(txt_username.getText());
 		auth.setPassword(txt_password.getText());
-		int status=auth_service.createAccount(temp_id,auth);
+		int status=auth_service.updateAccount(temp_id,auth);
 		if(status>0) {
 			JOptionPane.showMessageDialog(null, "successfully");
-		 create.dispose();
+		     update.dispose();
 		}
 		else {
-		
 			JOptionPane.showMessageDialog(null, "failed");
-		}
+	}
+	}
+	private void clear() {
+		txt_username.setText("");
+		txt_password.setText("");
 	}
 
 
@@ -82,12 +93,14 @@ int temp_id;
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource().equals(btncreate))
-			create( temp_id);
-		    
+		if(e.getSource().equals(btnupdate))
+			Update_account( temp_id);
+		    clear();
+		
 		
 	}
 
 	
 	
 }
+

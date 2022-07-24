@@ -16,6 +16,8 @@ import Model.Staff;
 import Service.Auth_service;
 import Service.Staff_Service;
 import Utility.FrameMoveDetect;
+import View.Login;
+import View.LoginForm;
 import View.Login_view;
 import View.Main_View;
 
@@ -26,14 +28,17 @@ public class Login_controller implements ActionListener {
 	JButton btnlogin;
 	JTextField txtc_username, txt_password;
 	Login_view vlogin;
+	LoginForm login;
 	String currentRole;
 	JLabel cargo_Icon,username_Icon,password_Icon;
+	Login loginp;
 
 	public Login_controller() {
 
 		dependencyInjection();
 		
 		vlogin = new Login_view();
+		//loginp=new Login();
 		initForm();
 		initComponent();
 		initController();
@@ -58,6 +63,15 @@ public class Login_controller implements ActionListener {
 		cargo_Icon=vlogin.getIcon1JLabel();
 		username_Icon=vlogin.getIconUsername();
 		password_Icon=vlogin.getIconPassword();
+		
+//		txtc_username=loginp.getTxt_username();
+//		txt_password=loginp.getPasswordfield();
+//		btnlogin=loginp.getBtnlogin();
+//		username_Icon=loginp.getLbl_username();
+//		password_Icon=loginp.getLbl_password();
+//		
+		
+	
 	}
 
 	private void initController() {
@@ -67,18 +81,30 @@ public class Login_controller implements ActionListener {
 	}
 	public void initForm() {
 		
-	    JLabel cargo_Icon=vlogin.getIcon1JLabel();
-	    JLabel username_Icon=vlogin.getIconUsername();
-	    JLabel password_Icon=vlogin.getIconPassword();
-		ImageIcon brandIcon = new ImageIcon(new ImageIcon("resource\\cargo.png").getImage()
-				.getScaledInstance(287, 126, Image.SCALE_SMOOTH));
-		ImageIcon userIcon = new ImageIcon(new ImageIcon("resource\\user.png").getImage()
-				.getScaledInstance(100, 50, Image.SCALE_SMOOTH));
-		ImageIcon passIcon = new ImageIcon(new ImageIcon("resource\\.png").getImage()
-				.getScaledInstance(100, 50, Image.SCALE_SMOOTH));
-		cargo_Icon.setIcon(brandIcon);
-		username_Icon.setIcon(userIcon);
-		password_Icon.setIcon(passIcon);
+		//  JLabel cargo_Icon=vlogin.getIcon1JLabel(); 
+		  username_Icon=vlogin.getIconUsername(); 
+		  password_Icon=vlogin.getIconPassword();
+		//ImageIcon brandIcon= new ImageIcon(new ImageIcon("resource\\cargo.png").getImage() 
+		 //      .getScaledInstance(287, 126, Image.SCALE_SMOOTH)); 
+//		ImageIcon userIcon= new ImageIcon(new ImageIcon("resource\\user.png").getImage()
+//		    .getScaledInstance(100, 50, Image.SCALE_SMOOTH)); //// ImageIcon passIcon =
+//		ImageIcon passIcon= new ImageIcon(new ImageIcon("resource\\1238426.png").getImage() 
+//		 .getScaledInstance(100, 50, Image.SCALE_SMOOTH)); ////
+//		 //cargo_Icon.setIcon(brandIcon); 
+//		 username_Icon.setIcon(userIcon); 
+//		  password_Icon.setIcon(passIcon); 
+		 	 
+//		    JLabel username_Icon=loginp.getLbl_username();
+//		    JLabel password_Icon=loginp.getLbl_password();
+////			ImageIcon brandIcon = new ImageIcon(new ImageIcon("resource\\cargo.png").getImage()
+////					.getScaledInstance(287, 126, Image.SCALE_SMOOTH));
+//			ImageIcon userIcon = new ImageIcon(new ImageIcon("resource\\username.png").getImage()
+//					.getScaledInstance(username_Icon.WIDTH, username_Icon.HEIGHT, Image.SCALE_SMOOTH));
+//			ImageIcon passIcon = new ImageIcon(new ImageIcon("resource\\password.png").getImage()
+//					.getScaledInstance(password_Icon.WIDTH, password_Icon.HEIGHT, Image.SCALE_SMOOTH));
+//			//cargo_Icon.setIcon(brandIcon);
+//			username_Icon.setIcon(userIcon);
+//			password_Icon.setIcon(passIcon);
 		
 	}
 

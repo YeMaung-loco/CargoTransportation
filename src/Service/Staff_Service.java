@@ -167,6 +167,20 @@ public class Staff_Service {
 		}
 		return status;
 	}
+	public String getdeliname(int id) {
+		String deliname=null;
+		try {
+			PreparedStatement ps= connection.prepareStatement("select name from cargotransportation.staff inner join "
+					+ "cargotransportation.order_staff as o on staff.staff_id=o.staff_id where o.staff_id=" +id+ ";");
+			ResultSet rs=ps.executeQuery();
+			if(rs.next()) {
+				deliname=rs.getString("name");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}return deliname;
+	}
 
 	public int assignDelivery(int id, boolean assign) {
 		int status = 0;

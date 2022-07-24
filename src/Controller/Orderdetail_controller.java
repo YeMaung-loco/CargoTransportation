@@ -28,6 +28,7 @@ import Service.Customer_service;
 import Service.Department_service;
 import Service.DestinationPrice_service;
 import Service.Order_service;
+import Service.Orderstaff_service;
 import Service.Package_service;
 import Service.Staff_Service;
 import TableModel.TableModel_Package;
@@ -45,7 +46,7 @@ public class Orderdetail_controller implements ActionListener, MouseListener {
 	Package_service packageservice;
 	Department_service department_Service;
 	DestinationPrice_service destination_Service;
-
+    Staff_Service staffservice;
 	TableModel_Package model_package;
 
 	Customer customer;
@@ -59,7 +60,7 @@ public class Orderdetail_controller implements ActionListener, MouseListener {
 	// JPanel viewdetail;
 	JPanel panel_btn_Account, panel_btn_SetPrice, panel_btn_OrderMange;
 	JButton btnDelete, btnEdit, btnUpdate, btnBack;
-	JLabel lblorderid, lblprice, lblway, lblpayment, lblname, lblphone, lbladdress, lbldate;
+	JLabel lblorderid, lblprice, lblway, lblpayment, lblname, lblphone, lbladdress, lbldate,lblstatus,lbl_setstatus,lbldelivery,lbl_setdelivery;
 	JTextField txtprice, txtpayment, txtname, txtphone, txtaddress, txtdate;
 	JComboBox<String> comboWay;
 	// Office_view office_view;
@@ -72,7 +73,7 @@ public class Orderdetail_controller implements ActionListener, MouseListener {
 	String order_no;
 	String temp_no;
 	TableRowSorter<TableModel_Package> sorter;
-
+    Orderstaff_service orderStaffservice;
 	DeliveryManage_Controller deliveryManage_Controller;
 	OrderManage_controller orderManage_controller;
 	Payment_controller payment_controller;
@@ -83,8 +84,10 @@ public class Orderdetail_controller implements ActionListener, MouseListener {
 			deliveryManage_Controller = deliController;
 		if (orderController != null)
 			orderManage_controller = orderController;
-		if (pay_controller != null)
+		if (pay_controller != null) 
 			this.payment_controller = pay_controller;
+		
+	
 
 		this.frame = frame;
 		this.order_no = order_no;
@@ -107,6 +110,8 @@ public class Orderdetail_controller implements ActionListener, MouseListener {
 			this.destination_Service = new DestinationPrice_service();
 			this.customerservice = new Customer_service();
 			this.orderservice = new Order_service();
+			this.staffservice=new Staff_Service();
+			this.orderStaffservice=new Orderstaff_service();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -132,6 +137,8 @@ public class Orderdetail_controller implements ActionListener, MouseListener {
 
 	private void initComponents() {
 		/// viewdetail = odetail.getPanel_orderdetails();
+		lbldelivery=new JLabel();
+		lbl_setdelivery=new JLabel();
 		panel_btn_Account = navigationPanel.getPanel_btnStaff();
 		panel_btn_OrderMange = navigationPanel.getPanel_btnOrder();
 		panel_btn_SetPrice = navigationPanel.getPanel_btnSetPrice();
@@ -149,6 +156,10 @@ public class Orderdetail_controller implements ActionListener, MouseListener {
 		lblphone = odetail.getLbl_setphone();
 		lbladdress = odetail.getLbl_setaddress();
 		lbldate = odetail.getLbl_setdate();
+		lblstatus=odetail.getLblstatus();
+		lbl_setstatus=odetail.getLbl_setstatus();
+		lbldelivery=odetail.getLbldelivery();
+		lbl_setdelivery=odetail.getLblsetdelivery();
 
 		txtprice = odetail.getTxt_orderprice();
 		txtpayment = odetail.getTxt_payment();
@@ -235,7 +246,28 @@ public class Orderdetail_controller implements ActionListener, MouseListener {
 		lblprice.setText(order == null ? "" : String.valueOf(order.getTransportationfees()));
 		lblway.setText(order == null ? "" : order.getDestination().getDestinationName());
 		lbldate.setText(order == null ? "" : String.valueOf(order.getDate()));
-	}
+		lbl_setstatus.setText(order==null? "":String.valueOf(order.getStatus()));
+	String status=order.getStatus();
+
+		System.out.println(order_no);
+		if(status!="" & status!=null ) {
+			if (!status.contains("T")) {
+			
+			int staff_id=orderStaffservice.getdeli(order_no);
+			String deli=staffservice.getdeliname(staff_id);
+			lbldelivery.setVisible(true);
+			lbl_setdelivery.setVisible(true);
+			lbl_setdelivery.setText(deli==null?"": deli);
+			}
+			
+		}
+		else {
+			System.out.println("delivering is not");
+		}
+			
+		}
+	
+	
 
 	private void datatoText(Order order) {
 		// System.out.println("Customer Name-" + order.getCustomer().getName());

@@ -465,11 +465,13 @@ public class CreateAccount_controller implements ActionListener, MouseListener, 
 			update();
 		}
 		if (e.getSource().equals(btnCreate)) {
+			
 			new Create_controller(temp_id);
+			
 		}
 		if (e.getSource().equals(btnEdit)) {
 
-			new Create_controller(temp_id);
+			new UpdateAccount_controller(temp_id);
 		}
 	}
 

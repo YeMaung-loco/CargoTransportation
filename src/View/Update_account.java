@@ -8,7 +8,7 @@ import javax.swing.JTextField;
 import java.awt.Font;
 import javax.swing.JButton;
 
-public class Create_account {
+public class Update_account {
 
 	private JFrame frame;
 	private JTextField txt_username;
@@ -22,7 +22,7 @@ public class Create_account {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Create_account window = new Create_account();
+					Update_account window = new Update_account();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -34,7 +34,7 @@ public class Create_account {
 	/**
 	 * Create the application.
 	 */
-	public Create_account() {
+	public Update_account() {
 		initialize();
 	}
 
@@ -67,17 +67,19 @@ public class Create_account {
 		txt_password.setBounds(197, 191, 207, 36);
 		frame.getContentPane().add(txt_password);
 		
-		bntCreate = new JButton("Create");
-		bntCreate.setFont(new Font("Tahoma", Font.BOLD, 17));
-		bntCreate.setBounds(237, 279, 167, 36);
-		bntCreate.setVisible(true);
 		
-//		bntUpdate=new JButton("Update");
-//		bntUpdate.setFont(new Font("Tahoma", Font.BOLD, 17));
-//		bntUpdate.setBounds(237, 279, 167, 36);
-//		bntUpdate.setVisible(false);
+		
+		bntUpdate=new JButton("Update");
+		bntUpdate.setFont(new Font("Tahoma", Font.BOLD, 17));
+		bntUpdate.setBounds(237, 279, 167, 36);
+		bntUpdate.setVisible(true);
 		frame.getContentPane().add(bntUpdate);
-		frame.getContentPane().add(bntCreate);
+		
+		
+		JLabel lblNewLabel_1 = new JLabel("Update Account");
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblNewLabel_1.setBounds(163, 22, 167, 44);
+		frame.getContentPane().add(lblNewLabel_1);
 		frame.setVisible(true);
 	}
 	public JTextField getTxt_username() {
@@ -86,9 +88,7 @@ public class Create_account {
 	public JTextField getTxt_password() {
 		return txt_password;
 	}
-	public JButton getBntCreate() {
-		return bntCreate;
-	}
+	
 	public JButton getBntUpdate() {
 		return bntUpdate;
 	}

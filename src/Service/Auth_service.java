@@ -7,6 +7,7 @@ import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
 
+import Mapper.Auth_mapper;
 import Mapper.Staff_mapper;
 import Model.Authenticate;
 import Model.Staff;
@@ -100,17 +101,36 @@ public class Auth_service {
 	    	return status;
 	    	
 	    }
+	    public Authenticate getDatabyId(int id) {
+	    	Authenticate auth=new Authenticate();
+	    	try {
+	    		PreparedStatement ps=connection.prepareStatement("select * from cargotransportation.authenticate where staff_id=" +id+ ";");
+	    		ResultSet rs=ps.executeQuery();
+	    		if(rs.next()) {
+	    			
+	    			auth=Auth_mapper.mapper(auth,rs);
+	    		}
+	    	}catch(SQLException e) {
+	    			e.printStackTrace();
+	    		}
+	    		return auth;
+	    	}
+	    
+	    
+	    
 	    public int updateAccount(int id,Authenticate auth) {
 	    	int status=0;
 	    	try {
 	    		PreparedStatement ps=connection.prepareStatement("update cargotransportation.authenticate set username=?,password=? where staff_id=" +id+ ";");
 	    		ps.setString(1, auth.getUsername());
 	    		ps.setString(2, auth.getPassword());
+	    		System.out.println(ps.toString());
 	    		status=ps.executeUpdate();
 	    		ps.close();
 	    	}catch(SQLException e) {
 	    		e.printStackTrace();
 	    	}return status;
 	    }
-	    
 }
+
+

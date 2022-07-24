@@ -12,6 +12,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
+import javax.swing.ImageIcon;
 
 public class Login_view {
 
@@ -36,18 +37,20 @@ public class Login_view {
 	private void initialize() {
 		frame = new JFrame();
 		panel = new JPanel();
-		panel.setBackground(new Color(204, 204, 204));
+		panel.setBackground(new Color(255, 204, 102));
 		Icon_lblUsername = new JLabel();
-		Icon_lblUsername.setBounds(63, 179, 160, 75);
+		Icon_lblUsername.setIcon(new ImageIcon("D:\\CargoTransportation\\CargoTransportation\\resource\\useer.png"));
+		Icon_lblUsername.setBounds(92, 191, 64, 75);
 		txtUsername = new JTextField();
 	    txtUsername.setFont(new Font("Tahoma", Font.PLAIN, 17));
-		txtUsername.setBounds(233, 194, 217, 66);
+		txtUsername.setBounds(200, 201, 217, 53);
 		Icon_lblPassword = new JLabel();
-		Icon_lblPassword.setBounds(63, 295, 138, 75);
+		Icon_lblPassword.setIcon(new ImageIcon("D:\\CargoTransportation\\CargoTransportation\\resource\\pass.png"));
+		Icon_lblPassword.setBounds(89, 293, 82, 75);
 		btnLogin = new JButton();
-		btnLogin.setBounds(274, 423, 138, 48);
+		btnLogin.setBounds(200, 414, 217, 48);
 		passwordField = new JPasswordField();
-		passwordField.setBounds(233, 304, 217, 66);
+		passwordField.setBounds(200, 305, 217, 53);
 		passwordField.setFont(new Font("Tahoma", Font.PLAIN, 17));
 
 	}
@@ -55,7 +58,7 @@ public class Login_view {
 	private void setProperties() {
 		frame.setResizable(false);
 		frame.setTitle("Cargo Transportation System");
-		frame.setBounds(100, 100, 578, 558);
+		frame.setBounds(100, 100, 531, 558);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		frame.setVisible(true);
@@ -91,8 +94,14 @@ public class Login_view {
 		panel.add(passwordField);
 		
 		Icon1JLabel = new JLabel("");
-		Icon1JLabel.setBounds(163, 43, 287, 126);
+		Icon1JLabel.setIcon(new ImageIcon("D:\\CargoTransportation\\CargoTransportation\\resource\\login.png"));
+		Icon1JLabel.setBounds(189, 55, 138, 126);
 		panel.add(Icon1JLabel);
+		
+		JLabel Cargo = new JLabel("Y & T Express");
+		Cargo.setFont(new Font("Tahoma", Font.BOLD, 18));
+		Cargo.setBounds(195, 10, 126, 27);
+		panel.add(Cargo);
 	}
 
 	public JLabel getIconUsername() {
