@@ -108,12 +108,12 @@ public class SetPrice_Panel {
 //		frame.getContentPane().setLayout(null);
 
 		destination_panel.setBackground(new Color(0, 206, 209));
-		weight_panel.setBackground(new Color(127, 255, 212));
+		weight_panel.setBackground(new Color(255, 255, 204));
 		destination_panel.setBounds(200, 0, 572, 759);
 
 		destination_panel.setLayout(null);
 
-		lbldestinationinput.setText("Destination price Input");
+		lbldestinationinput.setText("Destination Price Rate");
 		lbldestinationinput.setFont(new Font("Tahoma", Font.BOLD, 19));
 		lbldestinationinput.setBounds(167, 23, 238, 37);
 

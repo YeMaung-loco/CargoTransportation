@@ -205,7 +205,7 @@ public class DeliveryManage_Controller
 			}
 		}
 		if (e.getSource().equals(btnDeselect)) {
-			deselectOrder();
+		//	deselectOrder();
 		}
 
 	}
@@ -214,7 +214,7 @@ public class DeliveryManage_Controller
 	public void mouseClicked(MouseEvent e) {
 
 		if (e.getSource().equals(panel_deselect)) {
-			deselectOrder();
+		//	deselectOrder();
 		}
 		if (e.getSource().equals(panel_btnAccount)) {
 			frame.remove(panel_delivery);
@@ -268,13 +268,13 @@ public class DeliveryManage_Controller
 
 	}
 
-	private void deselectOrder() {
-		collectAssign();
-		System.out.println("Deselect click");
-		TableModel_OrderAssign model = (TableModel_OrderAssign) tblorder.getModel();
-		model.clearChecks(assignModelList);
-
-	}
+//	private void deselectOrder() {
+//		collectAssign();
+//		System.out.println("Deselect click");
+//		TableModel_OrderAssign model = (TableModel_OrderAssign) tblorder.getModel();
+//		model.clearChecks(assignModelList);
+//
+//	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {

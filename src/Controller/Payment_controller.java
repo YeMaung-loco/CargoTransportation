@@ -203,7 +203,7 @@ public class Payment_controller
 
 	private void pendingShowList() {
 		pendingList = new ArrayList<Order>();
-		pendingList = order_service.getOrderbyAssign(true);
+		pendingList = order_service.getOrderByStatus("Delivering");;
 		btn_viewdetail = new JButton("View");
 		model_pendingOrder = new TableModel_pendingOrder(pendingList, btn_viewdetail);
 
@@ -245,7 +245,7 @@ public class Payment_controller
 
 	private void failShowList() {
 		failList = new ArrayList<Order>();
-		failList = order_service.getAllOrderlist();
+		failList = order_service.getOrderByStatus("Failed");
 		btn_viewdetail = new JButton("View");
 		model_failOrder = new TableModel_failOrder(failList, btn_viewdetail);
 
@@ -359,13 +359,20 @@ public class Payment_controller
 		}
 
 		if (e.getSource().equals(tblRequesting)) {
-			if (tblRequesting.getSelectedColumn() == 8) {
+			if (tblRequesting.getSelectedColumn() == 9) {
 				frame.remove(navigationPanel.getPanel_navigation());
 				frame.remove(tabbedPane);
 				Orderdetail_controller orderdetail_controller = new Orderdetail_controller(null, null, this, order_no,
 						frame);
 
 			}
+			if (tblRequesting.getSelectedColumn() == 8) {
+				System.out.println("Approve button");
+				int status = order_service.assignOrder(order_no, true, "Failed");
+				if (status > 0)
+					model_requestingOrder.removeRow(tblRequesting.getSelectedRow());
+			}
+
 			if (tblRequesting.getSelectedColumn() == 7) {
 				System.out.println("Approve button");
 				int status = order_service.assignOrder(order_no, true, "Completed");

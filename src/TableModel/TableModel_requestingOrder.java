@@ -12,8 +12,8 @@ public class TableModel_requestingOrder extends AbstractTableModel {
 	List<Order> orderList;
 	JButton btn_viewdetail;
 	JButton btn_approve;
-	String headerList[] = new String[] { "No", "Order_Id", "Name", "Phone", "Destination", "Date", "Fee", "Approve",
-			"View Detail" };
+	String headerList[] = new String[] { "No", "Order_Id", "Name", "Phone", "Destination", "Date", "Fee", "Complete",
+			"Fail", "View Detail" };
 
 	public TableModel_requestingOrder(List<Order> list, JButton btn_viewDetail, JButton btn_approve) {
 		orderList = list;
@@ -86,7 +86,15 @@ public class TableModel_requestingOrder extends AbstractTableModel {
 			else {
 				return entity.getStatus();
 			}
+			
 		case 8:
+			if (entity.getStatus().equals("Delivering"))
+				return btn_approve;
+
+			else {
+				return entity.getStatus();
+			}
+		case 9:
 			return btn_viewdetail;
 		default:
 			return "";

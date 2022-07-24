@@ -157,8 +157,11 @@ public class Office_view {
 		panel_navigation.setBounds(0, 0, 200, 741);
 		panel_navigation.setBackground(new Color(255, 255, 102));
 
-		lblIcon.setIcon(new ImageIcon("resource\\testLogo.png"));
+				
 		lblIcon.setBounds(0, 0, 200, 162);
+		ImageIcon logo = new ImageIcon(new ImageIcon("resource\\cargo.png").getImage()
+				.getScaledInstance(lblIcon.getWidth(), lblIcon.getHeight(), Image.SCALE_SMOOTH));
+		lblIcon.setIcon(logo);
 
 		lbl_iconLogout.setVerticalAlignment(SwingConstants.TOP);
 		lbl_iconLogout.setBounds(50, 19, 32, 32);
@@ -168,8 +171,8 @@ public class Office_view {
 		//ImageIcon iconLogout = setIconScale("C:\\Users\\User\\Downloads\\options-lines.png");
 		lbl_iconLogout.setIcon(new ImageIcon("resource\\logout.png"));
 
-		ImageIcon account_icon = new ImageIcon("resource\\");
-		iconJLabel = new JLabel(account_icon);
+		//ImageIcon account_icon = new ImageIcon("resource\\");
+		iconJLabel = new JLabel();
 		panel_btnStaff.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panel_btnStaff.setBackground(new Color(255, 215, 0));
 		panel_btnStaff.setBounds(0, 165, 200, 70);

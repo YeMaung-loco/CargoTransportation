@@ -107,12 +107,12 @@ public class Orderdetail_controller implements ActionListener, MouseListener {
 
 	private void dependencyInjection() {
 		try {
-			this.packageservice = new Package_service();
-			this.destination_Service = new DestinationPrice_service();
-			this.customerservice = new Customer_service();
-			this.orderservice = new Order_service();
-			this.staffservice = new Staff_Service();
-			this.orderStaffservice = new Orderstaff_service();
+			packageservice = new Package_service();
+			destination_Service = new DestinationPrice_service();
+			customerservice = new Customer_service();
+			orderservice = new Order_service();
+			staffservice = new Staff_Service();
+			orderStaffservice = new Orderstaff_service();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -274,8 +274,9 @@ public class Orderdetail_controller implements ActionListener, MouseListener {
 		if (status != "" & status != null) {
 			if (!status.contains("T")) {
 
-				int staff_id = orderStaffservice.getdeli(order_no);
-				String deli = staffservice.getdeliname(staff_id);
+				int staff_id = ((Orderstaff_service) orderStaffservice).getdeli(order_no);
+				//String deli = staffservice.getdeliname(staff_id);
+				String deli=staffservice.getdeliname(staff_id);
 				lbldelivery.setVisible(true);
 				lbl_setdelivery.setVisible(true);
 				lbl_setdelivery.setText(deli == null ? "" : deli);
