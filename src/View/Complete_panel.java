@@ -1,14 +1,15 @@
 package View;
 
-import javax.swing.JPanel;
+import java.awt.Color;
+import java.awt.Font;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import java.awt.Font;
-import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import java.awt.Color;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 
 public class Complete_panel extends JPanel {
@@ -24,7 +25,7 @@ public class Complete_panel extends JPanel {
 	 * Create the panel.
 	 */
 	public Complete_panel() {
-		setBackground(new Color(144, 238, 144));
+		
 		initialize();
 		setTableDesign();
 	}
@@ -43,7 +44,8 @@ public class Complete_panel extends JPanel {
 	
 		public void initialize() {
 		setLayout(null);
-		
+		setBackground(new Color(144, 238, 144));
+		//setBorder(new RoundedBorder(20));
 		btnExport=new JButton("Export to Excel");
 		btnExport.setBounds(20, 73, 150, 35);
 		add(btnExport);

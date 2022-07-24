@@ -76,8 +76,8 @@ public class Payment_controller
 	private TableRowSorter<TableModel_requestingOrder> requestingSorter;
 	private TableRowSorter<TableModel_completeOrder> completeSorter;
 	private TableRowSorter<TableModel_failOrder> failSorter;
-	
-	private JButton btn_viewdetail, btn_approve, btn_complete_export;
+
+	private JButton btn_viewdetail, btn_approve, btn_complete_export, btn_failed_export;
 
 	List<Order> pendingList, requestingList, completeList, failList;
 	String order_no;
@@ -165,12 +165,14 @@ public class Payment_controller
 		tblFail = failPanel.getTblfail();
 
 		btn_complete_export = completePanel.getbtnExport();
+		btn_failed_export = failPanel.getbtnExport();
 
 	}
 
 	private void initController() {
 		tabbedPane.addChangeListener(this);
 		btn_complete_export.addActionListener(this);
+		btn_failed_export.addActionListener(this);
 
 		if (CurrentUserHolder.getCurrentUser().getRole().getRole_name().equals("Admin")) {
 			navigationPanel.getPanel_btnSetPrice().addMouseListener(this);
@@ -186,10 +188,10 @@ public class Payment_controller
 
 		tblRequesting.getSelectionModel().addListSelectionListener(this);
 		tblRequesting.addMouseListener(this);
-		
+
 		tblComplete.getSelectionModel().addListSelectionListener(this);
 		tblComplete.addMouseListener(this);
-		
+
 		tblFail.getSelectionModel().addListSelectionListener(this);
 		tblFail.addMouseListener(this);
 
@@ -225,7 +227,7 @@ public class Payment_controller
 		TableCellRenderer tableRenderer = tblRequesting.getDefaultRenderer(JButton.class);
 		tblRequesting.setDefaultRenderer(JButton.class, new JTableButtonRenderer(tableRenderer));
 		requestingSorter = new TableRowSorter<TableModel_requestingOrder>(model_requestingOrder);
-		
+
 	}
 
 	private void completeShowList() {
@@ -254,38 +256,43 @@ public class Payment_controller
 		failSorter = new TableRowSorter<TableModel_failOrder>(model_failOrder);
 	}
 
-	private void exportExcel() {
+	private void exportExcel(JTable table, List<Order> list, String tableName) {
+
 		try {
-			ExportDataToExcel.writeToExcell(tblComplete, "");
+			ExportDataToExcel.writeToExcell(table, tableName);
 			int packageDelete = 0;
 			int orderStaffDelete = 0;
 			int orderDelete = 0;
 			int customerDelete = 0;
-			for (Order completeOrder : completeList) {
+			for (Order completeOrder : list) {
 				String deleteOrderNo = completeOrder.getOrder_no();
 				int deleteCustomerId = completeOrder.getCustomer().getId();
-				System.out.println("Delete order_no" + deleteOrderNo);
-				System.out.println("Delete customer_id" + deleteCustomerId);
+//				System.out.println("Delete order_no" + deleteOrderNo);
+//				System.out.println("Delete customer_id" + deleteCustomerId);
 
-				packageDelete = package_service.deletePackageByOrderNo(completeOrder.getOrder_no());
-				orderStaffDelete = orderstaff_service.deleteAssignByOrderNo(completeOrder.getOrder_no());
-				orderDelete = order_service.deleteOrder(completeOrder.getOrder_no());
-				customerDelete = customer_service.deleteCustomer(completeOrder.getCustomer().getId());
+				packageDelete = package_service.deletePackageByOrderNo(deleteOrderNo);
+				orderStaffDelete = orderstaff_service.deleteAssignByOrderNo(deleteOrderNo);
+				orderDelete = order_service.deleteOrder(deleteOrderNo);
+				customerDelete = customer_service.deleteCustomer(deleteCustomerId);
 
-				if (packageDelete > 0)
-					System.out.println("Package delete success");
-				if(orderStaffDelete>0)
-					System.out.println("OrderStaff delete success");
-				if (orderDelete > 0)
-					System.out.println("Order delete success");
-				if (customerDelete > 0)
-					System.out.println("customer delete success");
-				
+//				if (packageDelete > 0)
+//					System.out.println("Package delete success");
+//				if (orderStaffDelete > 0)
+//					System.out.println("OrderStaff delete success");
+//				if (orderDelete > 0)
+//					System.out.println("Order delete success");
+//				if (customerDelete > 0)
+//					System.out.println("customer delete success");
+
 			}
 
-			if (packageDelete > 0 && orderDelete > 0 && customerDelete > 0 && orderStaffDelete > 0)
-				model_completeOrder.removeAllRow();
+			if (packageDelete > 0 && orderDelete > 0 && customerDelete > 0 && orderStaffDelete > 0) {
+				if (model_completeOrder.equals(table.getModel()))
+					model_completeOrder.removeAllRow();
+				if (model_failOrder.equals(table.getModel()))
+					model_failOrder.removeAllRow();
 
+			}
 		} catch (FileNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -295,12 +302,31 @@ public class Payment_controller
 		}
 	}
 
+//	public static Path getOutputPath(String s) {
+//		
+//		File theDir = new File("/path/directory");
+//		
+//		if (!theDir.exists()){
+//		    theDir.mkdirs();
+//		}
+//		
+//		 JFileChooser jd= s == null ? new JFileChooser() : new JFileChooser(s);
+//		 jd.setDialogTitle("Choose output file");
+//		 int returnVal= jd.showSaveDialog(null);
+//		 if (returnVal != JFileChooser.APPROVE_OPTION) return null;
+//		 return jd.getSelectedFile().toPath();
+//		}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(btn_complete_export)) {
-			exportExcel();
-
+			exportExcel(tblComplete, completeList, "CompletedOrder");
 		}
+
+		if (e.getSource().equals(btn_failed_export)) {
+			exportExcel(tblFail, failList, "FailedOrder");
+		}
+
 	}
 
 	@Override
@@ -341,7 +367,6 @@ public class Payment_controller
 
 			}
 			if (tblRequesting.getSelectedColumn() == 7) {
-
 				System.out.println("Approve button");
 				int status = order_service.assignOrder(order_no, true, "Completed");
 				if (status > 0)
@@ -351,25 +376,24 @@ public class Payment_controller
 
 		if (e.getSource().equals(tblPending)) {
 			if (tblPending.getSelectedColumn() == 7) {
-
 				frame.remove(navigationPanel.getPanel_navigation());
 				frame.remove(tabbedPane);
 				Orderdetail_controller nextController = new Orderdetail_controller(null, null, this, order_no, frame);
 
 			}
 		}
-		if(e.getSource().equals(tblComplete)) {
-			if(tblComplete.getSelectedColumn()==7) {
+		if (e.getSource().equals(tblComplete)) {
+			if (tblComplete.getSelectedColumn() == 7) {
 				frame.remove(navigationPanel.getPanel_navigation());
 				frame.remove(tabbedPane);
-				Orderdetail_controller nextController=new Orderdetail_controller(null,null,this,order_no,frame);
+				Orderdetail_controller nextController = new Orderdetail_controller(null, null, this, order_no, frame);
 			}
 		}
-		if(e.getSource().equals(tblFail)) {
-			if(tblFail.getSelectedColumn()==7) {
+		if (e.getSource().equals(tblFail)) {
+			if (tblFail.getSelectedColumn() == 7) {
 				frame.remove(navigationPanel.getPanel_navigation());
 				frame.remove(tabbedPane);
-				Orderdetail_controller nextController=new Orderdetail_controller(null,null,this,order_no,frame);
+				Orderdetail_controller nextController = new Orderdetail_controller(null, null, this, order_no, frame);
 			}
 		}
 
@@ -414,16 +438,15 @@ public class Payment_controller
 			System.out.println("Request Table -" + order_no);
 
 		}
-		if(!tblComplete.getSelectionModel().isSelectionEmpty()) {
-			order_no=model_completeOrder.getOrder_no(tblComplete.convertRowIndexToModel(tblComplete.getSelectedRow()));
-			
+		if (!tblComplete.getSelectionModel().isSelectionEmpty()) {
+			order_no = model_completeOrder
+					.getOrder_no(tblComplete.convertRowIndexToModel(tblComplete.getSelectedRow()));
+
 		}
-		if(!tblFail.getSelectionModel().isSelectionEmpty()) {
-			order_no=model_failOrder.getOrder_no(tblFail.convertRowIndexToModel(tblFail.getSelectedRow()));
-				order_no=model_failOrder.getOrder_no(tblFail.convertRowIndexToModel(tblFail.getSelectedRow()));
-			}
-			
-		
+		if (!tblFail.getSelectionModel().isSelectionEmpty()) {
+			order_no = model_failOrder.getOrder_no(tblFail.convertRowIndexToModel(tblFail.getSelectedRow()));
+			order_no = model_failOrder.getOrder_no(tblFail.convertRowIndexToModel(tblFail.getSelectedRow()));
+		}
 
 	}
 

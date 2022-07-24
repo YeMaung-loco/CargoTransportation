@@ -206,6 +206,14 @@ public class Staff_Panel extends JFrame {
 		lblInputform.setText("Input Form");
 		lblInputform.setFont(new Font("Tahoma", Font.BOLD, 20));
 		lblInputform.setBounds(32, 10, 125, 32);
+		
+		btnMaximize.setText("Maximize");
+		btnMaximize.setFont(new Font("Tahoma", Font.BOLD, 16));
+		btnMaximize.setBounds(150, 10, 130, 32);
+
+		btnMinimize.setText("Minimize");
+		btnMinimize.setFont(new Font("Tahoma", Font.BOLD, 16));
+		btnMinimize.setBounds(150, 10, 129, 32);
 
 		lblDepartment.setText("Department");
 		lblDepartment.setFont(new Font("Tahoma", Font.BOLD, 18));
@@ -241,13 +249,7 @@ public class Staff_Panel extends JFrame {
 
 		comboDepartment.setBounds(167, 177, 200, 32);
 
-		btnMaximize.setText("Maximize");
-		btnMaximize.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnMaximize.setBounds(987, 10, 130, 32);
-
-		btnMinimize.setText("Minimize");
-		btnMinimize.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnMinimize.setBounds(987, 10, 129, 32);
+		
 		
 
 		btnSave.setText("Save");

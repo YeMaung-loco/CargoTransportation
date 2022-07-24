@@ -27,6 +27,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
 import javax.swing.event.CaretEvent;
@@ -35,6 +36,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
+
+import com.mysql.cj.x.protobuf.MysqlxCrud.Update;
 
 import Model.CurrentUserHolder;
 import Model.Customer;
@@ -78,9 +81,10 @@ public class OrderManage_controller
 	TableModel_Order model_Order;
 	TableRowSorter<TableModel_Order> sorter;
 	JLabel lblFee, lblOrderId;
-	JTextField txtc_name, txtc_phone, txtc_address, txt_search;
+	JTextField txtc_name, txtc_phone, txt_search;
+	JTextArea txtc_address;
 	JComboBox<String> comboDestination, searchComboDestination;
-	JButton btnAdd, btnDelete, btnDone;
+	JButton btnAdd, btnDelete, btnDone, btnUpdate, btnRemove, btnClear;
 	JButton btn_viewDetail;
 	JLabel iconManageStaff, iconSetPrice;
 
@@ -91,6 +95,7 @@ public class OrderManage_controller
 
 	ArrayList<JCheckBox> checkBoxList = new ArrayList<JCheckBox>();
 	int i = 0;
+	int modelRowIndex;
 
 	public OrderManage_controller(JFrame frame) {
 		containerFrame = frame;
@@ -111,7 +116,7 @@ public class OrderManage_controller
 
 	private void showList() {
 		List<Order> orderList = new ArrayList<Order>();
-		orderList = order_service.getAllOrderlist();
+		orderList = order_service.getOrderbyAssign(false);
 		btn_viewDetail = new JButton("View");
 		model_Order = new TableModel_Order(orderList, btn_viewDetail);
 
@@ -166,9 +171,7 @@ public class OrderManage_controller
 		order_Panel = new Order_Panel(containerFrame);
 		office_view.getPanel_btnOrder().setBackground(new Color(218, 165, 32));
 
-		///
 		if (CurrentUserHolder.getCurrentUser().getRole().getRole_name().equals("Office Staff")) {
-			// office_view.getPanel_btnSetPrice().setVisible(false);
 			ImageIcon disableIcon = new ImageIcon(
 					new ImageIcon("resource\\disable.png").getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH));
 
@@ -200,7 +203,10 @@ public class OrderManage_controller
 		btnAdd = order_Panel.getBtnNewButton();
 		btnDelete = order_Panel.getBtnDelete();
 		btnDone = order_Panel.getBtnDone();
-
+		btnUpdate = order_Panel.getBtnUpdate();
+		btnRemove = order_Panel.getBtnRemove();
+		btnClear = order_Panel.getBtnClear();
+		
 		comboDestination = order_Panel.getJcombo_destination();
 		searchComboDestination = order_Panel.getJcombo_destination_1();
 
@@ -222,6 +228,9 @@ public class OrderManage_controller
 		btnAdd.addActionListener(this);
 		btnDelete.addActionListener(this);
 		btnDone.addActionListener(this);
+		btnUpdate.addActionListener(this);
+		btnRemove.addActionListener(this);
+		btnClear.addActionListener(this);
 
 		searchComboDestination.addItemListener(this);
 
@@ -233,7 +242,8 @@ public class OrderManage_controller
 	}
 
 	private void edit() {
-		Order order = new Order();
+		insertCO = true;
+		order = new Order();
 		order = order_service.getOrderById(order_no);
 		dataToView(order);
 	}
@@ -249,10 +259,10 @@ public class OrderManage_controller
 		txtc_name.setText(order == null ? "" : order.getCustomer().getName());
 		txtc_phone.setText(order == null ? "" : order.getCustomer().getPhone());
 		txtc_address.setText(order == null ? "" : order.getCustomer().getAddress());
-		comboDestination.setSelectedItem(order == null ? 0 : order.getDestination().getDestinationName());
+		comboDestination.setSelectedItem(order == null ? "-Select-" : order.getDestination().getDestinationName());
 
 		lblOrderId.setText(order == null ? "" : order.getOrder_no());
-		lblFee.setText(order == null ? "" : String.valueOf(order.getTransportationfees()));
+		lblFee.setText(order == null ? "" : String.valueOf(order.getTransportationfees()) + " Ks");
 		if (order != null) {
 			fee = order.getTransportationfees();
 			List<Package> packList = package_service.getPackageModelByOrderNo(order_no);
@@ -350,7 +360,7 @@ public class OrderManage_controller
 					order_Panel.getPanel_Package().add(checkbox);
 					checkBoxList.add(checkbox);
 					temp_packageList.put(packageId, price);
-					lblFee.setText(String.valueOf(fee));
+					lblFee.setText(String.valueOf(fee) + " Ks");
 					order_Panel.getPanel_Package().revalidate();
 					order_Panel.getPanel_Package().repaint();
 					// i++;
@@ -366,12 +376,23 @@ public class OrderManage_controller
 		System.out.println("Remove Package");
 		for (int i = 0; i < checkBoxList.size(); i++) {
 			if (checkBoxList.get(i).isSelected()) {
-				order_Panel.getPanel_Package().remove(checkBoxList.get(i));
-				fee -= temp_packageList.get(checkBoxList.get(i).getText());
-				checkBoxList.remove(i);
-				lblFee.setText(String.valueOf(fee));
-				order_Panel.getPanel_Package().revalidate();
-				order_Panel.getPanel_Package().repaint();
+				int status = package_service.deletePackageById(checkBoxList.get(i).getText());
+				if (status > 0) {
+					System.out.println("Remove" + checkBoxList.get(i).getText());
+					order_Panel.getPanel_Package().remove(checkBoxList.get(i));
+					fee -= temp_packageList.get(checkBoxList.get(i).getText());
+					checkBoxList.remove(i);
+
+					if (checkBoxList.size() == 0) {
+						fee = 0;
+					}
+
+					order.setTransportationfees(fee);
+					lblFee.setText(String.valueOf(fee) + " Ks");
+
+					order_Panel.getPanel_Package().revalidate();
+					order_Panel.getPanel_Package().repaint();
+				}
 			}
 
 		}
@@ -379,7 +400,8 @@ public class OrderManage_controller
 	}
 
 	private void delete() {
-		int modelRowIndex = tblorder.convertRowIndexToModel(tblorder.getSelectedRow());
+		// int modelRowIndex =
+		// tblorder.convertRowIndexToModel(tblorder.getSelectedRow());
 		System.out.println("delete " + modelRowIndex);
 		if (modelRowIndex != -1) {
 			int packageDelete = package_service.deletePackageByOrderNo(order_no);
@@ -396,6 +418,10 @@ public class OrderManage_controller
 			if (packageDelete > 0 && orderDelete > 0 && customerDelete > 0) {
 				model_Order.removeRow(modelRowIndex);
 				alert("Successfully Deleted!");
+
+				order = null;
+				dataToView(order);
+
 			} else
 				alert("Delete Failed!");
 		} else {
@@ -437,19 +463,29 @@ public class OrderManage_controller
 	}
 
 	private void done() {
-		order.setTransportationfees(fee);
-		int status = order_service.updateOrder(order_no, order);
-		if (status > 0) {
-			order = order_service.getlastOrder();
-			if (model_Order != null)
-				model_Order.insertRow(order);
+		if (fee != 0) {
+			order.setTransportationfees(fee);
+			int status = order_service.updateOrder(order_no, order);
+			if (status > 0) {
+				order = order_service.getlastOrder();
+				if (model_Order != null)
+					model_Order.insertRow(order);
 
-			alert("Successfully Saved!");
-			i = 0;
-			insertCO = false;
+				alert("Successfully Saved!");
+				i = 0;
+				insertCO = false;
+
+			} else {
+				alert("Failed Save!");
+			}
 
 		} else {
-			alert("Failed Save!");
+			int orderDeleteStatus = order_service.deleteOrder(order_no);
+			int customerDeleteStatus = customer_service.deleteCustomer(order.getCustomer().getId());
+
+			if (orderDeleteStatus > 0 && customerDeleteStatus > 0) {
+				model_Order.removeRow(modelRowIndex);
+			}
 		}
 		order = null;
 		customer = null;
@@ -558,6 +594,27 @@ public class OrderManage_controller
 			System.out.println("View detail");
 		}
 
+		if (e.getSource().equals(btnUpdate)) {
+			Update();
+		}
+		if (e.getSource().equals(btnRemove)) {
+			delete();
+
+		}
+		if(e.getSource().equals(btnClear)) {
+			order=null;
+			dataToView(order);
+		}
+
+	}
+
+	private void Update() {
+		if (setModel()) {
+			int updateCustomer = customer_service.updateCustomer(customer_id, customer);
+			int updateOrder = order_service.updateOrder(order_no, order);
+
+		}
+
 	}
 
 	@Override
@@ -605,6 +662,8 @@ public class OrderManage_controller
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
 		if (!tblorder.getSelectionModel().isSelectionEmpty()) {
+			modelRowIndex = tblorder.convertRowIndexToModel(tblorder.getSelectedRow());
+
 			order_no = model_Order.getOrder_no(tblorder.convertRowIndexToModel(tblorder.getSelectedRow()));
 			customer_id = model_Order.getCustomer_Id(tblorder.convertRowIndexToModel(tblorder.getSelectedRow()));
 

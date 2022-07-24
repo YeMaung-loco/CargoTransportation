@@ -26,7 +26,7 @@ import org.apache.poi.ss.usermodel.Row;
 
 public class ExportDataToExcel {
 	@SuppressWarnings("unused")
-	public static void writeToExcell(JTable table, String string) throws FileNotFoundException, IOException {
+	public static void writeToExcell(JTable table, String tableName) throws FileNotFoundException, IOException {
 		new XSSFWorkbookFactory();
 		Workbook wb = new XSSFWorkbook(); // Excell workbook
 		Sheet sheet = wb.createSheet(); // WorkSheet
@@ -35,7 +35,6 @@ public class ExportDataToExcel {
 
 		Row headerRow = (Row) sheet.createRow(0); // Create row at line 0
 		for (int headings = 0; headings < model.getColumnCount() - 1; headings++) {
-
 			// For each column
 			(headerRow).createCell(headings).setCellValue(model.getColumnName(headings));// Write column name
 		}
@@ -47,18 +46,14 @@ public class ExportDataToExcel {
 			row = sheet.createRow((rows + 3));
 		}
 		String currentTime = convertTime();
-		wb.write(new FileOutputStream("C:\\Users\\User\\Desktop\\image\\CompleteTableExportBy-"
+		wb.write(new FileOutputStream("C:\\Users\\User\\Desktop\\image\\"+tableName+"ExportBy-"
 				+ CurrentUserHolder.getCurrentUser().getName() + currentTime + ".xlsx"));
 	}
 
 	public static String convertTime() {
 		long millis = System.currentTimeMillis();
-
 		Date date = new Date(millis);
 		return date.toString();
-
-		// Format format = new SimpleDateFormat("dd-mmm-yyyy hh:mm");
-		// return format.format(date).toString();
 
 	}
 }
