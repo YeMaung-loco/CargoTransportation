@@ -270,6 +270,7 @@ public class CreateAccount_controller implements ActionListener, MouseListener, 
 	private void edit() {
 		auth = new Authenticate();
 		int status = auth_Service.checkStaffid(temp_id, auth);
+		
 		System.out.println(status);
 		if (status > 0) {
 			btnCreate.setVisible(false);
@@ -456,6 +457,9 @@ public class CreateAccount_controller implements ActionListener, MouseListener, 
 		}
 		if (e.getSource().equals(btnClear)) {
 			staff = null;
+			btnCreate.setVisible(false);
+			btnEdit.setVisible(false);
+			
 			dataToView(staff);
 		}
 		if (e.getSource().equals(btnDelete)) {
