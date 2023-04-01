@@ -136,12 +136,12 @@ public class SetPrice_Panel {
 		txt_destinationprice.setColumns(10);
 
 		btn_destinationsave.setText("Save");
-		btn_destinationsave.setFont(new Font("Tahoma", Font.BOLD, 20));
-		btn_destinationsave.setBounds(421, 303, 116, 48);
+		btn_destinationsave.setFont(new Font("Tahoma", Font.BOLD, 17));
+		btn_destinationsave.setBounds(421, 303, 100, 40);
 
 		btn_destinationUpdate.setText("Update");
-		btn_destinationUpdate.setFont(new Font("Tahoma", Font.BOLD, 20));
-		btn_destinationUpdate.setBounds(421, 303, 116, 48);
+		btn_destinationUpdate.setFont(new Font("Tahoma", Font.BOLD, 17));
+		btn_destinationUpdate.setBounds(421, 303, 100, 40);
 		btn_destinationUpdate.setVisible(false);
 
 		scrollPane_destination = new JScrollPane();
@@ -170,12 +170,12 @@ public class SetPrice_Panel {
 		txt_weightprice.setColumns(10);
 
 		btn_weightpricesave.setText("Save");
-		btn_weightpricesave.setFont(new Font("Tahoma", Font.BOLD, 20));
-		btn_weightpricesave.setBounds(409, 299, 116, 48);
+		btn_weightpricesave.setFont(new Font("Tahoma", Font.BOLD, 17));
+		btn_weightpricesave.setBounds(409, 299, 100, 40);
 
 		btn_weightUpdate.setText("Update");
-		btn_weightUpdate.setFont(new Font("Tahoma", Font.BOLD, 20));
-		btn_weightUpdate.setBounds(409, 299, 116, 48);
+		btn_weightUpdate.setFont(new Font("Tahoma", Font.BOLD, 17));
+		btn_weightUpdate.setBounds(409, 299, 100, 40);
 		btn_weightUpdate.setVisible(false);
 
 		scrollPane_weight = new JScrollPane();
@@ -188,20 +188,20 @@ public class SetPrice_Panel {
 		lblNewLabel.setBounds(447, 100, 38, 37);
 
 		btn_destinationdelete.setText("Delete");
-		btn_destinationdelete.setFont(new Font("Tahoma", Font.BOLD, 20));
-		btn_destinationdelete.setBounds(228, 303, 116, 48);
+		btn_destinationdelete.setFont(new Font("Tahoma", Font.BOLD, 17));
+		btn_destinationdelete.setBounds(228, 303, 100, 40);
 
 		btn_destinationedit.setText("Clear");
-		btn_destinationedit.setFont(new Font("Tahoma", Font.BOLD, 20));
-		btn_destinationedit.setBounds(22, 303, 116, 48);
+		btn_destinationedit.setFont(new Font("Tahoma", Font.BOLD, 17));
+		btn_destinationedit.setBounds(22, 303, 100, 40);
 
 		btn_weightdelete.setText("Delete");
-		btn_weightdelete.setFont(new Font("Tahoma", Font.BOLD, 20));
-		btn_weightdelete.setBounds(224, 299, 116, 48);
+		btn_weightdelete.setFont(new Font("Tahoma", Font.BOLD, 17));
+		btn_weightdelete.setBounds(224, 299, 100, 40);
 
 		btn_weightedit.setText("Clear");
-		btn_weightedit.setFont(new Font("Tahoma", Font.BOLD, 20));
-		btn_weightedit.setBounds(25, 299, 116, 48);
+		btn_weightedit.setFont(new Font("Tahoma", Font.BOLD, 17));
+		btn_weightedit.setBounds(25, 299, 100, 40);
 
 	}
 

@@ -80,7 +80,7 @@ public class TableModel_requestingOrder extends AbstractTableModel {
 		case 6:
 			return entity.getTransportationfees();
 		case 7:
-			if (entity.getStatus().equals("Delivering"))
+			if (entity.getStatus().equals("Requesting"))
 				return btn_approve;
 
 			else {
@@ -88,7 +88,7 @@ public class TableModel_requestingOrder extends AbstractTableModel {
 			}
 			
 		case 8:
-			if (entity.getStatus().equals("Delivering"))
+			if (entity.getStatus().equals("Requesting"))
 				return btn_approve;
 
 			else {

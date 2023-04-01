@@ -490,6 +490,9 @@ public class OrderManage_controller
 					int modelRowIndex = tblorder.convertRowIndexToModel(tblorder.getSelectedRow());
 					model_Order.setValueAt(order, modelRowIndex);
 					alert("Update Successfully");
+					
+					order=null;
+					dataToView(order);
 				} else {
 					alert("Input Properly!!!");
 				}

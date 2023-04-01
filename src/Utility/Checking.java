@@ -42,7 +42,7 @@ public class Checking {
 			JOptionPane.showMessageDialog(null, "You must enter Number");
 			return false;
 		} else if (Integer.parseInt(strqp) > 150) {
-			JOptionPane.showMessageDialog(null, "The Weight-kg you entered is exceed");
+			JOptionPane.showMessageDialog(null, "The Weight-kg you entered is exceed 150kg");
 			return false;
 		} else
 			return true;

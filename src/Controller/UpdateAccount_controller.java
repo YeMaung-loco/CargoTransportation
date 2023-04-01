@@ -21,10 +21,6 @@ private JTextField txt_username,txt_password;
 private Authenticate auth;
 int temp_id;
 Update_account update;
-
-	
-	
-	
 	
 	/**
 	 * @wbp.parser.entryPoint
@@ -85,10 +81,6 @@ Update_account update;
 		txt_username.setText("");
 		txt_password.setText("");
 	}
-
-
-	
-	
 
 
 	@Override

@@ -178,7 +178,7 @@ public class Office_view {
 		panel_btnStaff.setBounds(0, 165, 200, 70);
 		panel_btnStaff.setLayout(null);
 		iconJLabel.setVerticalAlignment(SwingConstants.TOP);
-		iconJLabel.setBounds(14, 19, 32, 32);
+		iconJLabel.setBounds(20, 14, 32, 32);
 		lblStaff = new JLabel("Manage Account");
 		lblStaff.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblStaff.setBounds(62, 15, 126, 39);

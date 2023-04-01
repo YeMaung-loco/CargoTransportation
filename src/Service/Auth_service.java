@@ -82,6 +82,19 @@ public class Auth_service {
 	    }
 	    	return status;
 	    }
+	    
+	    public int deleteLogin(int staff_id) {
+	    	int status=0; 
+	    	try {
+	    		PreparedStatement ps=connection.prepareStatement("delete from cargotransportation.authenticate where staff_id=" +staff_id+ ";");
+	    		status =ps.executeUpdate();
+	    		ps.close();
+	    	
+	    }catch(SQLException e) {
+	    	e.printStackTrace();
+	    }
+	    	return status;
+	    }
 	   
 	    public int createAccount(int staff_id,Authenticate auth) {
 	    	

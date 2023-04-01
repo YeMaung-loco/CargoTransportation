@@ -217,7 +217,7 @@ public class Payment_controller
 
 	private void requestingShowList() {
 		requestingList = new ArrayList<Order>();
-		requestingList = order_service.getOrderByStatus("Delivering");
+		requestingList = order_service.getOrderByStatus("Requesting");
 		btn_viewdetail = new JButton("View");
 		btn_approve = new JButton("Approve");
 		model_requestingOrder = new TableModel_requestingOrder(requestingList, btn_viewdetail, btn_approve);

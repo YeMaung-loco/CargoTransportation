@@ -154,7 +154,7 @@ public class SetPrice_controller implements MouseListener, ActionListener, ListS
 	boolean setWeightModel() {
 		boolean setmodel = false;
 		if (!txt_startweight_1.getText().equals("") && !txt_weightprice.getText().equals("")) {
-			if (Checking.IsAllDigit(txt_weightprice.getText()) && Checking.checkWeight(txt_weightprice.getText())) {
+			if (Checking.IsAllDigit(txt_startweight_1.getText()) && Checking.checkWeight(txt_startweight_1.getText())) {
 				weight = new Weight();
 				int price = Integer.parseInt(txt_weightprice.getText());
 				int kg = Integer.parseInt(txt_startweight_1.getText());

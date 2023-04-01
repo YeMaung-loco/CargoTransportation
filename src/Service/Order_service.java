@@ -118,7 +118,6 @@ public class Order_service {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
 		return id;
 	}
 	

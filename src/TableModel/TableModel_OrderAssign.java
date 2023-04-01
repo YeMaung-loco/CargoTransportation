@@ -5,6 +5,9 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.table.AbstractTableModel;
 
+import org.apache.tools.ant.taskdefs.Java;
+
+import Controller.DeliveryManage_Controller;
 import Model.Order;
 import Model.OrderAssign;
 import Service.Order_service;
@@ -51,6 +54,13 @@ public class TableModel_OrderAssign extends AbstractTableModel {
 		return getValueAt(0, column).getClass();
 	}
 
+	public void removeAllrow() {
+		if (orderList != null) {
+			orderList.clear();
+			fireTableDataChanged();
+		}
+	}
+
 	public void removeRow(int rowIndex) {
 		orderList.remove(rowIndex);
 		fireTableRowsDeleted(rowIndex, rowIndex);
@@ -61,15 +71,20 @@ public class TableModel_OrderAssign extends AbstractTableModel {
 		fireTableRowsInserted(orderList.size() - 1, orderList.size() - 1);
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
+
 		Order entity = null;
 
 		entity = orderList.get(rowIndex);
 
 		switch (columnIndex) {
 		case 0:
-			return entity.getAssign();
+
+		{
+			return new Boolean(entity.getAssign());
+		}
 		case 1:
 			return rowIndex + 1;
 		case 2:
@@ -89,6 +104,7 @@ public class TableModel_OrderAssign extends AbstractTableModel {
 		default:
 			return "";
 		}
+
 	}
 
 	public String getOrder_no(int i) {
@@ -107,7 +123,7 @@ public class TableModel_OrderAssign extends AbstractTableModel {
 				Order order = new Order();
 				order = orderList.get(index);
 				order.setAssign(false);
-				
+
 				System.out.println("i" + index + " j" + j);
 				fireTableRowsUpdated(index, j);
 			}

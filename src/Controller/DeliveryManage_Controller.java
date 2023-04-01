@@ -29,8 +29,6 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
-import org.apache.tools.ant.types.selectors.modifiedselector.Algorithm;
-
 import Model.CurrentUserHolder;
 import Model.Destination;
 import Model.Order;
@@ -39,6 +37,7 @@ import Service.Order_service;
 import TableModel.TableModel_OrderAssign;
 import View.Delivery_View;
 import View.Office_view;
+import share.Temp;
 
 public class DeliveryManage_Controller
 		implements ActionListener, MouseListener, ListSelectionListener, ItemListener, CaretListener {
@@ -48,7 +47,7 @@ public class DeliveryManage_Controller
 	Office_view navigation_panel;
 	DestinationPrice_service destination_service;
 	static Order_service order_service;
-	static TableModel_OrderAssign model_OrderAssign;
+	static TableModel_OrderAssign model_OrderAssign = new TableModel_OrderAssign();
 	static JTable tblorder;
 	JPanel panel_btnAccount, panel_btnOrderInput, panel_btnSetprice, panel_btnDelivery, panel_btnApprove;
 	JPanel panel_delivery;
@@ -59,7 +58,8 @@ public class DeliveryManage_Controller
 	JTextField txt_search;
 	String order_no;
 	List<String> assignList = new ArrayList<>();
-	List<Integer> assignModelList = new ArrayList<>();
+	static List<Integer> assignModelList = new ArrayList<>();
+	static List<Order> orderList = new ArrayList<Order>();
 	JComboBox<String> combodestination;
 
 	public DeliveryManage_Controller(JFrame frame) {
@@ -73,14 +73,25 @@ public class DeliveryManage_Controller
 		loadData();
 		showOrderList();
 	}
+//
+//	public static void removeAssign(List<Integer> assignModelList ) {
+//		if (assignModelList.size() > 0) {
+//			for (int i : assignModelList) {
+//				System.out.println("remove Assign"+i);
+//			
+//				{System.out.println("row is filtered"+tblorder.getRowSorter().convertRowIndexToModel(i));
+//					model_OrderAssign.removeRow(i);
+//				}
+//			}
+//
+//		}
+//	}
 
 	public static void showOrderList() {
-		List<Order> orderList = new ArrayList<Order>();
-		orderList = order_service.getOrderbyAssign(false);
-		JButton btn_viewDetail = new JButton("View");
-		// JCheckBox chkBox=new JCheckBox();
-		model_OrderAssign = new TableModel_OrderAssign(orderList, btn_viewDetail);
 
+		 orderList = order_service.getOrderbyAssign(false);
+		JButton btn_viewDetail = new JButton("View");
+		model_OrderAssign = new TableModel_OrderAssign(orderList, btn_viewDetail);
 		tblorder.setModel(model_OrderAssign);
 
 		TableCellRenderer tableRenderer = tblorder.getDefaultRenderer(JButton.class);
@@ -92,8 +103,6 @@ public class DeliveryManage_Controller
 	private void initController() {
 
 		if (CurrentUserHolder.getCurrentUser().getRole().getRole_name().equals("Admin")) {
-			// navigation_panel.getPanel_btnStaff().addMouseListener(this);
-			// navigation_panel.getPanel_btnSetPrice().addMouseListener(this);
 			panel_btnAccount.addMouseListener(this);
 			panel_btnSetprice.addMouseListener(this);
 		}
@@ -138,9 +147,6 @@ public class DeliveryManage_Controller
 		navigation_panel.getPanel_btnDelivery().setBackground(new Color(218, 165, 32));
 
 		if (CurrentUserHolder.getCurrentUser().getRole().getRole_name().equals("Office Staff")) {
-			// office_view.getPanel_btnSetPrice().setVisible(false);
-//			ImageIcon disableIcon = new ImageIcon(
-//					new ImageIcon("resource\\disable.png").getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH));
 
 			JLabel iconManageStaff = navigation_panel.getIconManageStaff();
 			JLabel iconSetPrice = navigation_panel.getIconSetPrice();
@@ -179,7 +185,6 @@ public class DeliveryManage_Controller
 	}
 
 	private void collectAssign() {
-
 		for (int i = 0; i < tblorder.getModel().getRowCount(); i++) {
 			if ((Boolean) tblorder.getModel().getValueAt(i, 0)) {
 				assignList.add((String) tblorder.getModel().getValueAt(i, 2));
@@ -187,6 +192,7 @@ public class DeliveryManage_Controller
 			}
 		}
 	}
+
 	private void alert(String msg) {
 		JOptionPane.showMessageDialog(navigation_panel.getFrame(), msg);
 	}
@@ -196,16 +202,15 @@ public class DeliveryManage_Controller
 		if (e.getSource().equals(deliveryManage_panel.getBtnSelectdelivery())) {
 			assignList.clear();
 			collectAssign();
-			if(assignList.size()>0) {
-			AssignDeliveryMan_Controller assignController = new AssignDeliveryMan_Controller(assignList);
+			if (assignList.size() > 0) {
+				AssignDeliveryMan_Controller assignController = new AssignDeliveryMan_Controller(assignList);
 
-			}
-			else {
+			} else {
 				alert("Select order to assign!!");
 			}
 		}
 		if (e.getSource().equals(btnDeselect)) {
-		//	deselectOrder();
+			// deselectOrder();
 		}
 
 	}
@@ -214,7 +219,7 @@ public class DeliveryManage_Controller
 	public void mouseClicked(MouseEvent e) {
 
 		if (e.getSource().equals(panel_deselect)) {
-		//	deselectOrder();
+			// deselectOrder();
 		}
 		if (e.getSource().equals(panel_btnAccount)) {
 			frame.remove(panel_delivery);
@@ -333,19 +338,27 @@ public class DeliveryManage_Controller
 			System.out.println("combodestination");
 			if (0 != combodestination.getSelectedIndex())
 				try {
-					System.out.println("0!");
-					java.util.List<RowFilter<Object, Object>> filters = new ArrayList<RowFilter<Object, Object>>(1);
-					filters.add(RowFilter.regexFilter(combodestination.getSelectedItem().toString(), 5));
-					System.out.println(combodestination.getSelectedItem().toString());
-					RowFilter<Object, Object> serviceFilter = RowFilter.andFilter(filters);
-					System.out.println(serviceFilter);
-					Ordersorter.setRowFilter(serviceFilter);
-					tblorder.setRowSorter(Ordersorter);
+					DestinationPrice_service destinationPrice_service = new DestinationPrice_service();
+					Destination destination = destinationPrice_service
+							.getDestinationByName(combodestination.getSelectedItem().toString());
+
+					//orderList = order_service.getOrderBydestinationId(destination.getId());
+				//	showOrderList(orderList);
+//					System.out.println("0!");
+//					java.util.List<RowFilter<Object, Object>> filters = new ArrayList<RowFilter<Object, Object>>(1);
+//					filters.add(RowFilter.regexFilter(combodestination.getSelectedItem().toString(), 5));
+//					System.out.println(combodestination.getSelectedItem().toString());
+//					RowFilter<Object, Object> serviceFilter = RowFilter.andFilter(filters);
+//					System.out.println(serviceFilter);
+//					Ordersorter.setRowFilter(serviceFilter);
+//					tblorder.setRowSorter(Ordersorter);
+
 				} catch (Exception exception) {
 					System.out.println(exception.getMessage());
 				}
 			else {
-				tblorder.setRowSorter(null);
+				//showOrderList(order_service.getOrderbyAssign(false));
+				// tblorder.setRowSorter(null);
 			}
 		}
 

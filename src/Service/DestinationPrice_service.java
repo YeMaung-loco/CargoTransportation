@@ -21,7 +21,6 @@ public class DestinationPrice_service {
 	public DestinationPrice_service() throws SQLException {
 		this.dbConfig = new DBConfig();
 		this.connection = dbConfig.getConnection();
-
 	}
 
 	public int createdestinationPrice(Destination dest) {

@@ -3,26 +3,18 @@ package Utility;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.sql.Date;
-import java.sql.SQLClientInfoException;
-import java.text.Format;
-import java.text.SimpleDateFormat;
 
-import javax.print.attribute.standard.DateTimeAtCompleted;
 import javax.swing.JTable;
 import javax.swing.table.TableModel;
 
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbookFactory;
 
-import com.mysql.cj.protocol.a.SqlDateValueEncoder;
-
 import Model.CurrentUserHolder;
-
-import org.apache.poi.ss.usermodel.Row;
 
 public class ExportDataToExcel {
 	@SuppressWarnings("unused")

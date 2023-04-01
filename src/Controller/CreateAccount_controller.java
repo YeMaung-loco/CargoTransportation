@@ -1,7 +1,6 @@
 package Controller;
 
 import java.awt.Color;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -11,12 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -31,8 +28,6 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableRowSorter;
 
 import Model.Authenticate;
-
-import Model.CurrentUserHolder;
 import Model.Department;
 import Model.Role;
 import Model.Staff;
@@ -174,21 +169,13 @@ public class CreateAccount_controller implements ActionListener, MouseListener, 
 	}
 
 	private boolean setModel() {
-		// boolean setModel=false;
 		if (Checking.IsValidName(txtName.getText()) && Checking.IsAllDigit(txtPhone.getText())
 				&& comboDepartment.getSelectedIndex() != 0) {
 
 			long millis = System.currentTimeMillis();
 			int roleId = 0;
 			String roleName = "";
-//			if (chckbxupload.isSelected()) {
-//				roleId = 1;
-//				roleName = "Normal Staff";
-//			}
-//			if (chckbxupload.isSelected() && chckbxManage.isSelected()) {
-//				roleId = 2;
-//				roleName = "Office Staff";
-//			}
+
 			if (radioGroup.getSelection().getActionCommand().equals("Office")) {
 				roleId = 2;
 				roleName = "Office Staff";
@@ -269,7 +256,7 @@ public class CreateAccount_controller implements ActionListener, MouseListener, 
 	private void edit() {
 		auth = new Authenticate();
 		int status = auth_Service.checkStaffid(temp_id, auth);
-		
+
 		System.out.println(status);
 		if (status > 0) {
 			btnCreate.setVisible(false);
@@ -303,8 +290,9 @@ public class CreateAccount_controller implements ActionListener, MouseListener, 
 		int modelRowIndex = table.convertRowIndexToModel(table.getSelectedRow());
 		System.out.println("delete " + modelRowIndex);
 		if (modelRowIndex != -1) {
+			int authdelete = auth_Service.deleteLogin(temp_id);
 			int status = staff_Service.deleteStaff(temp_id);
-			if (status > 0) {
+			if (status > 0 && authdelete > 0) {
 				model_Staff.removeRow(modelRowIndex);
 				alert("Successfully Deleted!");
 
@@ -458,7 +446,7 @@ public class CreateAccount_controller implements ActionListener, MouseListener, 
 			staff = null;
 			btnCreate.setVisible(false);
 			btnEdit.setVisible(false);
-			
+
 			dataToView(staff);
 		}
 		if (e.getSource().equals(btnDelete)) {
@@ -468,9 +456,9 @@ public class CreateAccount_controller implements ActionListener, MouseListener, 
 			update();
 		}
 		if (e.getSource().equals(btnCreate)) {
-			
+
 			new Create_controller(temp_id);
-			
+
 		}
 		if (e.getSource().equals(btnEdit)) {
 

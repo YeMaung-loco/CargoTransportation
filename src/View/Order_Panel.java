@@ -217,7 +217,7 @@ public class Order_Panel {
 		Border border = BorderFactory.createLineBorder(SystemColor.activeCaptionBorder);
 		txtc_address = new JTextArea();
 		txtc_address.setBorder(BorderFactory.createCompoundBorder(border, BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-		txtc_address.setBounds(165, 197, 262, 94);
+		txtc_address.setBounds(165, 197, 262, 80);
 		txtc_address.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		panel_order.add(txtc_address);
 		

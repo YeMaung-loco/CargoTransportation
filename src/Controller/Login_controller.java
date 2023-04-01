@@ -1,11 +1,9 @@
 package Controller;
 
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -30,15 +28,13 @@ public class Login_controller implements ActionListener {
 	Login_view vlogin;
 	LoginForm login;
 	String currentRole;
-	JLabel cargo_Icon,username_Icon,password_Icon;
+	JLabel cargo_Icon, username_Icon, password_Icon;
 	Login loginp;
 
 	public Login_controller() {
 
 		dependencyInjection();
-		
-		vlogin = new Login_view();
-		//loginp=new Login();
+
 		initForm();
 		initComponent();
 		initController();
@@ -52,60 +48,30 @@ public class Login_controller implements ActionListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("aaaaaaa");
-		// vlogin = new Login_view();
+
 	}
 
 	public void initComponent() {
 		txtc_username = vlogin.getTxtUsername();
 		txt_password = vlogin.getPasswordField();
 		btnlogin = vlogin.getBtnLogin();
-		cargo_Icon=vlogin.getIcon1JLabel();
-		username_Icon=vlogin.getIconUsername();
-		password_Icon=vlogin.getIconPassword();
-		
-//		txtc_username=loginp.getTxt_username();
-//		txt_password=loginp.getPasswordfield();
-//		btnlogin=loginp.getBtnlogin();
-//		username_Icon=loginp.getLbl_username();
-//		password_Icon=loginp.getLbl_password();
-//		
-		
-	
+		cargo_Icon = vlogin.getIcon1JLabel();
+		username_Icon = vlogin.getIconUsername();
+		password_Icon = vlogin.getIconPassword();
+
 	}
 
 	private void initController() {
 
 		btnlogin.addActionListener(this);
-		
+
 	}
+
 	public void initForm() {
-		
-		//  JLabel cargo_Icon=vlogin.getIcon1JLabel(); 
-		  username_Icon=vlogin.getIconUsername(); 
-		  password_Icon=vlogin.getIconPassword();
-		//ImageIcon brandIcon= new ImageIcon(new ImageIcon("resource\\cargo.png").getImage() 
-		 //      .getScaledInstance(287, 126, Image.SCALE_SMOOTH)); 
-//		ImageIcon userIcon= new ImageIcon(new ImageIcon("resource\\user.png").getImage()
-//		    .getScaledInstance(100, 50, Image.SCALE_SMOOTH)); //// ImageIcon passIcon =
-//		ImageIcon passIcon= new ImageIcon(new ImageIcon("resource\\1238426.png").getImage() 
-//		 .getScaledInstance(100, 50, Image.SCALE_SMOOTH)); ////
-//		 //cargo_Icon.setIcon(brandIcon); 
-//		 username_Icon.setIcon(userIcon); 
-//		  password_Icon.setIcon(passIcon); 
-		 	 
-//		    JLabel username_Icon=loginp.getLbl_username();
-//		    JLabel password_Icon=loginp.getLbl_password();
-////			ImageIcon brandIcon = new ImageIcon(new ImageIcon("resource\\cargo.png").getImage()
-////					.getScaledInstance(287, 126, Image.SCALE_SMOOTH));
-//			ImageIcon userIcon = new ImageIcon(new ImageIcon("resource\\username.png").getImage()
-//					.getScaledInstance(username_Icon.WIDTH, username_Icon.HEIGHT, Image.SCALE_SMOOTH));
-//			ImageIcon passIcon = new ImageIcon(new ImageIcon("resource\\password.png").getImage()
-//					.getScaledInstance(password_Icon.WIDTH, password_Icon.HEIGHT, Image.SCALE_SMOOTH));
-//			//cargo_Icon.setIcon(brandIcon);
-//			username_Icon.setIcon(userIcon);
-//			password_Icon.setIcon(passIcon);
-		
+		vlogin = new Login_view();
+		username_Icon = vlogin.getIconUsername();
+		password_Icon = vlogin.getIconPassword();
+
 	}
 
 	private void login() {
@@ -115,8 +81,6 @@ public class Login_controller implements ActionListener {
 		if (!username.isBlank() && !password.isBlank()) {
 			Staff staff = authservice.login(username, password);
 			if (staff != null) {
-
-				JOptionPane.showMessageDialog(null, "Successfully Login");
 				CurrentUserHolder.setLoggedInUser(staff);
 				currentRole = CurrentUserHolder.getCurrentUser().getRole().getRole_name();
 				System.out.println("currentholder is " + CurrentUserHolder.getCurrentUser().getRole().getRole_name());
@@ -135,7 +99,6 @@ public class Login_controller implements ActionListener {
 					vlogin.getFrame().dispose();
 					Main_View main_View = new Main_View();
 					OrderManage_controller nextController = new OrderManage_controller(main_View.getFrame());
-					// CargoTransportationSystem cargo = new CargoTransportationSystem();
 				}
 
 			}
